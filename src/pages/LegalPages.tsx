@@ -125,7 +125,20 @@ export function DatenschutzPage() {
             </p>
           </Section>
 
-          <Section title="8. Ihre Rechte">
+          <Section title="8. Bestenlisten">
+            <p>
+              Die Seite „Bestenliste“ zeigt die besten Ergebnisse aus dem Spiel: Spielername, Punkte, erreichte Welle,
+              Kills und bei Co-op die Namen des Teams. Diese Angaben stammen aus den Online-Bestenlisten des Spiels
+              (Unity Gaming Services, Unity Technologies) und erscheinen dort nur, wenn Spieler im Spiel der Teilnahme an
+              den Online-Bestenlisten zugestimmt haben; Einzelheiten stehen in der Datenschutzerklärung des Spiels. Unser
+              Cloudflare-Worker ruft die Liste höchstens alle zehn Minuten bei Unity ab und speichert sie kurzzeitig
+              zwischen. Ihr Browser verbindet sich dabei nicht mit Unity. Rechtsgrundlage ist Art. 6 Abs. 1 lit. a DSGVO
+              (Einwilligung im Spiel). Wer seine Online-Daten im Spiel löscht, verschwindet auch hier spätestens nach
+              zehn Minuten.
+            </p>
+          </Section>
+
+          <Section title="9. Ihre Rechte">
             <p>
               Sie haben nach der DSGVO das Recht auf Auskunft (Art. 15), Berichtigung (Art. 16), Löschung (Art. 17),
               Einschränkung der Verarbeitung (Art. 18), Datenübertragbarkeit (Art. 20) und Widerspruch gegen eine

@@ -1,12 +1,18 @@
-// Cloudflare Worker that serves the built site (dist/) at zombierealitybreach.com.
+// Cloudflare Worker that serves the built site (dist/) at zombierealitybreach.com, plus /api/leaderboards
+// (worker/index.ts, reads the game's scores from Unity Gaming Services).
 // Deploy: npm run build && npx wrangler deploy
+// Secrets (owner only): npx wrangler secret put UGS_KEY_ID / UGS_SECRET
 {
   "name": "zombie-reality-breach-site",
+  "main": "worker/index.ts",
   "compatibility_date": "2026-10-01",
   "assets": {
     "directory": "./dist",
+    "binding": "ASSETS",
     // React router: unknown paths get index.html.
-    "not_found_handling": "single-page-application"
+    "not_found_handling": "single-page-application",
+    // The API must reach the worker instead of the SPA fallback.
+    "run_worker_first": ["/api/*"]
   },
   "routes": [
     { "pattern": "zombierealitybreach.com", "custom_domain": true },

@@ -108,9 +108,9 @@ export const modeFamilies: ModeFamily[] = [
 
 /** Boards that open at launch: each Easy/Hard and Solo/Co-op. */
 export const leaderboardModes = [
-  { key: 'leaderboard.realityBreach', family: 'Reality Breach' },
-  { key: 'leaderboard.rift', family: 'Rift' },
-  { key: 'leaderboard.rooftop', family: 'Outbreak' },
-  { key: 'leaderboard.safeZone', family: 'Outbreak' },
-  { key: 'leaderboard.gasStation', family: 'Outbreak' },
+  { key: 'leaderboard.realityBreach', board: 'room', family: 'Reality Breach' },
+  { key: 'leaderboard.rift', board: 'rift', family: 'Rift' },
+  { key: 'leaderboard.rooftop', board: 'rooftop', family: 'Outbreak' },
+  { key: 'leaderboard.safeZone', board: 'safezone', family: 'Outbreak' },
+  { key: 'leaderboard.gasStation', board: 'gasstation', family: 'Outbreak' },
 ] as const;
