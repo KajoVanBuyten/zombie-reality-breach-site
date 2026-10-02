@@ -35,7 +35,18 @@ export default function LeaderboardBoards({ compact = false }: { compact?: boole
     let alive = true;
     fetch('/api/leaderboards')
       .then((r) => r.json() as Promise<Data>)
-      .then((d) => alive && setData(d))
+      .then((d) => {
+        if (!alive) return;
+        setData(d);
+        // Open on the first board that has scores instead of an empty one.
+        const first = Object.entries(d.boards ?? {}).find(([, rows]) => rows.length > 0)?.[0];
+        if (first) {
+          const [m, diff, tm] = first.split('_');
+          setMode(m);
+          setDifficulty(diff as Difficulty);
+          setTeam(tm as Team);
+        }
+      })
       .catch(() => alive && setData({ configured: false }));
     return () => {
       alive = false;

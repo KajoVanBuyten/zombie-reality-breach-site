@@ -82,12 +82,20 @@ async function leaderboards(env: Env): Promise<Response> {
   const envId = await environmentId(env, auth);
   const ids = MODES.flatMap((m) => DIFFICULTIES.flatMap((d) => TEAMS.map((t) => `${m}_${d}_${t}`)));
   const boards: Record<string, Row[]> = {};
+  const failed: string[] = [];
   // The API allows 10 requests per second: read five boards at a time.
   for (let i = 0; i < ids.length; i += 5) {
     const chunk = ids.slice(i, i + 5);
-    const rows = await Promise.all(chunk.map((id) => readBoard(auth, envId, id)));
-    chunk.forEach((id, n) => (boards[id] = rows[n]));
+    const rows = await Promise.allSettled(chunk.map((id) => readBoard(auth, envId, id)));
+    chunk.forEach((id, n) => {
+      const r = rows[n];
+      if (r.status === 'fulfilled') boards[id] = r.value;
+      else failed.push(String(r.reason));
+    });
   }
+  // One unreadable board leaves that board empty; only when none can be read is the whole answer an error.
+  if (failed.length) console.error('boards failed', failed.join(', '));
+  if (failed.length === ids.length) throw new Error('no board readable');
   return new Response(JSON.stringify({ configured: true, updated: new Date().toISOString(), boards }), { headers });
 }
 

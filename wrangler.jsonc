@@ -6,6 +6,10 @@
   "name": "zombie-reality-breach-site",
   "main": "worker/index.ts",
   "compatibility_date": "2026-10-01",
+  // Keep variables set in the Cloudflare dashboard; without this every deploy deletes them.
+  "keep_vars": true,
+  // UGS environment "production" (not a secret).
+  "vars": { "UGS_ENVIRONMENT_ID": "7fa5df87-b89f-4fc5-86ae-ddd3b58e52c9" },
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
