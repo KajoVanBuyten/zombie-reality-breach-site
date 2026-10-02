@@ -1,6 +1,6 @@
 /** Central site constants. */
 
-export const CONTACT_EMAIL = 'kontakt@kajo.tech';
+export const CONTACT_EMAIL = 'support@zombierealitybreach.com';
 
 /** Meta Quest link (currently the existing Meta share link; replace with the Coming Soon store URL when it is live). */
 export const META_URL = 'https://www.meta.com/s/67bQkabjj';
