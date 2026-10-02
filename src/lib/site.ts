@@ -14,9 +14,10 @@ export function asset(path: string): string {
 }
 
 export const img = {
-  keyArt: asset('assets/images/Reiseziel-Meta-Image.png'),
-  logoCity: asset('assets/images/338b2348-16ab-410d-9e3e-dc5fc694f9ab.png'),
-  ruins: asset('assets/images/07486ba7-ae5b-4fc0-a963-a926b00a1553.png'),
-  sparks: asset('assets/images/b4139335-8c7e-4d24-bb23-35b84793b08e.png'),
-  aerial: asset('assets/images/ca99e20b-79de-40b5-a10d-ea8cc8ae32ea.png'),
+  // Key art from the store sets (Media/Store/Meta/Final_5_Themen), the versions without lettering.
+  keyArt: asset('assets/images/hero_ashcity.jpg'),
+  logoCity: asset('assets/images/bg_daylight.jpg'),
+  realityBreach: asset('assets/images/mode_reality_breach.jpg'),
+  rift: asset('assets/images/mode_rift.jpg'),
+  outbreak: asset('assets/images/mode_outbreak.jpg'),
 };

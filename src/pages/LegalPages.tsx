@@ -71,13 +71,13 @@ export function DatenschutzPage() {
             <p>KaMa Studios, Inhaber Johannes Bauer<br />Schilfweg 6, 51069 Köln, Deutschland<br />E-Mail: <Mail /></p>
           </Section>
 
-          <Section title="2. Hosting über GitHub Pages">
+          <Section title="2. Hosting über Cloudflare">
             <p>
-              Diese Website wird über GitHub Pages bereitgestellt, einen Dienst der GitHub Inc., 88 Colin P. Kelly Jr. Street,
-              San Francisco, CA 94107, USA. Beim Aufruf der Website verarbeitet GitHub technisch notwendige Server-Logdaten,
-              insbesondere Ihre IP-Adresse, Datum und Uhrzeit des Zugriffs, die aufgerufene Seite, den Browsertyp und das
-              Betriebssystem, um die Website auszuliefern und ihre Sicherheit zu gewährleisten. Wir selbst haben keinen
-              Zugriff auf diese Logdaten.
+              Diese Website wird über Cloudflare (Cloudflare Workers) bereitgestellt, einen Dienst der Cloudflare Inc.,
+              101 Townsend St., San Francisco, CA 94107, USA. Cloudflare übernimmt auch die Namensauflösung (DNS). Beim
+              Aufruf der Website verarbeitet Cloudflare technisch notwendige Verbindungsdaten, insbesondere Ihre IP-Adresse,
+              Datum und Uhrzeit des Zugriffs, die aufgerufene Seite und den Browsertyp, um die Website auszuliefern und vor
+              Angriffen zu schützen. Wir werten diese Daten nicht aus.
             </p>
             <p>
               Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Unser berechtigtes Interesse liegt in der sicheren und
@@ -86,17 +86,11 @@ export function DatenschutzPage() {
             </p>
           </Section>
 
-          <Section title="3. Cloudflare (DNS und Auslieferung)">
+          <Section title="3. E-Mail an uns">
             <p>
-              Für die Namensauflösung (DNS) und die Auslieferung der Inhalte nutzen wir Cloudflare, einen Dienst der
-              Cloudflare Inc., 101 Townsend St., San Francisco, CA 94107, USA. Dabei verarbeitet Cloudflare technisch
-              notwendige Verbindungsdaten wie Ihre IP-Adresse, um die Website schnell und geschützt vor Angriffen
-              auszuliefern.
-            </p>
-            <p>
-              Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Unser berechtigtes Interesse liegt in einer sicheren und
-              performanten Auslieferung der Website. Die Übermittlung in die USA erfolgt auf Grundlage des
-              EU-US Data Privacy Framework.
+              Schreiben Sie uns an die genannte Adresse, wird Ihre Nachricht über Cloudflare Email Routing an unser
+              Postfach weitergeleitet und dort zur Bearbeitung Ihres Anliegens verwendet (Art. 6 Abs. 1 lit. b bzw. f DSGVO).
+              Wir löschen sie, sobald sie nicht mehr gebraucht wird und keine Aufbewahrungspflicht besteht.
             </p>
           </Section>
 

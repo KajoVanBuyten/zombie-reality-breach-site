@@ -1,0 +1,15 @@
+// Cloudflare Worker that serves the built site (dist/) at zombierealitybreach.com.
+// Deploy: npm run build && npx wrangler deploy
+{
+  "name": "zombie-reality-breach-site",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    // React router: unknown paths get index.html.
+    "not_found_handling": "single-page-application"
+  },
+  "routes": [
+    { "pattern": "zombierealitybreach.com", "custom_domain": true },
+    { "pattern": "www.zombierealitybreach.com", "custom_domain": true }
+  ]
+}
