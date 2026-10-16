@@ -5,6 +5,7 @@ import { useI18n } from '@/lib/i18n';
 import SteelCard from '@/components/SteelCard';
 import HazardDivider from '@/components/HazardDivider';
 import { newsPosts, type NewsPost } from '@/content/news';
+import KeyArt from '@/components/KeyArt';
 
 type Category = 'All' | NewsPost['category'];
 const categories: Category[] = ['All', 'Update', 'Devlog', 'Alpha'];
@@ -52,7 +53,7 @@ export function NewsListPage() {
             <Link to={`/news/${post.slug}`} key={post.slug}>
               <SteelCard className="group overflow-hidden hover:border-blood/40 transition-colors h-full">
                 <div className="relative h-44 overflow-hidden">
-                  <img src={post.image} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" />
+                  <KeyArt theme={post.theme} widths={[1280, 800]} sizes="(min-width: 768px) 33vw, 100vw" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                   <div className="absolute inset-0 bg-gradient-to-t from-bg-surface to-transparent" />
                   <div className="absolute top-3 left-3 px-2 py-0.5 bg-blood text-bone text-[10px] font-heading uppercase tracking-wider clip-tag">
                     {post.category}
@@ -116,7 +117,7 @@ export function NewsDetailPage() {
           <ArrowLeft className="w-3.5 h-3.5" /> {de ? 'Alle News' : 'All News'}
         </Link>
         <div className="relative h-64 overflow-hidden mb-8 border border-bg-steel">
-          <img src={post.image} alt={de ? post.titleDe : post.title} className="w-full h-full object-cover" />
+          <KeyArt theme={post.theme} widths={[1920, 1280, 800]} sizes="(min-width: 768px) 768px, 100vw" loading="eager" alt={de ? post.titleDe : post.title} className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/30 to-transparent" />
           <div className="absolute top-4 left-4 px-2 py-0.5 bg-blood text-bone text-[10px] font-heading uppercase tracking-wider clip-tag">
             {post.category}

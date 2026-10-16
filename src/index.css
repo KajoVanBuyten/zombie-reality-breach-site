@@ -91,3 +91,10 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .animate-fog-drift, .animate-glitch, .animate-glow-pulse, .animate-marquee { animation: none !important; }
 }
+
+/* Dark steel backdrop for the weapon renders (transparent WebP from public/assets/weapons). */
+.weapon-stage {
+  background:
+    radial-gradient(ellipse at 50% 60%, rgba(179, 18, 27, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 50%, #26262c 0%, #141417 70%, #0f0f12 100%);
+}

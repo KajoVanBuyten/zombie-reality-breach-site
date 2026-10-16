@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import { Play, Crosshair, Hand, Users, ArrowRight, Skull, Gift } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
-import { META_URL, img } from '@/lib/site';
+import { META_URL, keyArtThemes } from '@/lib/site';
+import KeyArt from '@/components/KeyArt';
 import SteelCard from '@/components/SteelCard';
 import HazardDivider from '@/components/HazardDivider';
 import { newsPosts } from '@/content/news';
@@ -21,9 +22,12 @@ export default function HomePage() {
       {/* HERO */}
       <section className="relative min-h-screen flex flex-col overflow-hidden">
         <div className="absolute inset-0">
-          <img
-            src={img.keyArt}
-            alt="Zombie Reality Breach logo over a ruined city"
+          <KeyArt
+            theme={keyArtThemes.game}
+            kind="hero"
+            portraitBelow={640}
+            loading="eager"
+            alt="A ruined city seen from a wrecked apartment"
             className="w-full h-full object-cover object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/50 to-bg/70" />
@@ -106,7 +110,7 @@ export default function HomePage() {
             <Link to="/modes" key={m.id}>
               <SteelCard className="group overflow-hidden hover:border-blood/40 transition-colors h-full">
                 <div className="relative h-52 overflow-hidden">
-                  <img src={m.image} alt={m.imageAlt} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" />
+                  <KeyArt theme={m.theme} widths={[1280, 800]} sizes="(min-width: 768px) 33vw, 100vw" alt={m.imageAlt} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                   <div className="absolute inset-0 bg-gradient-to-t from-bg-surface via-bg-surface/30 to-transparent" />
                 </div>
                 <div className="relative z-10 p-5">
@@ -176,7 +180,7 @@ export default function HomePage() {
             <Link to={`/news/${post.slug}`} key={post.slug}>
               <SteelCard className="group overflow-hidden hover:border-blood/40 transition-colors h-full">
                 <div className="relative h-44 overflow-hidden">
-                  <img src={post.image} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" />
+                  <KeyArt theme={post.theme} widths={[1280, 800]} sizes="(min-width: 768px) 33vw, 100vw" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                   <div className="absolute inset-0 bg-gradient-to-t from-bg-surface to-transparent" />
                   <div className="absolute top-3 left-3 px-2 py-0.5 bg-blood text-bone text-[10px] font-heading uppercase tracking-wider clip-tag">
                     {post.category}
@@ -202,7 +206,7 @@ export default function HomePage() {
       {/* CTA */}
       <section className="py-20 lg:py-28 relative overflow-hidden">
         <div className="absolute inset-0">
-          <img src={img.logoCity} alt="" className="w-full h-full object-cover opacity-15" />
+          <KeyArt theme={keyArtThemes.daylight} widths={[1920, 1280, 800]} className="w-full h-full object-cover opacity-15" />
           <div className="absolute inset-0 bg-gradient-to-r from-bg via-bg/80 to-bg/50" />
         </div>
         <div className="relative z-10 max-w-3xl mx-auto text-center px-4">

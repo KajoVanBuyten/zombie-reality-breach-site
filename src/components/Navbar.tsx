@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Skull } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
+import BrandMark from '@/components/BrandMark';
 import { useI18n } from '@/lib/i18n';
 import { META_URL } from '@/lib/site';
 
@@ -34,9 +35,8 @@ export default function Navbar() {
       scrolled ? 'bg-bg/95 backdrop-blur-md border-b border-bg-steel/60' : 'bg-transparent'
     }`}>
       <nav className="max-w-7xl mx-auto px-4 lg:px-8 h-16 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 group">
-          <Skull className="w-7 h-7 text-blood group-hover:text-blood-hover transition-colors" strokeWidth={2.2} />
-          <span className="font-horror text-sm sm:text-base text-blood tracking-wider leading-none">ZRB</span>
+        <Link to="/" className="flex items-center group" aria-label="Zombie Reality Breach, home">
+          <BrandMark skullClass="h-9" wordmarkClass="h-11" />
         </Link>
 
         <ul className="hidden xl:flex items-center gap-5">

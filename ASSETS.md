@@ -85,6 +85,22 @@ WebP in allen Breiten, JPG als Fallback in der Hauptbreite. Namensschema `<art>_
 
 Für die Download-Liste der Presseseite (dort stehen noch „Coming soon“). Offen bleiben Screenshots, Fact Sheet (PDF) und Trailer. Die drei ZIPs enthalten dasselbe Material doppelt; wer Platz im Repository sparen will, behält nur `zrb-presskit.zip`.
 
-## Noch nicht verdrahtet
+## Verdrahtung auf der Website
 
-Das Set liegt neben den bisherigen Bildern in `public/assets/images/` (die `img`-Konstanten in `src/lib/site.ts` zeigen weiter dorthin). Umstellung der Website, Favicon-Links in `index.html`, Open-Graph-Bilder pro Seite und die Presse-Downloads sind der nächste Schritt.
+Stand 16.10.2026, Umstellung von `public/assets/images/` (gelöscht) und `favicon.png` (gelöscht):
+
+- `index.html`: `favicon.ico`, `favicon-32x32.png`, `apple-touch-icon.png`, `site.webmanifest`; `og:image`/`twitter:image` auf `og_wall-breach_1200x630.jpg` (1200×630).
+- `src/lib/site.ts`: `brand` (SVG-Pfade), `keyArtThemes` (Modus → Thema), `keyArtWebp`/`keyArtJpg`/`keyArtSrcSet`/`keyArtSet` und die `img`-Konstanten (Hero ohne Schrift).
+- `src/components/KeyArt.tsx`: `<picture>` mit WebP-`srcset` und JPG-Fallback; `portraitBelow` liefert auf schmalen Viewports `portrait-clean`.
+- `src/components/BrandMark.tsx`: Signet (Totenkopf) auf schmalen Viewports, ab `sm` die Wortmarke; Navbar und Footer.
+- Startseite: Hero `ash-city` (2560/1920/1280/800, mobil Hochkant), Modus- und News-Karten `hero_1280/800`, Call-to-Action `daylight`.
+- Das Spiel / Spielmodi: Kopfbild pro Modus (`wall-breach`, `dead-signal`, `night-station`), keine Screenshots.
+- Presse: Downloads aus `public/assets/press/` mit Größen aus `manifest.json` (JSON-Import), Key-Art-Galerie `cover_1280.webp` → `cover_1920.jpg`.
+
+## Waffenbilder (`public/assets/weapons/`)
+
+Renders der echten Spielmodelle aus `Assets/_Project/Art/Weapons` und `Art/Mods` des Unity-Projekts, ohne Unity: `scripts/Build-WeaponImages.ps1` lässt Blender 4.5 headless `scripts/render_weapons.py` mit `scripts/weapon_renders.json` laufen (FBX laden, Texturen nach dem Namensschema oder aus der Konfiguration, Modell auf 1 m normieren, Kamera schräg von der Seite mit Mündung nach rechts, Dreipunktlicht, transparenter Hintergrund) und exportiert mit ImageMagick `<id>_1200.webp` und `<id>_600.webp` (16:9, Alphakanal). Die Zwischen-PNGs liegen in `build/weapon-renders/` (nicht im Repository).
+
+Die `<id>` sind die Waffen-IDs aus `src/content/weapons.ts` (23 Waffen, davon `pipe-bomb` ohne Modell) plus die Aufsätze und Vorräte mit eigenem Modell: `bayonet`, `laser`, `scope`, `speedloader`, `pain-pills`. Das Katana liegt als FBX 6100 vor, das Blenders Importer ablehnt; das Skript liest es über Blenders Low-Level-Parser. Die Taschenlampe hat im Projekt nur ein Unity-Mesh-Asset und deshalb kein Bild.
+
+Asset-Store-Modelle (A3500X, Pistol 92, Katana) dürfen als Render der Spielszene gezeigt, aber nicht als Rohdateien weitergegeben werden; die Renders sind davon nicht betroffen.

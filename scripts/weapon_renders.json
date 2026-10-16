@@ -1,0 +1,302 @@
+{
+  "art_root": "E:/source/Unity/zombie-reality-breach/Assets/_Project/Art",
+  "resolution": [
+    1600,
+    900
+  ],
+  "samples": 64,
+  "yaw": 28,
+  "pitch": 16,
+  "lens": 50,
+  "margin": 1.08,
+  "ambient": 0.35,
+  "items": {
+    "a3500x": {
+      "path": "Weapons/A3500X/Models/A3500X black.fbx",
+      "textures": {
+        "gun": {
+          "base": "Weapons/A3500X/Textures/A3500X black/A3500X_black_Base color.png",
+          "normal": "Weapons/A3500X/Textures/A3500X black/A3500X_black_Normal map.png",
+          "metallic": "Weapons/A3500X/Textures/A3500X black/A3500X_black_Metallic.png",
+          "roughness": "Weapons/A3500X/Textures/A3500X black/A3500X_black_Roughness.png"
+        },
+        "magazine": {
+          "base": "Weapons/A3500X/Textures/magazine/magazine_Base color.png",
+          "normal": "Weapons/A3500X/Textures/magazine/magazine_Normal map.png",
+          "metallic": "Weapons/A3500X/Textures/magazine/magazine_Metallic.png",
+          "roughness": "Weapons/A3500X/Textures/magazine/magazine_Roughness.png"
+        }
+      }
+    },
+    "bat": {
+      "path": "Weapons/BatWood/Bat.fbx"
+    },
+    "crowbar": {
+      "path": "Weapons/Crowbar/Crowbar.fbx"
+    },
+    "machete": {
+      "path": "Weapons/Machete/Machete.fbx"
+    },
+    "pistol-92": {
+      "path": "Weapons/Pistol92/Models/Pistol 92.fbx",
+      "textures": {
+        "*": {
+          "base": "Weapons/Pistol92/Textures/Pistol Black Diffuse.png",
+          "normal": "Weapons/Pistol92/Textures/Pistol Normal.png",
+          "metsmooth": "Weapons/Pistol92/Textures/Pistol Metallic.png"
+        }
+      }
+    },
+    "katana": {
+      "path": "Weapons/Swords/meshes/katana.FBX",
+      "builder": "fbx6100",
+      "textures": {
+        "*": {
+          "base": "Weapons/Swords/Materials/swords_texture.png",
+          "normal": "Weapons/Swords/Materials/swords_normal.png"
+        }
+      },
+      "rotate": [
+        90,
+        0,
+        0
+      ],
+      "yaw": 10,
+      "pitch": 24
+    },
+    "revolver": {
+      "path": "Weapons/Revolver/Revolver.fbx"
+    },
+    "fire-axe": {
+      "path": "Weapons/FireAxe/FireAxe.fbx"
+    },
+    "uzi": {
+      "path": "Weapons/Uzi/Uzi.fbx"
+    },
+    "desert-eagle": {
+      "path": "Weapons/DesertEagle/DesertEagle.fbx",
+      "colors": {
+        "BlackSteel": [
+          0.05,
+          0.05,
+          0.055,
+          1.0,
+          0.45
+        ],
+        "Bore": [
+          0.01,
+          0.01,
+          0.01,
+          1.0,
+          0.6
+        ],
+        "Brass": [
+          0.75,
+          0.56,
+          0.24,
+          1.0,
+          0.35
+        ],
+        "GripRubber": [
+          0.035,
+          0.035,
+          0.035,
+          0.0,
+          0.8
+        ],
+        "Stainless": [
+          0.62,
+          0.62,
+          0.64,
+          1.0,
+          0.45
+        ]
+      },
+      "light_scale": 0.45
+    },
+    "sawed-off": {
+      "path": "Weapons/SawedOff/SawedOff.fbx"
+    },
+    "mp5": {
+      "path": "Weapons/MP5/MP5.fbx"
+    },
+    "sledgehammer": {
+      "path": "Weapons/Sledgehammer/Sledgehammer.fbx"
+    },
+    "double-barrel": {
+      "path": "Weapons/DoubleBarrel/DoubleBarrel.fbx"
+    },
+    "lever-action": {
+      "path": "Weapons/LeverAction/LeverAction.fbx"
+    },
+    "pump-shotgun": {
+      "path": "Weapons/Remington/Remington.fbx",
+      "colors": {
+        "Steel": [
+          0.5,
+          0.5,
+          0.52,
+          1.0,
+          0.5
+        ],
+        "plastic": [
+          0.08,
+          0.08,
+          0.08,
+          0.0,
+          0.6
+        ]
+      }
+    },
+    "bolt-rifle": {
+      "path": "Weapons/BoltRifle/BoltRifle.fbx"
+    },
+    "ak-47": {
+      "path": "Weapons/AK47/AK47.fbx"
+    },
+    "chainsaw": {
+      "path": "Weapons/Chainsaw/Chainsaw.fbx",
+      "alpha_clip": [
+        "Chainsaw01_Alpha"
+      ]
+    },
+    "auto-shotgun": {
+      "path": "Weapons/Benelli/Benelli.fbx"
+    },
+    "lmg": {
+      "path": "Weapons/LMG/LMG.fbx"
+    },
+    "flare-gun": {
+      "path": "Weapons/FlareGun/FlareGun.fbx"
+    },
+    "molotov": {
+      "path": "Weapons/Molotov/Molotov.fbx",
+      "upright": true
+    },
+    "bayonet": {
+      "path": "Mods/Bayonet/Bayonet.fbx",
+      "colors": {
+        "BladeSteel": [
+          0.62,
+          0.63,
+          0.65,
+          1.0,
+          0.3
+        ],
+        "GripRubber": [
+          0.035,
+          0.035,
+          0.038,
+          0.0,
+          0.8
+        ]
+      },
+      "light_scale": 0.6
+    },
+    "laser": {
+      "path": "Mods/Laser/Laser.fbx",
+      "colors": {
+        "Anodized": [
+          0.028,
+          0.028,
+          0.032,
+          1.0,
+          0.4
+        ],
+        "Lens": [
+          0.6,
+          0.05,
+          0.05,
+          0.0,
+          0.1
+        ],
+        "Rubber": [
+          0.02,
+          0.02,
+          0.02,
+          0.0,
+          0.9
+        ],
+        "Steel": [
+          0.42,
+          0.43,
+          0.45,
+          1.0,
+          0.4
+        ]
+      }
+    },
+    "scope": {
+      "path": "Mods/Scope/Scope.fbx",
+      "colors": {
+        "06___Default": [
+          0.588,
+          0.588,
+          0.588,
+          1.0,
+          0.4
+        ],
+        "07___Default": [
+          0.784,
+          0.043,
+          0.043,
+          0.0,
+          0.4
+        ],
+        "08___Default": [
+          0.588,
+          0.588,
+          0.588,
+          1.0,
+          0.4
+        ],
+        "09___Default": [
+          0.588,
+          0.588,
+          0.588,
+          1.0,
+          0.4
+        ]
+      }
+    },
+    "speedloader": {
+      "path": "Mods/Speedloader/Speedloader.fbx",
+      "colors": {
+        "01___Default": [
+          0.8,
+          0.8,
+          0.8,
+          1.0,
+          0.4
+        ]
+      },
+      "light_scale": 0.6
+    },
+    "pain-pills": {
+      "path": "Mods/PillBottle/PillBottle.fbx",
+      "upright": true,
+      "colors": {
+        "plastico": [
+          0.92,
+          0.92,
+          0.9,
+          0.0,
+          0.4
+        ],
+        "vidro": [
+          0.42,
+          0.2,
+          0.05,
+          0.0,
+          0.1
+        ]
+      }
+    }
+  },
+  "lights": {
+    "key": 75,
+    "fill": 25,
+    "rim": 110,
+    "under": 10
+  }
+}

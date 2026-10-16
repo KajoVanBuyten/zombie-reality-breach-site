@@ -4,6 +4,7 @@ import { useI18n } from '@/lib/i18n';
 import SteelCard from '@/components/SteelCard';
 import HazardDivider from '@/components/HazardDivider';
 import { modeFamilies } from '@/content/modes';
+import KeyArt from '@/components/KeyArt';
 
 const features = [
   { icon: Eye, key: 'mr', en: 'True mixed reality in Reality Breach: uses your room scan. Zombies break in through your real doors. No door? They tear a hole in the wall.', de: 'Echte Mixed Reality in Reality Breach: nutzt deinen Raumscan. Zombies brechen durch deine echten Türen. Keine Tür? Dann reißen sie ein Loch in die Wand.' },
@@ -72,8 +73,12 @@ export default function TheGamePage() {
         <h2 className="font-heading text-2xl lg:text-3xl uppercase text-bone mt-2 mb-8">{t('game.modes')}</h2>
         <div className="grid md:grid-cols-3 gap-4">
           {modeFamilies.map((m) => (
-            <SteelCard key={m.id} className="p-5 hover:border-blood/40 transition-colors">
-              <div className="relative z-10">
+            <SteelCard key={m.id} className="overflow-hidden hover:border-blood/40 transition-colors">
+              <div className="relative h-40 overflow-hidden">
+                <KeyArt theme={m.theme} widths={[1280, 800]} sizes="(min-width: 768px) 33vw, 100vw" alt={m.imageAlt} className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-bg-surface via-bg-surface/30 to-transparent" />
+              </div>
+              <div className="relative z-10 p-5">
                 <h3 className="font-heading text-lg uppercase text-bone">{m.name}</h3>
                 <p className="text-[10px] font-heading uppercase tracking-wider text-ember mb-2">{de ? m.kindDe : m.kind}</p>
                 <p className="text-sm text-bone-muted font-body font-light leading-relaxed">{de ? m.shortDe : m.short}</p>

@@ -1,7 +1,8 @@
 import { useI18n } from '@/lib/i18n';
 import SteelCard from '@/components/SteelCard';
 import HazardDivider from '@/components/HazardDivider';
-import { modeFamilies } from '@/content/modes';
+import { modeFamilies, riftUpgrades, zombieKinds } from '@/content/modes';
+import KeyArt from '@/components/KeyArt';
 import { Gift } from 'lucide-react';
 
 export default function GameModesPage() {
@@ -24,7 +25,7 @@ export default function GameModesPage() {
             <SteelCard key={m.id} className="overflow-hidden hover:border-blood/40 transition-colors">
               <div className="md:flex">
                 <div className="relative md:w-2/5 h-56 md:h-auto overflow-hidden flex-shrink-0">
-                  <img src={m.image} alt={m.imageAlt} className="w-full h-full object-cover" loading="lazy" />
+                  <KeyArt theme={m.theme} widths={[1280, 800]} sizes="(min-width: 768px) 40vw, 100vw" alt={m.imageAlt} className="w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent to-bg-surface md:block hidden" />
                   <div className="absolute inset-0 bg-gradient-to-t from-bg-surface to-transparent md:hidden" />
                 </div>
@@ -51,8 +52,14 @@ export default function GameModesPage() {
                           }`}>
                             {t(s.status === 'playable' ? 'modes.playable' : 'modes.inDev')}
                           </span>
-                          <h3 className="font-heading text-base uppercase text-bone mt-3 mb-1">{s.name}</h3>
+                          <h3 className="font-heading text-base uppercase text-bone mt-3 mb-0.5">{s.name}</h3>
+                          <p className="text-[10px] font-heading uppercase tracking-wider text-ember mb-2">{de ? s.playersDe : s.players}</p>
                           <p className="text-xs text-bone-muted font-body font-light leading-relaxed">{de ? s.descDe : s.desc}</p>
+                          {s.points.length > 0 && (
+                            <ul className="mt-3 space-y-1 text-[11px] text-bone-muted/80 font-body font-light list-disc pl-4">
+                              {s.points.map((p) => <li key={p.en}>{de ? p.de : p.en}</li>)}
+                            </ul>
+                          )}
                         </div>
                       ))}
                     </div>
@@ -67,25 +74,25 @@ export default function GameModesPage() {
             <div className="relative z-10 p-6 md:p-8">
               <h2 className="font-heading text-2xl uppercase text-bone mb-1">{de ? 'Mehrspieler (Co-op)' : 'Multiplayer (Co-op)'}</h2>
               <p className="text-xs font-heading text-ember uppercase tracking-wider mb-4">
-                {de ? 'Bis zu 4 in Reality Breach und Rift · bis zu 3 in Rooftop' : 'Up to 4 in Reality Breach and Rift · up to 3 in Rooftop'}
+                {de ? 'Bis zu 4 in Reality Breach, Rift und Gas Station · bis zu 3 in Rooftop und Safe Zone' : 'Up to 4 in Reality Breach, Rift and Gas Station · up to 3 in Rooftop and Safe Zone'}
               </p>
               <p className="text-sm text-bone-muted font-body font-light leading-relaxed mb-5">
                 {de
-                  ? 'Erstelle eine Lobby, teile den Code, wähle Modus und Schwierigkeit. Nur der Host startet; alle anderen sehen die Auswahl des Hosts.'
-                  : 'Host a lobby, share the code, pick the mode and difficulty. Only the host starts; everyone else sees what the host chose while they wait.'}
+                  ? 'Erstelle eine Lobby, teile den Code, wähle Modus und Schwierigkeit. Nur der Host startet; alle anderen sehen die Auswahl des Hosts. Lokal im selben WLAN, online über Relay mit Code. Kein Sprachchat im Spiel.'
+                  : 'Host a lobby, share the code, pick the mode and difficulty. Only the host starts; everyone else sees what the host chose while they wait. Local in the same Wi-Fi, online over relay with a code. No voice chat in the game.'}
               </p>
               <div className="grid sm:grid-cols-3 gap-4 mb-5">
                 <div className="p-4 bg-bg/60 border border-bg-steel">
                   <h3 className="font-heading text-sm uppercase text-ember mb-2">Reality Breach</h3>
-                  <p className="text-xs text-bone-muted font-body font-light">{de ? 'Bis zu vier Spieler, im selben Raum (geteilter Raum) oder online.' : 'Up to four players, in the same room (shared space) or online.'}</p>
+                  <p className="text-xs text-bone-muted font-body font-light">{de ? 'Bis zu vier Spieler, nur im selben Raum (geteilter Raumscan). Online schaltet die Lobby auf Rift um.' : 'Up to four players, same room only (shared room scan). Going online switches the lobby to Rift.'}</p>
                 </div>
                 <div className="p-4 bg-bg/60 border border-bg-steel">
                   <h3 className="font-heading text-sm uppercase text-ember mb-2">Rift</h3>
-                  <p className="text-xs text-bone-muted font-body font-light">{de ? 'Bis zu vier Spieler im Online-Co-op.' : 'Up to four players in online co-op.'}</p>
+                  <p className="text-xs text-bone-muted font-body font-light">{de ? 'Bis zu vier Spieler, im selben Raum oder online. Drei gemeinsame Herzen, eigene Pistolen und Coins.' : 'Up to four players, same room or online. Three shared hearts, personal pistols and coins.'}</p>
                 </div>
                 <div className="p-4 bg-bg/60 border border-bg-steel">
-                  <h3 className="font-heading text-sm uppercase text-ember mb-2">Rooftop</h3>
-                  <p className="text-xs text-bone-muted font-body font-light">{de ? 'Bis zu drei Spieler, jeder auf seinem Auto, mit Meta-Avataren, lokal oder online.' : 'Up to three players, one car each, with Meta avatars, local or online.'}</p>
+                  <h3 className="font-heading text-sm uppercase text-ember mb-2">Outbreak</h3>
+                  <p className="text-xs text-bone-muted font-body font-light">{de ? 'Rooftop bis drei (jeder auf seinem Auto, auch im selben Raum), Safe Zone bis drei (jeder in seinem Zimmer), Gas Station bis vier. Mit Meta-Avataren, lokal oder online.' : 'Rooftop up to three (one car each, same room allowed), Safe Zone up to three (each in their own room), Gas Station up to four. With Meta avatars, local or online.'}</p>
                 </div>
               </div>
               <p className="text-xs text-bone-muted/60 font-body font-light">
@@ -105,6 +112,66 @@ export default function GameModesPage() {
             </div>
           </SteelCard>
         </div>
+      </section>
+
+      <HazardDivider />
+
+      {/* ENEMIES */}
+      <section className="py-16 lg:py-24 max-w-7xl mx-auto px-4 lg:px-8">
+        <h2 className="font-heading text-2xl uppercase text-bone mb-2">{de ? 'Die Toten' : 'The dead'}</h2>
+        <p className="text-sm text-bone-muted font-body font-light leading-relaxed max-w-3xl mb-6">
+          {de
+            ? 'Vier Typen, in allen Modi dieselben. Leben und Tempo wachsen mit jeder Welle. Kopfschüsse zählen; Klingen nehmen Gliedmaßen, und beinlose Zombies kriechen weiter.'
+            : 'Four kinds, the same in every mode. Health and speed grow with every wave. Headshots count; blades take limbs, and legless zombies keep crawling.'}
+        </p>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {zombieKinds.map((z) => (
+            <SteelCard key={z.name} className="p-5 hover:border-blood/40 transition-colors">
+              <div className="relative z-10">
+                <span className="text-[10px] font-heading uppercase tracking-wider text-ember">{de ? z.fromDe : z.from}</span>
+                <h3 className="font-heading text-lg uppercase text-bone mt-1 mb-2">{z.name}</h3>
+                <p className="text-xs text-bone-muted font-body font-light leading-relaxed">{de ? z.descDe : z.desc}</p>
+              </div>
+            </SteelCard>
+          ))}
+        </div>
+      </section>
+
+      <HazardDivider />
+
+      {/* RIFT UPGRADES */}
+      <section className="py-16 lg:py-24 max-w-4xl mx-auto px-4 lg:px-8">
+        <h2 className="font-heading text-2xl uppercase text-bone mb-2">{de ? 'Rift: die Upgrades' : 'Rift: the upgrades'}</h2>
+        <p className="text-sm text-bone-muted font-body font-light leading-relaxed mb-6">
+          {de
+            ? 'Nach jeder Welle zwei Karten: eine gratis und schwächer, eine für Coins und stärker. Du nimmst eine; sie geht an die Pistole der Hand, die geklickt hat. Coins gibt es nur im Spiel, neue Spieler starten mit 500.'
+            : 'After every wave two cards: one free and weaker, one for coins and stronger. You take one; it goes to the pistol of the hand that clicked. Coins are earned in play only; new players start with 500.'}
+        </p>
+        <div className="steel-card overflow-hidden overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-bg-steel text-left">
+                <th className="px-4 py-3 font-heading text-[10px] uppercase tracking-wider text-bone-muted">Upgrade</th>
+                <th className="px-4 py-3 font-heading text-[10px] uppercase tracking-wider text-bone-muted">{de ? 'Gratis' : 'Free'}</th>
+                <th className="px-4 py-3 font-heading text-[10px] uppercase tracking-wider text-bone-muted">{de ? 'Für Coins' : 'For coins'}</th>
+                <th className="px-4 py-3 font-heading text-[10px] uppercase tracking-wider text-bone-muted">{de ? 'Preis' : 'Price'}</th>
+              </tr>
+            </thead>
+            <tbody className="font-body font-light text-bone-muted">
+              {riftUpgrades.map((u) => (
+                <tr key={u.name} className="border-b border-bg-steel/40 last:border-0">
+                  <td className="px-4 py-3 font-heading text-xs text-ember uppercase whitespace-nowrap">{u.name}</td>
+                  <td className="px-4 py-3">{de ? u.freeDe : u.free}</td>
+                  <td className="px-4 py-3">{de ? u.paidDe : u.paid}{u.cap && <span className="block text-[10px] text-bone-muted/60">{de ? u.capDe : u.cap}</span>}</td>
+                  <td className="px-4 py-3 whitespace-nowrap">{u.price} Coins</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="text-xs text-bone-muted/60 font-body font-light mt-3">
+          {de ? 'Ab dem zweiten besiegten Boss bietet der Upgrade-Bildschirm zusätzlich einen grünen Laser für 250 Coins an.' : 'From the second boss you beat, the upgrade screen also offers a green laser for 250 coins.'}
+        </p>
       </section>
 
       <HazardDivider />
@@ -131,6 +198,20 @@ export default function GameModesPage() {
                 <td className="px-4 py-3 font-heading text-xs text-ember uppercase">{de ? 'Pillen zu Beginn' : 'Pain pills at start'}</td>
                 <td className="px-4 py-3">1</td>
                 <td className="px-4 py-3">0</td>
+              </tr>
+              <tr className="border-b border-bg-steel/40">
+                <td className="px-4 py-3 font-heading text-xs text-ember uppercase">{de ? 'Zombieschaden' : 'Zombie damage'}</td>
+                <td className="px-4 py-3">× 0.7</td>
+                <td className="px-4 py-3">× 1.3</td>
+              </tr>
+              <tr className="border-b border-bg-steel/40">
+                <td className="px-4 py-3 font-heading text-xs text-ember uppercase">{de ? 'Heilung in der Pause' : 'Healing in the break'}</td>
+                <td className="px-4 py-3">{de ? 'Voll' : 'Full'}</td>
+                <td className="px-4 py-3">35 %</td>
+              </tr>
+              <tr className="border-b border-bg-steel/40">
+                <td className="px-4 py-3 font-heading text-xs text-ember uppercase">{de ? 'Zombies pro Welle' : 'Zombies per wave'}</td>
+                <td className="px-4 py-3" colSpan={2}>{de ? 'Gleich: 9 in Welle 1, dann +1 je Welle, höchstens 6 gleichzeitig (3 in kleinen Räumen)' : 'The same: 9 in wave 1, then +1 per wave, at most 6 at once (3 in small rooms)'}</td>
               </tr>
               <tr>
                 <td className="px-4 py-3 font-heading text-xs text-ember uppercase">{de ? 'Bestenliste' : 'Leaderboard'}</td>

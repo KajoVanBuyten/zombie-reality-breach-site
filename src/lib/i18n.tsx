@@ -81,6 +81,9 @@ const translations: Record<string, Record<Lang, string>> = {
   'press.contact': { en: 'Press Contact', de: 'Pressekontakt' },
   'press.copied': { en: 'Copied!', de: 'Kopiert!' },
   'press.copy': { en: 'Copy', de: 'Kopieren' },
+  'press.soon': { en: 'Coming soon', de: 'Folgt' },
+  'press.keyart': { en: 'Key Art', de: 'Key Art' },
+  'press.keyartNote': { en: 'The five key-art themes with logo. Click for the full-size JPG; the full set in every format is in the press kit.', de: 'Die f\u00fcnf Key-Art-Themen mit Logo. Klick f\u00fcr das JPG in voller Gr\u00f6\u00dfe; das komplette Set in allen Formaten steckt im Pressepaket.' },
   'faq.title': { en: 'Frequently Asked Questions', de: 'Häufige Fragen' },
   'faq.statusTitle': { en: 'Release status', de: 'Release-Status' },
   'game.title': { en: 'The Game', de: 'Das Spiel' },
@@ -101,7 +104,7 @@ const translations: Record<string, Record<Lang, string>> = {
   'footer.about': { en: 'Zombie Reality Breach by KaMa Studios. Zombie survival in mixed reality and VR for Meta Quest 3 and 3S. Coming soon.', de: 'Zombie Reality Breach von KaMa Studios. Zombie-Survival in Mixed Reality und VR für Meta Quest 3 und 3S. Bald verfügbar.' },
   'modes.title': { en: 'Game Modes', de: 'Spielmodi' },
   'modes.diff': { en: 'Difficulty in Reality Breach', de: 'Schwierigkeit in Reality Breach' },
-  'modes.playable': { en: 'Playable in development', de: 'In Entwicklung spielbar' },
+  'modes.playable': { en: 'Playable (in development)', de: 'Spielbar (in Entwicklung)' },
   'modes.inDev': { en: 'In development', de: 'In Entwicklung' },
   'modes.learnMore': { en: 'Learn more', de: 'Mehr erfahren' },
 };

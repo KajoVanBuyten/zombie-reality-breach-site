@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { Skull, Mail } from 'lucide-react';
+import { Mail } from 'lucide-react';
+import { brand } from '@/lib/site';
 import { useI18n } from '@/lib/i18n';
 import { CONTACT_EMAIL } from '@/lib/site';
 
@@ -12,10 +13,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 lg:px-8 py-14">
         <div className="grid md:grid-cols-3 gap-10 mb-10">
           <div>
-            <div className="flex items-center gap-2 mb-3">
-              <Skull className="w-6 h-6 text-blood" strokeWidth={2.2} />
-              <span className="font-horror text-sm text-blood tracking-wider">ZRB</span>
-            </div>
+            <img src={brand.wordmarkOnDark} alt="Zombie Reality Breach" className="w-40 h-auto mb-4" loading="lazy" />
             <p className="text-sm text-bone-muted font-body leading-relaxed max-w-xs">{t('footer.about')}</p>
           </div>
 

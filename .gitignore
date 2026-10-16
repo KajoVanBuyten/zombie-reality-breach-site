@@ -23,3 +23,7 @@ dist-ssr
 .env
 
 .wrangler
+
+# Blender-Zwischenrenders (scripts/Build-WeaponImages.ps1) und lokale Preview-Konfiguration
+build
+.claude/
