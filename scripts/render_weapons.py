@@ -15,6 +15,15 @@ Die Pipe Bomb hat im Spiel kein Modell: ThrowableItem.cs baut sie aus Unity-Prim
 "builder": "primitives" baut dieselben Formen mit denselben Farben in Blender nach ("parts" in der Konfiguration:
 Unity-Zylinder mit localScale (sx, sy, sz) = Radius 0,5·sx, Länge 2·sy, entlang Z).
 
+Die Mods ohne Prefab (ModModels.cs) und die Bretter sind ebenfalls "primitives": zusätzlich zu "cylinder" und "cube" gibt es
+"sphere" (Durchmesser = scale) und je Teil optional "dir" (Zylinderachse statt Z, wie ModModels.Stick) und "euler" (Würfel
+gedreht). Alle Maße und Positionen sind Unity-Lokalkoordinaten (+Z = Mündung, +Y = oben); "rotate": [90, 0, 0] stellt sie
+für die Kamera auf. Leuchtende Teile: "emission": {"Material": Stärke} (Emission = Grundfarbe x Stärke).
+
+Die Taschenlampe liegt nur als Unity-Mesh-Asset (YAML, kein FBX) vor. "builder": "unity_mesh" liest Vertex- und Indexpuffer aus
+dem .asset und setzt das Mesh mit der Prefab-Transformation ("mesh_transform": Rotation um Y, Skalierung, Position) in dieselben
+Unity-Lokalkoordinaten.
+
 Die Kamera wird nicht über camera_fit_coords eingepasst (lieferte abgeschnittene Bilder), sondern analytisch: für jeden
 Vertex der Abstand entlang der Blickachse, ab dem er innerhalb des horizontalen und vertikalen Öffnungswinkels liegt;
 das Maximum mal "margin" ist der Kameraabstand. So ist jedes Modell garantiert vollständig im Bild.
@@ -32,7 +41,7 @@ argv = sys.argv[sys.argv.index('--') + 1:]
 CONFIG, OUT = argv[0], argv[1]
 ONLY = set(argv[2:])
 cfg = json.load(open(CONFIG, encoding='utf-8'))
-ART = cfg['art_root']
+ART = os.environ.get('ZRB_ART_ROOT') or cfg['art_root']  # ZRB_ART_ROOT: render from another checkout of the Unity Art folder
 RES = cfg.get('resolution', [1600, 900])
 SAMPLES = cfg.get('samples', 64)
 os.makedirs(OUT, exist_ok=True)
@@ -100,22 +109,83 @@ def build_fbx6100(path):
 
 
 def build_primitives(item):
-    """Unity-style primitives: each part is {"type": "cylinder"|"cube", "pos": [x,y,z], "scale": [sx,sy,sz], "material": name}
-    in Unity's local frame after the game's Quaternion.Euler(90,0,0): the cylinder axis lies along Z."""
+    """Unity-style primitives: each part is {"type": "cylinder"|"cube"|"sphere", "pos": [x,y,z], "scale": [sx,sy,sz],
+    "material": name} in Unity's local frame. A cylinder's axis lies along Z (after the game's Quaternion.Euler(90,0,0)) or along
+    "dir" when given; its radius is 0.5*sx and its length 2*sy. A cube has edge lengths sx/sy/sz and an optional "euler"
+    [x,y,z] (degrees, Unity order). A sphere has the diameter sx."""
     for i, part in enumerate(item['parts']):
         sx, sy, sz = part['scale']
         px, py, pz = part['pos']
-        if part['type'] == 'cylinder':
+        kind = part['type']
+        if kind == 'cylinder':
             bpy.ops.mesh.primitive_cylinder_add(vertices=64, radius=0.5 * sx, depth=2.0 * sy, location=(px, py, pz))
+            obj = bpy.context.active_object
+            if 'dir' in part:
+                obj.rotation_euler = Vector(part['dir']).normalized().to_track_quat('Z', 'Y').to_euler()
+        elif kind == 'sphere':
+            bpy.ops.mesh.primitive_uv_sphere_add(segments=32, ring_count=16, radius=0.5 * sx, location=(px, py, pz))
+            obj = bpy.context.active_object
+        elif kind == 'torus':
+            # Ring in the XY plane: major diameter sx, tube diameter sy.
+            bpy.ops.mesh.primitive_torus_add(major_segments=64, minor_segments=24, major_radius=0.5 * sx, minor_radius=0.5 * sy, location=(px, py, pz))
+            obj = bpy.context.active_object
         else:
             bpy.ops.mesh.primitive_cube_add(size=1.0, location=(px, py, pz))
-            bpy.context.active_object.scale = (sx, sy, sz)
-        obj = bpy.context.active_object
+            obj = bpy.context.active_object
+            obj.scale = (sx, sy, sz)
+            if 'euler' in part:
+                obj.rotation_euler = [math.radians(a) for a in part['euler']]
         obj.name = '%s_%d' % (part['material'], i)
         mat = bpy.data.materials.get(part['material']) or bpy.data.materials.new(part['material'])
         obj.data.materials.append(mat)
-        if part['type'] == 'cylinder':
+        if kind != 'cube':
             bpy.ops.object.shade_smooth_by_angle(angle=math.radians(35))
+
+
+def build_unity_mesh(path, item):
+    """Reads a Unity mesh asset (YAML, one submesh, uint16 indices, interleaved stream 0) and builds it in the prefab's
+    local frame: item["mesh_transform"] = {"rot_y": degrees, "scale": s, "pos": [x, y, z]} (Unity's left-handed rotation about Y)."""
+    import struct
+    text = open(path, encoding='utf-8').read()
+    count = int(re.search(r'm_VertexCount:\s*(\d+)', text).group(1))
+    channels = re.findall(r'- stream: (\d+)\s+offset: (\d+)\s+format: (\d+)\s+dimension: (\d+)', text)
+    pos_off = int(channels[0][1])
+    uv_off = int(channels[4][1]) if int(channels[4][3]) else None
+    data = bytes.fromhex(re.search(r'_typelessdata:\s*([0-9a-f]+)', text).group(1))
+    stride = 0
+    for _, off, fmt, dim in channels:
+        if int(dim):
+            stride = max(stride, int(off) + 4 * (int(dim) & 7))
+    assert len(data) == stride * count, (len(data), stride, count)
+    idx_raw = bytes.fromhex(re.search(r'm_IndexBuffer:\s*([0-9a-f]+)', text).group(1))
+    idx = struct.unpack('<%dH' % (len(idx_raw) // 2), idx_raw)
+
+    tf = item.get('mesh_transform', {})
+    a = math.radians(tf.get('rot_y', 0.0))
+    ca, sa = math.cos(a), math.sin(a)
+    s = tf.get('scale', 1.0)
+    ox, oy, oz = tf.get('pos', [0, 0, 0])
+    verts, uvs = [], []
+    for v in range(count):
+        x, y, z = struct.unpack_from('<3f', data, v * stride + pos_off)
+        verts.append((ox + s * (x * ca + z * sa), oy + s * y, oz + s * (-x * sa + z * ca)))
+        uvs.append(struct.unpack_from('<2f', data, v * stride + uv_off) if uv_off is not None else (0.0, 0.0))
+    # Unity front faces are clockwise; the coordinates are used as they are, so flip the winding.
+    faces = [(idx[i], idx[i + 2], idx[i + 1]) for i in range(0, len(idx), 3)]
+    name = os.path.splitext(os.path.basename(path))[0]
+    mesh = bpy.data.meshes.new(name)
+    mesh.from_pydata(verts, [], faces)
+    layer = mesh.uv_layers.new(name='UVMap')
+    for li, loop in enumerate(mesh.loops):
+        layer.data[li].uv = uvs[loop.vertex_index]
+    mat = bpy.data.materials.new(item.get('material', name))
+    mesh.materials.append(mat)
+    mesh.validate()
+    mesh.update()
+    obj = bpy.data.objects.new(name, mesh)
+    bpy.context.scene.collection.objects.link(obj)
+    for poly in mesh.polygons:
+        poly.use_smooth = True
 
 
 # ----------------------------------------------------------------------------- Materials
@@ -142,8 +212,10 @@ def setup_material(mat, item, folder, prefix):
     metsmooth = art(spec['metsmooth']) if 'metsmooth' in spec else find_texture(folder, prefix, mat.name, 'MetallicSmoothness')
     metallic = art(spec['metallic']) if 'metallic' in spec else None
     roughness = art(spec['roughness']) if 'roughness' in spec else None
+    emissive = art(spec['emissive']) if 'emissive' in spec else None
     colors = item.get('colors', {})
     flat = colors.get(mat.name) or colors.get(sanitize(mat.name))
+    glow = item.get('emission', {}).get(mat.name)
 
     mat.use_nodes = True
     nt = mat.node_tree
@@ -157,6 +229,8 @@ def setup_material(mat, item, folder, prefix):
     if base:
         t = nt.nodes.new('ShaderNodeTexImage')
         t.image = image(base)
+        if item.get('texture_closest'):
+            t.interpolation = 'Closest'  # flat colour palettes: no bleeding between swatches
         nt.links.new(t.outputs['Color'], bsdf.inputs['Base Color'])
         if item.get('alpha_clip') and mat.name in item['alpha_clip']:
             nt.links.new(t.outputs['Alpha'], bsdf.inputs['Alpha'])
@@ -171,6 +245,15 @@ def setup_material(mat, item, folder, prefix):
     if flat and len(flat) >= 5:
         bsdf.inputs['Metallic'].default_value = flat[3]
         bsdf.inputs['Roughness'].default_value = flat[4]
+
+    if glow and flat:
+        bsdf.inputs['Emission Color'].default_value = (flat[0], flat[1], flat[2], 1.0)
+        bsdf.inputs['Emission Strength'].default_value = glow
+    if emissive:
+        t = nt.nodes.new('ShaderNodeTexImage')
+        t.image = image(emissive)
+        nt.links.new(t.outputs['Color'], bsdf.inputs['Emission Color'])
+        bsdf.inputs['Emission Strength'].default_value = item.get('emissive_strength', 1.0)
 
     if normal:
         t = nt.nodes.new('ShaderNodeTexImage')
@@ -243,8 +326,30 @@ def render_item(name, item):
         build_fbx6100(path)
     elif item.get('builder') == 'primitives':
         build_primitives(item)
+    elif item.get('builder') == 'unity_mesh':
+        build_unity_mesh(path, item)
     else:
         import_fbx(path)
+
+    keep = item.get('keep')
+    if keep:  # only these parts of the model (substring of the object name) ...
+        for o in list(bpy.data.objects):
+            if o.type == 'MESH' and not any(k in o.name for k in keep):
+                bpy.data.objects.remove(o, do_unlink=True)
+    if item.get('copies'):  # ... shown once per copy: {"offset": [x, y, z], "scale": [sx, sy, sz]}, scaled about the top edge
+        bpy.context.view_layer.update()
+        originals = mesh_objects()
+        top = max(max((o.matrix_world @ Vector(c)).z for c in o.bound_box) for o in originals)
+        for c in item['copies']:
+            for o in originals:
+                n = o.copy()
+                bpy.context.scene.collection.objects.link(n)
+                n.scale = Vector(o.scale) * Vector(c.get('scale', [1, 1, 1]))
+                n.location = Vector(o.location) + Vector(c.get('offset', [0, 0, 0]))
+                bpy.context.view_layer.update()
+                n.location.z += top - max((n.matrix_world @ Vector(b)).z for b in n.bound_box)
+        for o in originals:
+            bpy.data.objects.remove(o, do_unlink=True)
 
     drop = item.get('drop', [])
     for o in list(bpy.data.objects):

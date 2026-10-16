@@ -6,7 +6,7 @@ import { keyArtThemes } from '@/lib/site';
 import SteelCard from '@/components/SteelCard';
 import HazardDivider from '@/components/HazardDivider';
 import WeaponImage from '@/components/WeaponImage';
-import { weapons, weaponClasses, weaponName, mods, supplies, armoryLadder, type WeaponClass } from '@/content/weapons';
+import { weapons, weaponClasses, weaponName, mods, supplies, armoryLadder, modelCredits, type WeaponClass } from '@/content/weapons';
 import PageHero from '@/components/PageHero';
 
 const classIcon: Record<WeaponClass, LucideIcon> = {
@@ -250,6 +250,20 @@ export default function ArsenalPage() {
               ? 'Spielgeld und Coins werden nur im Spiel verdient und können nicht mit echtem Geld gekauft werden. Keine Lootboxen. Werte Stand Oktober 2026, Balancing in Arbeit.'
               : 'In-game money and coins are only earned by playing and cannot be bought with real money. No loot boxes. Values as of October 2026, balancing in progress.'}
           </p>
+          <div className="pt-4 border-t border-bg-steel/60 text-[11px] text-bone-muted/70 space-y-1">
+            <h3 className="font-heading uppercase tracking-wider text-ember/80">{de ? 'Modell-Nachweise' : 'Model credits'}</h3>
+            {modelCredits.map((c) => (
+              <p key={c.title}>
+                {de ? c.forDe : c.forEn}:{' '}
+                <a href={c.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline hover:text-bone">{c.title}</a>
+                {' '}{de ? 'von' : 'by'}{' '}
+                <a href={c.authorUrl} target="_blank" rel="noopener noreferrer" className="underline hover:text-bone">{c.author}</a>
+                {', '}
+                <a href={c.licenseUrl} target="_blank" rel="noopener noreferrer" className="underline hover:text-bone">{c.license}</a>
+                {'. '}{de ? c.changesDe : c.changesEn}
+              </p>
+            ))}
+          </div>
         </div>
       </section>
     </div>

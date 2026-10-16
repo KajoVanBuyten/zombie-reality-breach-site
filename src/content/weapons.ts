@@ -275,42 +275,42 @@ export const mods: Mod[] = [
     effect: 'Dot shows the hit; spread −30 % while switched on.', effectDe: 'Der Punkt zeigt den Treffer; Streuung −30 %, solange er an ist.' },
   { id: 'laser-green', name: 'Green Laser', nameDe: 'Grüner Laser', price: 150, fits: GUNS_ALL, image: 'laser',
     effect: 'Same as red, brighter beam, visible in daylight.', effectDe: 'Wie rot, hellerer Strahl, auch bei Tag sichtbar.' },
-  { id: 'flashlight', name: 'Flashlight', nameDe: 'Waffenlicht', price: 120, fits: GUNS_ALL, fitsAlso: ['chainsaw'],
+  { id: 'flashlight', name: 'Flashlight', nameDe: 'Waffenlicht', price: 120, fits: GUNS_ALL, fitsAlso: ['chainsaw'], image: 'flashlight',
     effect: 'Clips on any gun or the chainsaw. Free hand: trigger switches, grip removes.', effectDe: 'Passt an jede Schusswaffe und die Kettensäge. Freie Hand: Abzug schaltet, Griff nimmt ab.' },
   { id: 'bayonet', name: 'Bayonet', nameDe: 'Bajonett', price: 160, image: 'bayonet',
     fits: ['uzi', 'mp5', 'double-barrel', 'pump-shotgun', 'lever-action', 'ak-47', 'bolt-rifle', 'auto-shotgun', 'lmg'],
     effect: 'Knife under the muzzle; thrust to stab. A weak stab into ribs sticks, gun and all.', effectDe: 'Messer unter der Mündung; stoßen statt schlagen. Ein schwacher Stich in Rippen bleibt stecken, samt Waffe.' },
-  { id: 'red-dot', name: 'Red Dot', nameDe: 'Rotpunkt', price: 180,
+  { id: 'red-dot', name: 'Red Dot', nameDe: 'Rotpunkt', price: 180, image: 'red-dot',
     fits: ['a3500x', 'pistol-92', 'revolver', 'desert-eagle', 'uzi', 'mp5', 'pump-shotgun', 'lever-action', 'ak-47', 'bolt-rifle', 'auto-shotgun', 'lmg'],
     effect: 'Sight on top; spread −30 %, no laser needed.', effectDe: 'Visier oben; Streuung −30 %, kein Laser nötig.' },
-  { id: 'foregrip', name: 'Foregrip', nameDe: 'Vordergriff', price: 150,
+  { id: 'foregrip', name: 'Foregrip', nameDe: 'Vordergriff', price: 150, image: 'foregrip',
     fits: ['uzi', 'mp5', 'pump-shotgun', 'ak-47', 'auto-shotgun', 'lmg'],
     effect: 'No one-handed spread penalty, 20 % less kick.', effectDe: 'Keine Streustrafe einhändig, 20 % weniger Rückstoß.' },
-  { id: 'stock', name: 'SMG Stock', nameDe: 'Schulterstütze', price: 130, fits: ['uzi', 'mp5'],
+  { id: 'stock', name: 'SMG Stock', nameDe: 'Schulterstütze', price: 130, fits: ['uzi', 'mp5'], image: 'stock',
     effect: 'Spread −25 % in two hands.', effectDe: 'Streuung −25 % zweihändig.' },
-  { id: 'suppressor', name: 'Suppressor', nameDe: 'Schalldämpfer', price: 220,
+  { id: 'suppressor', name: 'Suppressor', nameDe: 'Schalldämpfer', price: 220, image: 'suppressor',
     fits: ['a3500x', 'pistol-92', 'uzi', 'mp5', 'ak-47', 'bolt-rifle'],
     effect: 'Noise radius −70 %: at the gas station far fewer dead come running. Damage −5 %.', effectDe: 'Lärmradius −70 %: an der Tankstelle kommen viel weniger Tote gelaufen. Schaden −5 %.' },
-  { id: 'choke', name: 'Choke', nameDe: 'Choke', price: 170,
+  { id: 'choke', name: 'Choke', nameDe: 'Choke', price: 170, image: 'choke',
     fits: ['sawed-off', 'double-barrel', 'pump-shotgun', 'auto-shotgun'],
     effect: 'Tighter pattern (−35 %), 15 % more reach.', effectDe: 'Engere Streuung (−35 %), 15 % mehr Reichweite.' },
-  { id: 'muzzle-brake', name: 'Muzzle Brake', nameDe: 'Mündungsbremse', price: 200, fits: ['ak-47', 'bolt-rifle', 'lmg'],
+  { id: 'muzzle-brake', name: 'Muzzle Brake', nameDe: 'Mündungsbremse', price: 200, fits: ['ak-47', 'bolt-rifle', 'lmg'], image: 'muzzle-brake',
     effect: 'Fires 10 % faster.', effectDe: 'Schießt 10 % schneller.' },
-  { id: 'long-barrel', name: 'Long Barrel', nameDe: 'Verlängerter Lauf', price: 190,
+  { id: 'long-barrel', name: 'Long Barrel', nameDe: 'Verlängerter Lauf', price: 190, image: 'long-barrel',
     fits: ['a3500x', 'pistol-92', 'revolver', 'lever-action', 'ak-47', 'bolt-rifle'],
     effect: 'Range +30 %, damage +8 %.', effectDe: 'Reichweite +30 %, Schaden +8 %.' },
   { id: 'scope', name: 'Scope 2×', nameDe: 'Zielfernrohr 2×', price: 250, fits: ['lever-action', 'bolt-rifle'], image: 'scope',
     effect: 'Magnification for the gas station; spread −30 %. The glass only renders while an eye is at the eyepiece.', effectDe: 'Vergrößerung für die Tankstelle; Streuung −30 %. Das Glas rechnet nur, solange ein Auge am Okular ist.' },
   { id: 'speedloader', name: 'Speedloader', nameDe: 'Speedloader', price: 120, fits: ['revolver'], image: 'speedloader',
     effect: 'The ammo pouch hands you six rounds at once; hold them to the open cylinder.', effectDe: 'Die Patronentasche gibt sechs Patronen auf einmal; an die offene Trommel halten.' },
-  { id: 'nails', name: 'Nails', nameDe: 'Nägel', price: 110, fits: ['bat', 'crowbar'],
+  { id: 'nails', name: 'Nails', nameDe: 'Nägel', price: 110, fits: ['bat', 'crowbar'], image: 'nails',
     effect: 'Nails or barbed wire: wounds bleed on.', effectDe: 'Nägel oder Stacheldraht: Wunden bluten nach.' },
-  { id: 'grip-tape', name: 'Grip Tape', nameDe: 'Griffband', price: 90,
+  { id: 'grip-tape', name: 'Grip Tape', nameDe: 'Griffband', price: 90, image: 'grip-tape',
     fits: ['bat', 'crowbar', 'machete', 'katana', 'fire-axe', 'sledgehammer'],
     effect: 'Swings 15 % faster.', effectDe: 'Schwingt 15 % schneller.' },
-  { id: 'serrated', name: 'Saw Teeth', nameDe: 'Gezahnte Klinge', price: 140, fits: ['machete', 'katana', 'fire-axe'],
+  { id: 'serrated', name: 'Saw Teeth', nameDe: 'Gezahnte Klinge', price: 140, fits: ['machete', 'katana', 'fire-axe'], image: 'serrated',
     effect: 'Limbs come off 15 % easier.', effectDe: 'Gliedmaßen gehen 15 % leichter ab.' },
-  { id: 'head-weight', name: 'Head Weight', nameDe: 'Kopfgewicht', price: 160, fits: ['fire-axe', 'sledgehammer'],
+  { id: 'head-weight', name: 'Head Weight', nameDe: 'Kopfgewicht', price: 160, fits: ['fire-axe', 'sledgehammer'], image: 'head-weight',
     effect: 'Every hit knocks them off balance, bloaters included.', effectDe: 'Jeder Schlag bringt sie aus dem Gleichgewicht, auch Bloater.' },
 ];
 
@@ -329,19 +329,19 @@ export interface Supply {
 export const supplies: Supply[] = [
   { id: 'pain-pills', name: 'Pain Pills', nameDe: 'Schmerztabletten', price: '90 $', priceDe: '90 $', image: 'pain-pills',
     desc: 'One pill for the bottle on your chest. Hold it to your mouth to heal half your health.', descDe: 'Eine Pille für das Fläschchen an der Brust. Zum Mund halten heilt die halbe Gesundheit.' },
-  { id: 'ammo', name: 'Ammo', nameDe: 'Munition', price: '≈ 12 % of the gun, min. 15 $', priceDe: '≈ 12 % des Waffenpreises, mind. 15 $',
+  { id: 'ammo', name: 'Ammo', nameDe: 'Munition', price: '≈ 12 % of the gun, min. 15 $', priceDe: '≈ 12 % des Waffenpreises, mind. 15 $', image: 'ammo',
     desc: 'One full magazine or one fill of shells per purchase, up to three spares per gun. Break-action guns pay 5 %. Pistols and the revolver never pay: unlimited on Easy, reserve plus pickups on Hard.',
     descDe: 'Ein volles Magazin oder eine Füllung Patronen je Kauf, höchstens drei Reserven pro Waffe. Knicklaufwaffen zahlen 5 %. Pistolen und Revolver zahlen nie: unbegrenzt auf Easy, Reserve plus Pickups auf Hard.' },
-  { id: 'mag-plus', name: 'Mag+ I / II', nameDe: 'Mag+ I / II', price: '60 to 600 $', priceDe: '60 bis 600 $',
+  { id: 'mag-plus', name: 'Mag+ I / II', nameDe: 'Mag+ I / II', price: '60 to 600 $', priceDe: '60 bis 600 $', image: 'mag-plus',
     desc: 'Bigger magazines, two steps per gun (see the magazine line of each weapon). Never more damage, only more time between reloads.',
     descDe: 'Größere Magazine, zwei Stufen je Waffe (siehe Magazinzeile der Waffe). Nie mehr Schaden, nur mehr Zeit zwischen dem Nachladen.' },
-  { id: 'fuel', name: 'Chainsaw Fuel', nameDe: 'Kettensägen-Sprit', price: '40 $', priceDe: '40 $',
+  { id: 'fuel', name: 'Chainsaw Fuel', nameDe: 'Kettensägen-Sprit', price: '40 $', priceDe: '40 $', image: 'fuel',
     desc: 'A full tank: 60 seconds at full revs.', descDe: 'Ein voller Tank: 60 Sekunden bei Vollgas.' },
-  { id: 'pouch', name: 'Molotov / Pipe Bomb Pouch+', nameDe: 'Molotow- / Rohrbomben-Tasche+', price: '50 $ per step', priceDe: '50 $ je Stufe',
+  { id: 'pouch', name: 'Molotov / Pipe Bomb Pouch+', nameDe: 'Molotow- / Rohrbomben-Tasche+', price: '50 $ per step', priceDe: '50 $ je Stufe', image: 'pouch',
     desc: 'Room for one more in the hip pouch, two steps: 1 → 2 → 3.', descDe: 'Platz für eine mehr in der Hüfttasche, zwei Stufen: 1 → 2 → 3.' },
-  { id: 'boards', name: 'Boards', nameDe: 'Bretter', price: '40 $ for 2', priceDe: '40 $ für 2',
+  { id: 'boards', name: 'Boards', nameDe: 'Bretter', price: '40 $ for 2', priceDe: '40 $ für 2', image: 'boards',
     desc: 'Nail them across a real doorway (Reality Breach) or the windows of the shop (Safe Zone, Gas Station).', descDe: 'Über eine echte Tür nageln (Reality Breach) oder vor die Fenster des Shops (Safe Zone, Gas Station).' },
-  { id: 'headlamp', name: 'Headlamp', nameDe: 'Stirnlampe', price: '150 $ (Armory: 500 $ or wave 30)', priceDe: '150 $ (Arsenal: 500 $ oder Welle 30)',
+  { id: 'headlamp', name: 'Headlamp', nameDe: 'Stirnlampe', price: '150 $ (Armory: 500 $ or wave 30)', priceDe: '150 $ (Arsenal: 500 $ oder Welle 30)', image: 'headlamp',
     desc: 'A lamp on your forehead that recharges in the breaks. Grip it with a free hand to switch. Starting gear in OUTBREAK.', descDe: 'Eine Lampe an der Stirn, lädt in den Pausen nach. Mit der freien Hand greifen schaltet sie. In OUTBREAK Startausrüstung.' },
 ];
 
@@ -349,3 +349,40 @@ export const supplies: Supply[] = [
 export const armoryLadder = weapons
   .filter((w) => w.armory)
   .sort((a, b) => a.armory!.wave - b.armory!.wave || a.armory!.cost - b.armory!.cost);
+
+export interface ModelCredit {
+  /** What the model is used for on this page. */
+  forDe: string;
+  forEn: string;
+  title: string;
+  author: string;
+  sourceUrl: string;
+  authorUrl: string;
+  license: string;
+  licenseUrl: string;
+  /** What was changed (CC-BY asks to say so). */
+  changesDe: string;
+  changesEn: string;
+}
+
+/** Third-party models that need an attribution wherever they are shown (CC-BY). */
+export const modelCredits: ModelCredit[] = [
+  {
+    forEn: 'Flashlight', forDe: 'Waffenlicht',
+    title: 'Flashlight - Fenix_FD41', author: 'andrea.notarstefano',
+    sourceUrl: 'https://sketchfab.com/3d-models/flashlight-fenix-fd41-ea097c579aff4b428f5ff728bc751bf7',
+    authorUrl: 'https://sketchfab.com/andrea.notarstefano',
+    license: 'CC BY 4.0', licenseUrl: 'http://creativecommons.org/licenses/by/4.0/',
+    changesEn: 'Converted for the game and rendered for this page.', changesDe: 'Für das Spiel umgewandelt und für diese Seite gerendert.',
+  },
+  {
+    forEn: 'Ammo', forDe: 'Munition',
+    title: 'CC0 Flat Ammunition', author: 'Pichuliru',
+    sourceUrl: 'https://opengameart.org/content/cc0-flat-ammunition',
+    authorUrl: 'https://opengameart.org/users/pichuliru',
+    license: 'CC0 1.0', licenseUrl: 'http://creativecommons.org/publicdomain/zero/1.0/',
+    changesEn: 'Combined into one heap for the game and rendered for this page (credit is not required, but welcome).',
+    changesDe: 'Für das Spiel zu einem Haufen zusammengesetzt und für diese Seite gerendert (Nennung nicht nötig, aber erwünscht).',
+  },
+];
+

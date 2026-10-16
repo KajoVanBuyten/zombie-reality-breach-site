@@ -345,6 +345,1969 @@
       "yaw": 35,
       "pitch": 22,
       "light_scale": 0.45
+    },
+    "red-dot": {
+      "builder": "primitives",
+      "parts": [
+        {
+          "type": "cube",
+          "pos": [
+            0,
+            0.003,
+            0
+          ],
+          "scale": [
+            0.022,
+            0.006,
+            0.042
+          ],
+          "material": "ModPolymer"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            0,
+            0.019,
+            -0.016
+          ],
+          "scale": [
+            0.024,
+            0.017,
+            0.024
+          ],
+          "material": "ModMetal"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            0,
+            0.019,
+            0.0175
+          ],
+          "scale": [
+            0.019,
+            0.001,
+            0.019
+          ],
+          "material": "ModGlass"
+        },
+        {
+          "type": "sphere",
+          "pos": [
+            0,
+            0.019,
+            0.012
+          ],
+          "scale": [
+            0.005,
+            0.005,
+            0.005
+          ],
+          "material": "ModGlow"
+        }
+      ],
+      "colors": {
+        "ModPolymer": [
+          0.05,
+          0.05,
+          0.055,
+          0.0,
+          0.65
+        ],
+        "ModMetal": [
+          0.12,
+          0.12,
+          0.13,
+          0.85,
+          0.45
+        ],
+        "ModGlass": [
+          0.05,
+          0.1,
+          0.12,
+          0.2,
+          0.05
+        ],
+        "ModGlow": [
+          1.0,
+          0.05,
+          0.03,
+          0.0,
+          0.5
+        ]
+      },
+      "rotate": [
+        90,
+        0,
+        0
+      ],
+      "yaw": 35,
+      "pitch": 22,
+      "emission": {
+        "ModGlow": 3.0
+      }
+    },
+    "foregrip": {
+      "builder": "primitives",
+      "parts": [
+        {
+          "type": "cube",
+          "pos": [
+            0,
+            -0.004,
+            0
+          ],
+          "scale": [
+            0.024,
+            0.008,
+            0.04
+          ],
+          "material": "ModPolymer"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            0.0,
+            -0.0505,
+            0.0
+          ],
+          "scale": [
+            0.03,
+            0.0425,
+            0.03
+          ],
+          "material": "ModRubber",
+          "dir": [
+            0.0,
+            -1.0,
+            0.0
+          ]
+        }
+      ],
+      "colors": {
+        "ModPolymer": [
+          0.05,
+          0.05,
+          0.055,
+          0.0,
+          0.65
+        ],
+        "ModRubber": [
+          0.035,
+          0.035,
+          0.035,
+          0.0,
+          0.88
+        ]
+      },
+      "rotate": [
+        90,
+        0,
+        0
+      ],
+      "yaw": 35,
+      "pitch": 22
+    },
+    "stock": {
+      "builder": "primitives",
+      "parts": [
+        {
+          "type": "cylinder",
+          "pos": [
+            0.0,
+            0.012,
+            -0.11
+          ],
+          "scale": [
+            0.01,
+            0.11,
+            0.01
+          ],
+          "material": "ModMetal",
+          "dir": [
+            0.0,
+            0.0,
+            -1.0
+          ]
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            0.0,
+            -0.018,
+            -0.1
+          ],
+          "scale": [
+            0.01,
+            0.1,
+            0.01
+          ],
+          "material": "ModMetal",
+          "dir": [
+            0.0,
+            0.0,
+            -1.0
+          ]
+        },
+        {
+          "type": "cube",
+          "pos": [
+            0,
+            -0.006,
+            -0.215
+          ],
+          "scale": [
+            0.03,
+            0.07,
+            0.012
+          ],
+          "material": "ModRubber"
+        }
+      ],
+      "colors": {
+        "ModMetal": [
+          0.12,
+          0.12,
+          0.13,
+          0.85,
+          0.45
+        ],
+        "ModRubber": [
+          0.035,
+          0.035,
+          0.035,
+          0.0,
+          0.88
+        ]
+      },
+      "rotate": [
+        90,
+        0,
+        0
+      ],
+      "yaw": 35,
+      "pitch": 22
+    },
+    "suppressor": {
+      "builder": "primitives",
+      "parts": [
+        {
+          "type": "cylinder",
+          "pos": [
+            0,
+            0,
+            0.085
+          ],
+          "scale": [
+            0.035,
+            0.08,
+            0.035
+          ],
+          "material": "ModPolymer"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            0,
+            0,
+            0.004
+          ],
+          "scale": [
+            0.024,
+            0.006,
+            0.024
+          ],
+          "material": "ModMetal"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            0,
+            0,
+            0.166
+          ],
+          "scale": [
+            0.032,
+            0.002,
+            0.032
+          ],
+          "material": "ModMetal"
+        }
+      ],
+      "colors": {
+        "ModPolymer": [
+          0.05,
+          0.05,
+          0.055,
+          0.0,
+          0.65
+        ],
+        "ModMetal": [
+          0.12,
+          0.12,
+          0.13,
+          0.85,
+          0.45
+        ]
+      },
+      "rotate": [
+        90,
+        0,
+        0
+      ],
+      "yaw": 35,
+      "pitch": 22
+    },
+    "choke": {
+      "builder": "primitives",
+      "parts": [
+        {
+          "type": "cylinder",
+          "pos": [
+            0,
+            0,
+            0.02
+          ],
+          "scale": [
+            0.025,
+            0.02,
+            0.025
+          ],
+          "material": "ModMetal"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            0,
+            0,
+            0.012
+          ],
+          "scale": [
+            0.027,
+            0.0015,
+            0.027
+          ],
+          "material": "ModPolymer"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            0,
+            0,
+            0.022
+          ],
+          "scale": [
+            0.027,
+            0.0015,
+            0.027
+          ],
+          "material": "ModPolymer"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            0,
+            0,
+            0.032
+          ],
+          "scale": [
+            0.027,
+            0.0015,
+            0.027
+          ],
+          "material": "ModPolymer"
+        }
+      ],
+      "colors": {
+        "ModMetal": [
+          0.12,
+          0.12,
+          0.13,
+          0.85,
+          0.45
+        ],
+        "ModPolymer": [
+          0.05,
+          0.05,
+          0.055,
+          0.0,
+          0.65
+        ]
+      },
+      "rotate": [
+        90,
+        0,
+        0
+      ],
+      "yaw": 35,
+      "pitch": 22
+    },
+    "muzzle-brake": {
+      "builder": "primitives",
+      "parts": [
+        {
+          "type": "cube",
+          "pos": [
+            0,
+            0,
+            0.028
+          ],
+          "scale": [
+            0.026,
+            0.024,
+            0.056
+          ],
+          "material": "ModMetal"
+        },
+        {
+          "type": "cube",
+          "pos": [
+            -0.0125,
+            0,
+            0.014
+          ],
+          "scale": [
+            0.003,
+            0.016,
+            0.006
+          ],
+          "material": "ModPolymer"
+        },
+        {
+          "type": "cube",
+          "pos": [
+            0.0125,
+            0,
+            0.014
+          ],
+          "scale": [
+            0.003,
+            0.016,
+            0.006
+          ],
+          "material": "ModPolymer"
+        },
+        {
+          "type": "cube",
+          "pos": [
+            -0.0125,
+            0,
+            0.028
+          ],
+          "scale": [
+            0.003,
+            0.016,
+            0.006
+          ],
+          "material": "ModPolymer"
+        },
+        {
+          "type": "cube",
+          "pos": [
+            0.0125,
+            0,
+            0.028
+          ],
+          "scale": [
+            0.003,
+            0.016,
+            0.006
+          ],
+          "material": "ModPolymer"
+        },
+        {
+          "type": "cube",
+          "pos": [
+            -0.0125,
+            0,
+            0.042
+          ],
+          "scale": [
+            0.003,
+            0.016,
+            0.006
+          ],
+          "material": "ModPolymer"
+        },
+        {
+          "type": "cube",
+          "pos": [
+            0.0125,
+            0,
+            0.042
+          ],
+          "scale": [
+            0.003,
+            0.016,
+            0.006
+          ],
+          "material": "ModPolymer"
+        }
+      ],
+      "colors": {
+        "ModMetal": [
+          0.12,
+          0.12,
+          0.13,
+          0.85,
+          0.45
+        ],
+        "ModPolymer": [
+          0.05,
+          0.05,
+          0.055,
+          0.0,
+          0.65
+        ]
+      },
+      "rotate": [
+        90,
+        0,
+        0
+      ],
+      "yaw": 35,
+      "pitch": 22,
+      "light_scale": 0.6
+    },
+    "long-barrel": {
+      "builder": "primitives",
+      "parts": [
+        {
+          "type": "cylinder",
+          "pos": [
+            0,
+            0,
+            0.05
+          ],
+          "scale": [
+            0.017,
+            0.05,
+            0.017
+          ],
+          "material": "ModMetal"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            0,
+            0,
+            0.1
+          ],
+          "scale": [
+            0.019,
+            0.002,
+            0.019
+          ],
+          "material": "ModPolymer"
+        }
+      ],
+      "colors": {
+        "ModMetal": [
+          0.12,
+          0.12,
+          0.13,
+          0.85,
+          0.45
+        ],
+        "ModPolymer": [
+          0.05,
+          0.05,
+          0.055,
+          0.0,
+          0.65
+        ]
+      },
+      "rotate": [
+        90,
+        0,
+        0
+      ],
+      "yaw": 35,
+      "pitch": 22
+    },
+    "nails": {
+      "builder": "primitives",
+      "parts": [
+        {
+          "type": "cylinder",
+          "pos": [
+            -0.0,
+            0.0375,
+            -0.1
+          ],
+          "scale": [
+            0.0044,
+            0.0175,
+            0.0044
+          ],
+          "material": "ModSteel",
+          "dir": [
+            -0.0,
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "type": "sphere",
+          "pos": [
+            0.0,
+            0.018,
+            -0.1
+          ],
+          "scale": [
+            0.007,
+            0.007,
+            0.007
+          ],
+          "material": "ModSteel"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            -0.02533,
+            -0.02765,
+            -0.08182
+          ],
+          "scale": [
+            0.0044,
+            0.0175,
+            0.0044
+          ],
+          "material": "ModSteel",
+          "dir": [
+            -0.67559,
+            -0.73728,
+            0.0
+          ]
+        },
+        {
+          "type": "sphere",
+          "pos": [
+            -0.01216,
+            -0.01327,
+            -0.08182
+          ],
+          "scale": [
+            0.007,
+            0.007,
+            0.007
+          ],
+          "material": "ModSteel"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            0.03736,
+            0.00327,
+            -0.06364
+          ],
+          "scale": [
+            0.0044,
+            0.0175,
+            0.0044
+          ],
+          "material": "ModSteel",
+          "dir": [
+            0.99619,
+            0.08716,
+            0.0
+          ]
+        },
+        {
+          "type": "sphere",
+          "pos": [
+            0.01793,
+            0.00157,
+            -0.06364
+          ],
+          "scale": [
+            0.007,
+            0.007,
+            0.007
+          ],
+          "material": "ModSteel"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            -0.02975,
+            0.02283,
+            -0.04545
+          ],
+          "scale": [
+            0.0044,
+            0.0175,
+            0.0044
+          ],
+          "material": "ModSteel",
+          "dir": [
+            -0.79335,
+            0.60876,
+            0.0
+          ]
+        },
+        {
+          "type": "sphere",
+          "pos": [
+            -0.01428,
+            0.01096,
+            -0.04545
+          ],
+          "scale": [
+            0.007,
+            0.007,
+            0.007
+          ],
+          "material": "ModSteel"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            0.00651,
+            -0.03693,
+            -0.02727
+          ],
+          "scale": [
+            0.0044,
+            0.0175,
+            0.0044
+          ],
+          "material": "ModSteel",
+          "dir": [
+            0.17365,
+            -0.98481,
+            0.0
+          ]
+        },
+        {
+          "type": "sphere",
+          "pos": [
+            0.00313,
+            -0.01773,
+            -0.02727
+          ],
+          "scale": [
+            0.007,
+            0.007,
+            0.007
+          ],
+          "material": "ModSteel"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            0.02015,
+            0.03163,
+            -0.00909
+          ],
+          "scale": [
+            0.0044,
+            0.0175,
+            0.0044
+          ],
+          "material": "ModSteel",
+          "dir": [
+            0.5373,
+            0.84339,
+            0.0
+          ]
+        },
+        {
+          "type": "sphere",
+          "pos": [
+            0.00967,
+            0.01518,
+            -0.00909
+          ],
+          "scale": [
+            0.007,
+            0.007,
+            0.007
+          ],
+          "material": "ModSteel"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            -0.03622,
+            -0.00971,
+            0.00909
+          ],
+          "scale": [
+            0.0044,
+            0.0175,
+            0.0044
+          ],
+          "material": "ModSteel",
+          "dir": [
+            -0.96593,
+            -0.25882,
+            0.0
+          ]
+        },
+        {
+          "type": "sphere",
+          "pos": [
+            -0.01739,
+            -0.00466,
+            0.00909
+          ],
+          "scale": [
+            0.007,
+            0.007,
+            0.007
+          ],
+          "material": "ModSteel"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            0.03326,
+            -0.01732,
+            0.02727
+          ],
+          "scale": [
+            0.0044,
+            0.0175,
+            0.0044
+          ],
+          "material": "ModSteel",
+          "dir": [
+            0.88701,
+            -0.46175,
+            0.0
+          ]
+        },
+        {
+          "type": "sphere",
+          "pos": [
+            0.01597,
+            -0.00831,
+            0.02727
+          ],
+          "scale": [
+            0.007,
+            0.007,
+            0.007
+          ],
+          "material": "ModSteel"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            -0.01283,
+            0.03524,
+            0.04545
+          ],
+          "scale": [
+            0.0044,
+            0.0175,
+            0.0044
+          ],
+          "material": "ModSteel",
+          "dir": [
+            -0.34202,
+            0.93969,
+            0.0
+          ]
+        },
+        {
+          "type": "sphere",
+          "pos": [
+            -0.00616,
+            0.01691,
+            0.04545
+          ],
+          "scale": [
+            0.007,
+            0.007,
+            0.007
+          ],
+          "material": "ModSteel"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            -0.01435,
+            -0.03465,
+            0.06364
+          ],
+          "scale": [
+            0.0044,
+            0.0175,
+            0.0044
+          ],
+          "material": "ModSteel",
+          "dir": [
+            -0.38268,
+            -0.92388,
+            0.0
+          ]
+        },
+        {
+          "type": "sphere",
+          "pos": [
+            -0.00689,
+            -0.01663,
+            0.06364
+          ],
+          "scale": [
+            0.007,
+            0.007,
+            0.007
+          ],
+          "material": "ModSteel"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            0.03399,
+            0.01585,
+            0.08182
+          ],
+          "scale": [
+            0.0044,
+            0.0175,
+            0.0044
+          ],
+          "material": "ModSteel",
+          "dir": [
+            0.90631,
+            0.42262,
+            0.0
+          ]
+        },
+        {
+          "type": "sphere",
+          "pos": [
+            0.01631,
+            0.00761,
+            0.08182
+          ],
+          "scale": [
+            0.007,
+            0.007,
+            0.007
+          ],
+          "material": "ModSteel"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            -0.03576,
+            0.01128,
+            0.1
+          ],
+          "scale": [
+            0.0044,
+            0.0175,
+            0.0044
+          ],
+          "material": "ModSteel",
+          "dir": [
+            -0.95372,
+            0.30071,
+            0.0
+          ]
+        },
+        {
+          "type": "sphere",
+          "pos": [
+            -0.01717,
+            0.00541,
+            0.1
+          ],
+          "scale": [
+            0.007,
+            0.007,
+            0.007
+          ],
+          "material": "ModSteel"
+        }
+      ],
+      "colors": {
+        "ModSteel": [
+          0.55,
+          0.55,
+          0.56,
+          0.9,
+          0.4
+        ]
+      },
+      "rotate": [
+        90,
+        0,
+        0
+      ],
+      "yaw": 35,
+      "pitch": 22,
+      "light_scale": 0.6
+    },
+    "grip-tape": {
+      "builder": "primitives",
+      "parts": [
+        {
+          "type": "cylinder",
+          "pos": [
+            0,
+            0,
+            0.1
+          ],
+          "scale": [
+            0.033,
+            0.1,
+            0.033
+          ],
+          "material": "ModRubber"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            0,
+            0,
+            0.01667
+          ],
+          "scale": [
+            0.0344,
+            0.002,
+            0.0344
+          ],
+          "material": "ModPolymer"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            0,
+            0,
+            0.05
+          ],
+          "scale": [
+            0.0344,
+            0.002,
+            0.0344
+          ],
+          "material": "ModPolymer"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            0,
+            0,
+            0.08333
+          ],
+          "scale": [
+            0.0344,
+            0.002,
+            0.0344
+          ],
+          "material": "ModPolymer"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            0,
+            0,
+            0.11667
+          ],
+          "scale": [
+            0.0344,
+            0.002,
+            0.0344
+          ],
+          "material": "ModPolymer"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            0,
+            0,
+            0.15
+          ],
+          "scale": [
+            0.0344,
+            0.002,
+            0.0344
+          ],
+          "material": "ModPolymer"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            0,
+            0,
+            0.18333
+          ],
+          "scale": [
+            0.0344,
+            0.002,
+            0.0344
+          ],
+          "material": "ModPolymer"
+        }
+      ],
+      "colors": {
+        "ModRubber": [
+          0.035,
+          0.035,
+          0.035,
+          0.0,
+          0.88
+        ],
+        "ModPolymer": [
+          0.05,
+          0.05,
+          0.055,
+          0.0,
+          0.65
+        ]
+      },
+      "rotate": [
+        90,
+        0,
+        0
+      ],
+      "yaw": 35,
+      "pitch": 22
+    },
+    "serrated": {
+      "builder": "primitives",
+      "parts": [
+        {
+          "type": "cube",
+          "pos": [
+            0,
+            0.016,
+            -0.1
+          ],
+          "scale": [
+            0.003,
+            0.007,
+            0.007
+          ],
+          "material": "ModSteel",
+          "euler": [
+            45,
+            0,
+            0
+          ]
+        },
+        {
+          "type": "cube",
+          "pos": [
+            0,
+            0.016,
+            -0.08462
+          ],
+          "scale": [
+            0.003,
+            0.007,
+            0.007
+          ],
+          "material": "ModSteel",
+          "euler": [
+            45,
+            0,
+            0
+          ]
+        },
+        {
+          "type": "cube",
+          "pos": [
+            0,
+            0.016,
+            -0.06923
+          ],
+          "scale": [
+            0.003,
+            0.007,
+            0.007
+          ],
+          "material": "ModSteel",
+          "euler": [
+            45,
+            0,
+            0
+          ]
+        },
+        {
+          "type": "cube",
+          "pos": [
+            0,
+            0.016,
+            -0.05385
+          ],
+          "scale": [
+            0.003,
+            0.007,
+            0.007
+          ],
+          "material": "ModSteel",
+          "euler": [
+            45,
+            0,
+            0
+          ]
+        },
+        {
+          "type": "cube",
+          "pos": [
+            0,
+            0.016,
+            -0.03846
+          ],
+          "scale": [
+            0.003,
+            0.007,
+            0.007
+          ],
+          "material": "ModSteel",
+          "euler": [
+            45,
+            0,
+            0
+          ]
+        },
+        {
+          "type": "cube",
+          "pos": [
+            0,
+            0.016,
+            -0.02308
+          ],
+          "scale": [
+            0.003,
+            0.007,
+            0.007
+          ],
+          "material": "ModSteel",
+          "euler": [
+            45,
+            0,
+            0
+          ]
+        },
+        {
+          "type": "cube",
+          "pos": [
+            0,
+            0.016,
+            -0.00769
+          ],
+          "scale": [
+            0.003,
+            0.007,
+            0.007
+          ],
+          "material": "ModSteel",
+          "euler": [
+            45,
+            0,
+            0
+          ]
+        },
+        {
+          "type": "cube",
+          "pos": [
+            0,
+            0.016,
+            0.00769
+          ],
+          "scale": [
+            0.003,
+            0.007,
+            0.007
+          ],
+          "material": "ModSteel",
+          "euler": [
+            45,
+            0,
+            0
+          ]
+        },
+        {
+          "type": "cube",
+          "pos": [
+            0,
+            0.016,
+            0.02308
+          ],
+          "scale": [
+            0.003,
+            0.007,
+            0.007
+          ],
+          "material": "ModSteel",
+          "euler": [
+            45,
+            0,
+            0
+          ]
+        },
+        {
+          "type": "cube",
+          "pos": [
+            0,
+            0.016,
+            0.03846
+          ],
+          "scale": [
+            0.003,
+            0.007,
+            0.007
+          ],
+          "material": "ModSteel",
+          "euler": [
+            45,
+            0,
+            0
+          ]
+        },
+        {
+          "type": "cube",
+          "pos": [
+            0,
+            0.016,
+            0.05385
+          ],
+          "scale": [
+            0.003,
+            0.007,
+            0.007
+          ],
+          "material": "ModSteel",
+          "euler": [
+            45,
+            0,
+            0
+          ]
+        },
+        {
+          "type": "cube",
+          "pos": [
+            0,
+            0.016,
+            0.06923
+          ],
+          "scale": [
+            0.003,
+            0.007,
+            0.007
+          ],
+          "material": "ModSteel",
+          "euler": [
+            45,
+            0,
+            0
+          ]
+        },
+        {
+          "type": "cube",
+          "pos": [
+            0,
+            0.016,
+            0.08462
+          ],
+          "scale": [
+            0.003,
+            0.007,
+            0.007
+          ],
+          "material": "ModSteel",
+          "euler": [
+            45,
+            0,
+            0
+          ]
+        },
+        {
+          "type": "cube",
+          "pos": [
+            0,
+            0.016,
+            0.1
+          ],
+          "scale": [
+            0.003,
+            0.007,
+            0.007
+          ],
+          "material": "ModSteel",
+          "euler": [
+            45,
+            0,
+            0
+          ]
+        }
+      ],
+      "colors": {
+        "ModSteel": [
+          0.55,
+          0.55,
+          0.56,
+          0.9,
+          0.4
+        ]
+      },
+      "rotate": [
+        90,
+        0,
+        0
+      ],
+      "yaw": 35,
+      "pitch": 22,
+      "light_scale": 0.6
+    },
+    "head-weight": {
+      "builder": "primitives",
+      "parts": [
+        {
+          "type": "cylinder",
+          "pos": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            0.06,
+            0.03,
+            0.06
+          ],
+          "material": "ModSteel"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            0,
+            0,
+            0.028
+          ],
+          "scale": [
+            0.064,
+            0.003,
+            0.064
+          ],
+          "material": "ModMetal"
+        }
+      ],
+      "colors": {
+        "ModSteel": [
+          0.55,
+          0.55,
+          0.56,
+          0.9,
+          0.4
+        ],
+        "ModMetal": [
+          0.12,
+          0.12,
+          0.13,
+          0.85,
+          0.45
+        ]
+      },
+      "rotate": [
+        90,
+        0,
+        0
+      ],
+      "yaw": 35,
+      "pitch": 22,
+      "light_scale": 0.6
+    },
+    "flashlight": {
+      "builder": "unity_mesh",
+      "path": "Mods/Flashlight/meshes/Object_0_0_0.asset",
+      "material": "Scene_-_Root_0",
+      "mesh_transform": {
+        "rot_y": 90,
+        "scale": 0.0009641133,
+        "pos": [
+          0.017374681,
+          -0.034773204,
+          0.060000002
+        ]
+      },
+      "textures": {
+        "*": {
+          "base": "Mods/Flashlight/textures/Scene_-_Root_baseColor_0.png",
+          "normal": "Mods/Flashlight/textures/Scene_-_Root_normal_3.png",
+          "metsmooth": "Mods/Flashlight/textures/Scene_-_Root_metallicRoughness_1_metal.png",
+          "emissive": "Mods/Flashlight/textures/Scene_-_Root_emissive_2.png"
+        }
+      },
+      "rotate": [
+        90,
+        0,
+        0
+      ],
+      "yaw": 35,
+      "pitch": 22
+    },
+    "boards": {
+      "builder": "primitives",
+      "parts": [
+        {
+          "type": "cube",
+          "pos": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            0.035,
+            0.16,
+            1.1
+          ],
+          "material": "Plank"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            -0.020300000000000002,
+            0,
+            -0.484
+          ],
+          "scale": [
+            0.0203,
+            0.0028,
+            0.0203
+          ],
+          "material": "Nail",
+          "dir": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            -0.020300000000000002,
+            0,
+            0.484
+          ],
+          "scale": [
+            0.0203,
+            0.0028,
+            0.0203
+          ],
+          "material": "Nail",
+          "dir": [
+            1,
+            0,
+            0
+          ]
+        }
+      ],
+      "colors": {
+        "Plank": [
+          0.22,
+          0.13,
+          0.06,
+          0.0,
+          0.85
+        ],
+        "Nail": [
+          0.12,
+          0.12,
+          0.13,
+          0.0,
+          0.5
+        ]
+      },
+      "rotate": [
+        90,
+        0,
+        0
+      ],
+      "yaw": 35,
+      "pitch": 22,
+      "light_scale": 0.6
+    },
+    "ammo": {
+      "path": "../Resources/Ammo/AmmoHeap.fbx",
+      "textures": {
+        "*": {
+          "base": "../Resources/Ammo/AmmoHeap_Palette.png"
+        }
+      },
+      "texture_closest": true,
+      "yaw": 35,
+      "pitch": 24,
+      "light_scale": 0.8
+    },
+    "mag-plus": {
+      "path": "Weapons/AK47/AK47.fbx",
+      "keep": [
+        "MagazineVisual"
+      ],
+      "copies": [
+        {
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "offset": [
+            0,
+            -0.17,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1.34
+          ]
+        },
+        {
+          "offset": [
+            0,
+            -0.34,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1.5
+          ]
+        }
+      ],
+      "yaw": 25,
+      "pitch": 14,
+      "light_scale": 0.9
+    },
+    "fuel": {
+      "path": "Vr/Props/metal_jerrycan_green/metal_jerrycan_green.fbx",
+      "textures": {
+        "*": {
+          "base": "Vr/Props/metal_jerrycan_green/metal_jerrycan_green_diff.jpg",
+          "normal": "Vr/Props/metal_jerrycan_green/metal_jerrycan_green_nor.jpg",
+          "metsmooth": "Vr/Props/metal_jerrycan_green/metal_jerrycan_green_ms.png"
+        }
+      },
+      "yaw": 35,
+      "pitch": 20,
+      "light_scale": 0.8
+    },
+    "headlamp": {
+      "builder": "primitives",
+      "_note": "Kein Spielmodell: die Stirnlampe ist im Spiel nur eine Lichtquelle (HeadLamp.cs). Darstellung in den Farben der Mod-Teile, Lichtfarbe aus HeadLamp.Beam.",
+      "parts": [
+        {
+          "type": "torus",
+          "pos": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            0.19,
+            0.018,
+            0.0
+          ],
+          "material": "Strap"
+        },
+        {
+          "type": "cube",
+          "pos": [
+            -0.088,
+            0,
+            0
+          ],
+          "scale": [
+            0.03,
+            0.03,
+            0.02
+          ],
+          "material": "Housing"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            -0.108,
+            0,
+            0
+          ],
+          "scale": [
+            0.044,
+            0.0225,
+            0.044
+          ],
+          "material": "Housing",
+          "dir": [
+            -1,
+            0,
+            0
+          ]
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            -0.1315,
+            0,
+            0
+          ],
+          "scale": [
+            0.05,
+            0.003,
+            0.05
+          ],
+          "material": "Bezel",
+          "dir": [
+            -1,
+            0,
+            0
+          ]
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            -0.1345,
+            0,
+            0
+          ],
+          "scale": [
+            0.038,
+            0.0015,
+            0.038
+          ],
+          "material": "Lens",
+          "dir": [
+            -1,
+            0,
+            0
+          ]
+        },
+        {
+          "type": "cube",
+          "pos": [
+            0.095,
+            0,
+            0
+          ],
+          "scale": [
+            0.022,
+            0.06,
+            0.035
+          ],
+          "material": "Housing"
+        }
+      ],
+      "colors": {
+        "Strap": [
+          0.06,
+          0.06,
+          0.07,
+          0.0,
+          0.85
+        ],
+        "Housing": [
+          0.05,
+          0.05,
+          0.055,
+          0.0,
+          0.65
+        ],
+        "Bezel": [
+          0.3,
+          0.3,
+          0.32,
+          0.9,
+          0.4
+        ],
+        "Lens": [
+          1.0,
+          0.96,
+          0.88,
+          0.0,
+          0.1
+        ]
+      },
+      "emission": {
+        "Lens": 4.0
+      },
+      "yaw": 35,
+      "pitch": 22,
+      "light_scale": 0.6
+    },
+    "pouch": {
+      "builder": "primitives",
+      "_note": "Kein Spielmodell: die Hüfttasche ist im Spiel unsichtbar (Throwables.cs zählt nur). Darstellung mit Molotow-Hals und Rohrbombe als Inhalt.",
+      "parts": [
+        {
+          "type": "cube",
+          "pos": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            0.07,
+            0.13,
+            0.15
+          ],
+          "material": "Canvas"
+        },
+        {
+          "type": "cube",
+          "pos": [
+            -0.004,
+            0,
+            0.06
+          ],
+          "scale": [
+            0.076,
+            0.135,
+            0.06
+          ],
+          "material": "CanvasDark"
+        },
+        {
+          "type": "cube",
+          "pos": [
+            -0.043,
+            0,
+            0.045
+          ],
+          "scale": [
+            0.006,
+            0.03,
+            0.025
+          ],
+          "material": "Buckle"
+        },
+        {
+          "type": "cube",
+          "pos": [
+            0.041,
+            0,
+            0.02
+          ],
+          "scale": [
+            0.012,
+            0.05,
+            0.09
+          ],
+          "material": "CanvasDark"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            0.0,
+            0.03,
+            0.105
+          ],
+          "scale": [
+            0.03,
+            0.025,
+            0.03
+          ],
+          "material": "Glass"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            0.0,
+            0.03,
+            0.135
+          ],
+          "scale": [
+            0.03,
+            0.006,
+            0.03
+          ],
+          "material": "Rag"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            0.0,
+            -0.03,
+            0.1
+          ],
+          "scale": [
+            0.046,
+            0.02,
+            0.046
+          ],
+          "material": "Pipe"
+        },
+        {
+          "type": "cylinder",
+          "pos": [
+            0.0,
+            -0.03,
+            0.122
+          ],
+          "scale": [
+            0.054,
+            0.004,
+            0.054
+          ],
+          "material": "Cap"
+        }
+      ],
+      "colors": {
+        "Canvas": [
+          0.17,
+          0.15,
+          0.11,
+          0.0,
+          0.9
+        ],
+        "CanvasDark": [
+          0.13,
+          0.115,
+          0.085,
+          0.0,
+          0.9
+        ],
+        "Buckle": [
+          0.35,
+          0.33,
+          0.3,
+          0.9,
+          0.4
+        ],
+        "Glass": [
+          0.08,
+          0.28,
+          0.1,
+          0.0,
+          0.1
+        ],
+        "Rag": [
+          0.75,
+          0.7,
+          0.6,
+          0.0,
+          0.9
+        ],
+        "Pipe": [
+          0.32,
+          0.32,
+          0.34,
+          1.0,
+          0.45
+        ],
+        "Cap": [
+          0.18,
+          0.18,
+          0.19,
+          1.0,
+          0.5
+        ]
+      },
+      "yaw": 35,
+      "pitch": 22,
+      "light_scale": 0.6
     }
   },
   "lights": {
