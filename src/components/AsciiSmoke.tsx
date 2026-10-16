@@ -12,7 +12,7 @@ const CHARS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 const CELL_W = 9;
 const CELL_H = 15;
 const FONT = '12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace';
-const FRAME_MS = 1000 / 30;
+const MASK_STEP = 2; // smoke and ink are soft fields: compute them on every 2nd cell and let the mask scaling blend
 
 const SMOKE_RGB = '154, 148, 138'; // bone-muted
 const SMOKE_MAX_ALPHA = 0.32;
@@ -24,12 +24,16 @@ const RIPPLE_LIFE = 6.5; // seconds
 const RIPPLE_EDGE = 18; // px, soft edge of the front at the start; it widens as the blot spreads
 const MAX_RIPPLES = 24;
 
-// Performance guard: if the effect costs too much on this device, it switches itself off and the
-// page falls back to the plain black background. Nothing is stored; every visit measures anew.
-const PERF_WARMUP_FRAMES = 15; // first frames (glyph setup, JIT) are not judged
-const PERF_MAX_DRAW_MS = 9; // average cost of one effect frame; above this the device is struggling
-const PERF_MAX_FRAME_MS = 70; // average time between frames while visible (~14 fps) ...
-const PERF_SLOW_FRAME_DRAW_MS = 4; // ... counts only if the effect itself takes a noticeable share
+// Performance guard. Only the effect's own work per frame is measured (not scrolling, layout or
+// images, which belong to the page). Samples taken while scrolling, resizing or right after start are
+// ignored. If the effect takes too large a share of the main thread, it first lowers its frame rate;
+// only when even the lowest rate is too expensive does it switch off and leave the plain black page.
+// Nothing is stored; every visit measures anew.
+const FRAME_RATES = [30, 20, 12];
+const PERF_MAX_LOAD = 0.12; // share of each second the effect may use (median frame cost x frame rate)
+const PERF_SAMPLES = 45; // frames per judgement, median taken
+const PERF_QUIET_MS = 500; // after scrolling or resizing, samples are ignored for this long
+const PERF_START_MS = 1500; // after start or returning to the tab
 const HEADER_FADE = 36; // px below the navigation bar over which the characters fade in
 
 interface Ripple {
@@ -210,10 +214,17 @@ export default function AsciiSmoke() {
       r.drawImage(atlas, sx, gh, gw, gh, x, y, gw, gh);
     };
 
+    let sizedW = 0;
+    let sizedH = 0;
+    /** Rebuild only when the width changes or the window grows; a shrinking height (mobile address bar) keeps the grid. */
     const resize = () => {
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
       const w = window.innerWidth;
-      const h = window.innerHeight;
+      const h = Math.max(window.innerHeight, w === sizedW ? sizedH : 0);
+      const newDpr = Math.min(window.devicePixelRatio || 1, 2);
+      if (w === sizedW && h === sizedH && newDpr === dpr) return false;
+      sizedW = w;
+      sizedH = h;
+      dpr = newDpr;
       canvas.width = Math.ceil(w * dpr);
       canvas.height = Math.ceil(h * dpr);
       canvas.style.width = `${w}px`;
@@ -224,17 +235,33 @@ export default function AsciiSmoke() {
         layer.width = Math.ceil(cols * CELL_W * dpr);
         layer.height = Math.ceil(rows * CELL_H * dpr);
       }
-      smokeMask.width = rippleMask.width = cols;
-      smokeMask.height = rippleMask.height = rows;
-      smokeData = smokeMask.getContext('2d')?.createImageData(cols, rows) ?? null;
-      rippleData = rippleMask.getContext('2d')?.createImageData(cols, rows) ?? null;
+      smokeMask.width = Math.ceil(cols / MASK_STEP);
+      smokeMask.height = Math.ceil(rows / MASK_STEP);
+      rippleMask.width = smokeMask.width;
+      rippleMask.height = smokeMask.height;
+      smokeData = smokeMask.getContext('2d')?.createImageData(smokeMask.width, smokeMask.height) ?? null;
+      rippleData = rippleMask.getContext('2d')?.createImageData(rippleMask.width, rippleMask.height) ?? null;
       glyphs = new Uint8Array(cols * rows);
       for (let i = 0; i < glyphs.length; i++) glyphs[i] = Math.floor(Math.random() * CHARS.length);
       buildAtlas();
       for (let i = 0; i < glyphs.length; i++) drawCell(i);
+      return true;
     };
 
     const ripples: Ripple[] = [];
+    let inkBuffer = new Float32Array(0);
+
+    // The navigation bar is fixed at the top; its height is cached instead of read every frame
+    // (reading layout while scrolling forces the browser to lay out the page first).
+    let headerHeight = 0;
+    const header = document.querySelector('header');
+    const headerObserver = new ResizeObserver(() => {
+      headerHeight = header ? header.offsetHeight : 0;
+    });
+    if (header) {
+      headerHeight = header.offsetHeight;
+      headerObserver.observe(header);
+    }
     let heartNext = Math.random() < 0.5;
 
     // Only a drag (text selection) cancels a drop; quick repeated clicks each drop new ink.
@@ -260,14 +287,22 @@ export default function AsciiSmoke() {
     };
 
     /** Composite a glyph layer through a per-cell mask onto the visible canvas. */
-    const composite = (layer: HTMLCanvasElement, mask: HTMLCanvasElement) => {
+    const composite = (layer: HTMLCanvasElement, mask: HTMLCanvasElement, cellsPerPixel: number) => {
       const s = scratch.getContext('2d');
       if (!s) return;
       s.globalCompositeOperation = 'copy';
       s.drawImage(layer, 0, 0);
       s.globalCompositeOperation = 'destination-in';
       s.imageSmoothingEnabled = true;
-      s.drawImage(mask, 0, 0, scratch.width, scratch.height);
+      // Pixel centres of the mask sit on the centres of the cells they stand for.
+      const off = ((cellsPerPixel - 1) / 2) * dpr;
+      s.drawImage(
+        mask,
+        -off * CELL_W,
+        -off * CELL_H,
+        mask.width * cellsPerPixel * CELL_W * dpr,
+        mask.height * cellsPerPixel * CELL_H * dpr,
+      );
       s.globalCompositeOperation = 'source-over';
       ctx.drawImage(scratch, 0, 0);
     };
@@ -301,60 +336,70 @@ export default function AsciiSmoke() {
         };
       });
 
+      // Smoke on a coarse grid.
       const sd = smokeData.data;
-      const rd = rippleData.data;
-      for (let row = 0; row < rows; row++) {
-        const py = row * CELL_H + CELL_H / 2;
+      const sw = smokeMask.width;
+      const sh = smokeMask.height;
+      for (let r = 0; r < sh; r++) {
+        const py = (r * MASK_STEP + (MASK_STEP - 1) / 2) * CELL_H + CELL_H / 2;
         const ny = py / 260;
-        for (let col = 0; col < cols; col++) {
-          const px = col * CELL_W + CELL_W / 2;
-          const o = (row * cols + col) * 4 + 3;
-
-          let wave = 0;
-          for (const a of active) {
-            const dx = px - a.r.x;
-            const dy = py - a.r.y;
-            if (Math.abs(dx) > a.radius * 1.8 + 120 || Math.abs(dy) > a.radius * 1.8 + 120) continue;
-            const ang = Math.atan2(dy, dx);
-            const ca = Math.cos(ang);
-            const sa = Math.sin(ang);
-            const base = a.r.heart ? heartDistance(dx, dy) : Math.hypot(dx, dy);
-            // Ragged outline: coarse lobes plus finer tendrils that drift outwards with the distance.
-            const n =
-              (noise(ca * 1.4 + a.r.seed, sa * 1.4 + a.age * 0.35) - 0.5) * 0.75 +
-              (noise(ca * 4 + a.r.seed * 2, sa * 4 + base / 90 - a.age * 0.4) - 0.5) * 0.35;
-            const d = base * (1 + n * a.wobble * 2);
-            const u = d / a.radius;
-            const f = (d - a.radius) / a.edge;
-            let ink = Math.exp(-f * f) * 0.95; // blurred front
-            if (u < 1) {
-              // A few broad contour bands travelling outwards, wider apart towards the edge.
-              const band = Math.pow(0.5 + 0.5 * Math.cos((Math.sqrt(u) * 3.2 - a.age * 0.55) * Math.PI * 2), 2.5);
-              ink = Math.max(ink, (0.1 + 0.5 * band) * (0.4 + 0.6 * u));
-            }
-            wave += ink * a.fade;
-          }
-          rd[o] = Math.min(1, wave) * 0.9 * 255;
-
-          const s = smoke(px / 260, ny, t);
+        for (let c = 0; c < sw; c++) {
+          const px = (c * MASK_STEP + (MASK_STEP - 1) / 2) * CELL_W + CELL_W / 2;
           // Shape the field into soft bands: mostly dark, brighter ridges drifting through.
-          const v = Math.max(0, (s - 0.36) / 0.64);
-          sd[o] = (0.035 + Math.pow(v, 1.6) * SMOKE_MAX_ALPHA) * (1 - Math.min(1, wave) * 0.6) * 255;
+          const v = Math.max(0, (smoke(px / 260, ny, t) - 0.36) / 0.64);
+          sd[(r * sw + c) * 4 + 3] = (0.035 + Math.pow(v, 1.6) * SMOKE_MAX_ALPHA) * 255;
         }
       }
       smokeMask.getContext('2d')?.putImageData(smokeData, 0, 0);
 
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      composite(greyLayer, smokeMask);
+      // Ink only inside the box each drop can reach.
       if (active.length) {
+        if (inkBuffer.length !== sw * sh) inkBuffer = new Float32Array(sw * sh);
+        const acc = inkBuffer;
+        acc.fill(0);
+        for (const a of active) {
+          const reach = a.radius * 1.8 + 120;
+          const c0 = Math.max(0, Math.floor((a.r.x - reach) / (CELL_W * MASK_STEP)));
+          const c1 = Math.min(sw - 1, Math.ceil((a.r.x + reach) / (CELL_W * MASK_STEP)));
+          const r0 = Math.max(0, Math.floor((a.r.y - reach) / (CELL_H * MASK_STEP)));
+          const r1 = Math.min(sh - 1, Math.ceil((a.r.y + reach) / (CELL_H * MASK_STEP)));
+          for (let row = r0; row <= r1; row++) {
+            const dy = (row * MASK_STEP + (MASK_STEP - 1) / 2) * CELL_H + CELL_H / 2 - a.r.y;
+            for (let col = c0; col <= c1; col++) {
+              const dx = (col * MASK_STEP + (MASK_STEP - 1) / 2) * CELL_W + CELL_W / 2 - a.r.x;
+              const ang = Math.atan2(dy, dx);
+              const ca = Math.cos(ang);
+              const sa = Math.sin(ang);
+              const base = a.r.heart ? heartDistance(dx, dy) : Math.hypot(dx, dy);
+              // Ragged outline: coarse lobes plus finer tendrils that drift outwards with the distance.
+              const n =
+                (noise(ca * 1.4 + a.r.seed, sa * 1.4 + a.age * 0.35) - 0.5) * 0.75 +
+                (noise(ca * 4 + a.r.seed * 2, sa * 4 + base / 90 - a.age * 0.4) - 0.5) * 0.35;
+              const d = base * (1 + n * a.wobble * 2);
+              const u = d / a.radius;
+              const f = (d - a.radius) / a.edge;
+              let ink = Math.exp(-f * f) * 0.95; // blurred front
+              if (u < 1) {
+                // A few broad contour bands travelling outwards, wider apart towards the edge.
+                const band = Math.pow(0.5 + 0.5 * Math.cos((Math.sqrt(u) * 3.2 - a.age * 0.55) * Math.PI * 2), 2.5);
+                ink = Math.max(ink, (0.1 + 0.5 * band) * (0.4 + 0.6 * u));
+              }
+              acc[row * sw + col] += ink * a.fade;
+            }
+          }
+        }
+        const rd = rippleData.data;
+        for (let i = 0; i < acc.length; i++) rd[i * 4 + 3] = Math.min(1, acc[i]) * 0.9 * 255;
         rippleMask.getContext('2d')?.putImageData(rippleData, 0, 0);
-        composite(redLayer, rippleMask);
       }
 
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      composite(greyLayer, smokeMask, MASK_STEP);
+      if (active.length) composite(redLayer, rippleMask, MASK_STEP);
+
       // Keep the navigation bar clean: no characters behind it, a soft fade below it.
-      const header = document.querySelector('header');
-      const hb = header ? header.getBoundingClientRect().bottom : 0;
+      const hb = headerHeight;
       if (hb > 0) {
         ctx.globalCompositeOperation = 'destination-out';
         ctx.fillStyle = '#000';
@@ -372,57 +417,78 @@ export default function AsciiSmoke() {
     let last = 0;
     let needsStill = false; // one more still frame after the last ripple when motion is reduced
     let stopped = false;
-    let frames = 0;
-    let drawAvg = 0;
-    let frameAvg = FRAME_MS;
-    let prevFrame = 0;
+    let rateLevel = 0;
+    let quietUntil = performance.now() + PERF_START_MS;
+    const samples: number[] = [];
 
     const stop = () => {
       stopped = true;
       cancelAnimationFrame(raf);
-      window.removeEventListener('resize', onResize);
-      document.removeEventListener('mousedown', onMouseDown);
-      document.removeEventListener('click', onClick);
-      document.removeEventListener('visibilitychange', onVisibility);
+      cleanup();
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       canvas.style.display = 'none';
       canvas.dataset.fallback = 'performance';
     };
 
-    /** Judge the device on a smoothed draw cost and frame interval; switch off when it struggles. */
-    const measure = (nowMs: number, drawMs: number) => {
-      const interval = prevFrame ? nowMs - prevFrame : FRAME_MS;
-      prevFrame = nowMs;
-      frames++;
-      if (frames <= PERF_WARMUP_FRAMES) return;
-      drawAvg += (drawMs - drawAvg) * 0.1;
-      // Gaps over 200 ms come from throttling (hidden or covered window, debugger), not from this effect.
-      if (interval < 200) frameAvg += (interval - frameAvg) * 0.1;
-      if (frames < PERF_WARMUP_FRAMES + 20) return;
-      if (drawAvg > PERF_MAX_DRAW_MS || (frameAvg > PERF_MAX_FRAME_MS && drawAvg > PERF_SLOW_FRAME_DRAW_MS)) stop();
+    /** Collect the effect's own frame cost; lower the frame rate or switch off when it is too expensive. */
+    const measure = (startMs: number, costMs: number) => {
+      if (startMs < quietUntil || document.visibilityState !== 'visible') return;
+      samples.push(costMs);
+      if (samples.length < PERF_SAMPLES) return;
+      const median = [...samples].sort((x, y) => x - y)[samples.length >> 1];
+      samples.length = 0;
+      canvas.dataset.frameCost = median.toFixed(2);
+      const load = (median * FRAME_RATES[rateLevel]) / 1000;
+      if (load <= PERF_MAX_LOAD) return;
+      // Far over budget (e.g. no GPU canvas): a lower frame rate cannot save it.
+      if (rateLevel < FRAME_RATES.length - 1 && load < PERF_MAX_LOAD * 3) {
+        rateLevel++;
+        canvas.dataset.frameRate = String(FRAME_RATES[rateLevel]);
+      } else {
+        stop();
+      }
     };
 
-    // Hidden tabs get no frames; restart the interval measurement when the page comes back.
+    const quiet = () => {
+      quietUntil = performance.now() + PERF_QUIET_MS;
+      samples.length = 0;
+    };
     const onVisibility = () => {
-      prevFrame = 0;
+      quietUntil = performance.now() + PERF_START_MS;
+      samples.length = 0;
     };
 
     const loop = (nowMs: number) => {
       if (stopped) return;
       raf = requestAnimationFrame(loop);
-      if (nowMs - last < FRAME_MS) return;
+      if (nowMs - last < 1000 / FRAME_RATES[rateLevel] - 2) return;
       last = nowMs;
       if (reduceMotion.matches && ripples.length === 0 && !needsStill) return;
       needsStill = ripples.length > 0;
       const t0 = performance.now();
       draw(nowMs);
-      if (!reduceMotion.matches) measure(nowMs, performance.now() - t0);
+      if (!reduceMotion.matches) measure(t0, performance.now() - t0);
     };
 
+    let resizeTimer = 0;
     function onResize() {
-      resize();
-      draw(performance.now());
+      quiet();
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        if (resize()) draw(performance.now());
+        quiet();
+      }, 150);
+    }
+
+    function cleanup() {
+      window.clearTimeout(resizeTimer);
+      headerObserver.disconnect();
+      window.removeEventListener('resize', onResize);
+      window.removeEventListener('scroll', quiet, true);
+      document.removeEventListener('mousedown', onMouseDown);
+      document.removeEventListener('click', onClick);
+      document.removeEventListener('visibilitychange', onVisibility);
     }
 
     // Very weak devices or an explicit data-saver setting never start the effect.
@@ -436,16 +502,14 @@ export default function AsciiSmoke() {
     draw(performance.now());
     raf = requestAnimationFrame(loop);
     window.addEventListener('resize', onResize);
+    window.addEventListener('scroll', quiet, { capture: true, passive: true });
     document.addEventListener('mousedown', onMouseDown);
     document.addEventListener('click', onClick);
     document.addEventListener('visibilitychange', onVisibility);
     return () => {
       stopped = true;
       cancelAnimationFrame(raf);
-      document.removeEventListener('visibilitychange', onVisibility);
-      window.removeEventListener('resize', onResize);
-      document.removeEventListener('mousedown', onMouseDown);
-      document.removeEventListener('click', onClick);
+      cleanup();
     };
   }, []);
 
