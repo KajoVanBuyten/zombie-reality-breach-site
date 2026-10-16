@@ -1,17 +1,22 @@
 import { Info, ExternalLink } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
-import { GAME_PRIVACY_URL } from '@/lib/site';
+import { GAME_PRIVACY_URL, keyArtThemes } from '@/lib/site';
 import HazardDivider from '@/components/HazardDivider';
 import LeaderboardBoards from '@/components/LeaderboardBoards';
+import PageHero from '@/components/PageHero';
 
 export default function LeaderboardPage() {
   const { t } = useI18n();
 
   return (
-    <div className="pt-20">
+    <div className="pt-16">
+      <PageHero
+        theme={keyArtThemes.rift}
+        kicker={`// ${t('leaderboard.title')}`}
+        title={t('leaderboard.title')}
+        intro={t('leaderboard.live.text')}
+      />
       <section className="py-16 lg:py-24 max-w-5xl mx-auto px-4 lg:px-8">
-        <span className="text-xs font-heading uppercase tracking-widest text-blood">// {t('leaderboard.title')}</span>
-        <h1 className="font-heading text-3xl lg:text-4xl uppercase text-bone mt-2 mb-8">{t('leaderboard.title')}</h1>
 
         <LeaderboardBoards />
 

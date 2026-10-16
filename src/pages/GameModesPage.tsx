@@ -4,21 +4,26 @@ import HazardDivider from '@/components/HazardDivider';
 import { modeFamilies, riftUpgrades, zombieKinds } from '@/content/modes';
 import KeyArt from '@/components/KeyArt';
 import { Gift } from 'lucide-react';
+import PageHero from '@/components/PageHero';
+import Backdrop from '@/components/Backdrop';
+import { keyArtThemes } from '@/lib/site';
 
 export default function GameModesPage() {
   const { t, lang } = useI18n();
   const de = lang === 'de';
 
   return (
-    <div className="pt-20">
+    <div className="pt-16">
+      <PageHero
+        theme={keyArtThemes.outbreak}
+        kicker={`// ${t('modes.title')}`}
+        title={t('modes.title')}
+        intro={de
+          ? 'Drei Modusfamilien: REALITY BREACH und RIFT in Mixed Reality in deinem eigenen Raum, OUTBREAK in vollem VR an einer Tankstelle im Wald bei Nacht. Das Spiel erscheint bald für Meta Quest 3 und 3S (Early Access geplant).'
+          : 'Three mode families: REALITY BREACH and RIFT in mixed reality in your own room, OUTBREAK in full VR at a gas station in the woods at night. The game is coming soon to Meta Quest 3 and 3S (Early Access planned).'}
+      />
+
       <section className="py-16 lg:py-24 max-w-7xl mx-auto px-4 lg:px-8">
-        <span className="text-xs font-heading uppercase tracking-widest text-blood">// {t('modes.title')}</span>
-        <h1 className="font-heading text-3xl lg:text-4xl uppercase text-bone mt-2 mb-4">{t('modes.title')}</h1>
-        <p className="text-sm text-bone-muted font-body font-light leading-relaxed mb-10 max-w-3xl">
-          {de
-            ? 'Drei Modusfamilien: REALITY BREACH und RIFT in Mixed Reality in deinem eigenen Raum, OUTBREAK in vollem VR an einer Tankstelle im Wald bei Nacht. Das Spiel erscheint bald für Meta Quest 3 und 3S (Early Access geplant).'
-            : 'Three mode families: REALITY BREACH and RIFT in mixed reality in your own room, OUTBREAK in full VR at a gas station in the woods at night. The game is coming soon to Meta Quest 3 and 3S (Early Access planned).'}
-        </p>
 
         <div className="space-y-8">
           {modeFamilies.map((m) => (
@@ -30,7 +35,7 @@ export default function GameModesPage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-bg-surface to-transparent md:hidden" />
                 </div>
                 <div className="relative z-10 p-6 md:p-8 flex-1">
-                  <h2 className="font-heading text-2xl uppercase text-bone mb-1">{m.name}</h2>
+                  <h2 className="section-title font-heading text-2xl uppercase text-bone mb-1">{m.name}</h2>
                   <p className="text-xs font-heading text-ember uppercase tracking-wider mb-4">{de ? m.kindDe : m.kind}</p>
                   <p className="text-sm text-bone-muted font-body font-light leading-relaxed mb-4">{de ? m.descDe : m.desc}</p>
                   <div className="flex flex-wrap gap-2 mb-4">
@@ -72,7 +77,7 @@ export default function GameModesPage() {
           {/* MULTIPLAYER */}
           <SteelCard className="overflow-hidden hover:border-blood/40 transition-colors">
             <div className="relative z-10 p-6 md:p-8">
-              <h2 className="font-heading text-2xl uppercase text-bone mb-1">{de ? 'Mehrspieler (Co-op)' : 'Multiplayer (Co-op)'}</h2>
+              <h2 className="section-title font-heading text-2xl uppercase text-bone mb-1">{de ? 'Mehrspieler (Co-op)' : 'Multiplayer (Co-op)'}</h2>
               <p className="text-xs font-heading text-ember uppercase tracking-wider mb-4">
                 {de ? 'Bis zu 4 in Reality Breach, Rift und Gas Station · bis zu 3 in Rooftop und Safe Zone' : 'Up to 4 in Reality Breach, Rift and Gas Station · up to 3 in Rooftop and Safe Zone'}
               </p>
@@ -106,7 +111,7 @@ export default function GameModesPage() {
             <div className="relative z-10 flex items-start gap-4">
               <Gift className="w-6 h-6 text-gold flex-shrink-0 mt-1" />
               <div>
-                <h2 className="font-heading text-xl uppercase text-bone mb-2">{t('home.free.title')}</h2>
+                <h2 className="section-title font-heading text-xl uppercase text-bone mb-2">{t('home.free.title')}</h2>
                 <p className="text-sm text-bone-muted font-body font-light leading-relaxed">{t('home.free.text')}</p>
               </div>
             </div>
@@ -117,8 +122,9 @@ export default function GameModesPage() {
       <HazardDivider />
 
       {/* ENEMIES */}
+      <Backdrop theme={keyArtThemes.rift} opacity={0.16}>
       <section className="py-16 lg:py-24 max-w-7xl mx-auto px-4 lg:px-8">
-        <h2 className="font-heading text-2xl uppercase text-bone mb-2">{de ? 'Die Toten' : 'The dead'}</h2>
+        <h2 className="section-title font-heading text-2xl uppercase text-bone mb-2">{de ? 'Die Toten' : 'The dead'}</h2>
         <p className="text-sm text-bone-muted font-body font-light leading-relaxed max-w-3xl mb-6">
           {de
             ? 'Vier Typen, in allen Modi dieselben. Leben und Tempo wachsen mit jeder Welle. Kopfschüsse zählen; Klingen nehmen Gliedmaßen, und beinlose Zombies kriechen weiter.'
@@ -136,12 +142,13 @@ export default function GameModesPage() {
           ))}
         </div>
       </section>
+      </Backdrop>
 
       <HazardDivider />
 
       {/* RIFT UPGRADES */}
       <section className="py-16 lg:py-24 max-w-4xl mx-auto px-4 lg:px-8">
-        <h2 className="font-heading text-2xl uppercase text-bone mb-2">{de ? 'Rift: die Upgrades' : 'Rift: the upgrades'}</h2>
+        <h2 className="section-title font-heading text-2xl uppercase text-bone mb-2">{de ? 'Rift: die Upgrades' : 'Rift: the upgrades'}</h2>
         <p className="text-sm text-bone-muted font-body font-light leading-relaxed mb-6">
           {de
             ? 'Nach jeder Welle zwei Karten: eine gratis und schwächer, eine für Coins und stärker. Du nimmst eine; sie geht an die Pistole der Hand, die geklickt hat. Coins gibt es nur im Spiel, neue Spieler starten mit 500.'
@@ -178,7 +185,7 @@ export default function GameModesPage() {
 
       {/* DIFFICULTY TABLE */}
       <section className="py-16 lg:py-24 max-w-4xl mx-auto px-4 lg:px-8">
-        <h2 className="font-heading text-2xl uppercase text-bone mb-6">{t('modes.diff')}</h2>
+        <h2 className="section-title font-heading text-2xl uppercase text-bone mb-6">{t('modes.diff')}</h2>
         <div className="steel-card overflow-hidden overflow-x-auto">
           <table className="w-full text-sm">
             <thead>

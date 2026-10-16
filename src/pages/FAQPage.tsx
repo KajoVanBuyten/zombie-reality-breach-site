@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { ChevronDown, ExternalLink, Skull } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
-import { META_URL } from '@/lib/site';
+import { META_URL, keyArtThemes } from '@/lib/site';
 import { faqItems } from '@/content/faq';
-import HazardDivider from '@/components/HazardDivider';
 import SteelCard from '@/components/SteelCard';
+import PageHero from '@/components/PageHero';
 
 export default function FAQPage() {
   const { t, lang } = useI18n();
@@ -12,34 +12,36 @@ export default function FAQPage() {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <div className="pt-20">
-      {/* RELEASE STATUS */}
-      <section className="py-16 lg:py-24 max-w-3xl mx-auto px-4 lg:px-8">
-        <span className="text-xs font-heading uppercase tracking-widest text-blood">// {t('faq.statusTitle')}</span>
-        <h1 className="font-heading text-3xl lg:text-4xl uppercase text-bone mt-2 mb-8">{t('hero.coming')}</h1>
-
-        <SteelCard className="p-6 hover:border-blood/40 transition-colors">
-          <div className="relative z-10 space-y-4">
-            <p className="text-sm text-bone font-body font-light leading-relaxed">
-              {de
-                ? 'Zombie Reality Breach erscheint bald für Meta Quest 3 und 3S. Ein Early-Access-Release ist geplant.'
-                : 'Zombie Reality Breach is coming soon to Meta Quest 3 and 3S. An Early Access release is planned.'}
-            </p>
+    <div className="pt-16">
+      <PageHero
+        theme={keyArtThemes.realityBreach}
+        kicker={`// ${t('faq.title')}`}
+        title={t('faq.title')}
+        narrow
+      >
+        <SteelCard className="p-5 mt-8 max-w-2xl hover:border-blood/40 transition-colors">
+          <div className="relative z-10 flex flex-col sm:flex-row sm:items-center gap-4">
+            <div className="flex-1">
+              <span className="text-[10px] font-heading uppercase tracking-widest text-ember">{t('faq.statusTitle')}</span>
+              <p className="text-sm text-bone font-body font-light leading-relaxed mt-1">
+                {de
+                  ? 'Zombie Reality Breach erscheint bald für Meta Quest 3 und 3S. Ein Early-Access-Release ist geplant; eine geschlossene ALPHA läuft.'
+                  : 'Zombie Reality Breach is coming soon to Meta Quest 3 and 3S. An Early Access release is planned; a closed ALPHA is running.'}
+              </p>
+            </div>
             <a href={META_URL} target="_blank" rel="noopener noreferrer"
-               className="inline-flex items-center gap-1 text-sm text-blood hover:text-blood-hover font-body font-medium">
+               className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-blood hover:bg-blood-hover text-bone text-xs font-heading uppercase tracking-wider transition-all hover:scale-105 glow-blood flex-shrink-0">
               {t('hero.cta')} <ExternalLink className="w-3.5 h-3.5 flex-shrink-0" />
             </a>
           </div>
         </SteelCard>
-      </section>
-
-      <HazardDivider />
+      </PageHero>
 
       {/* FAQ */}
       <section className="py-16 lg:py-24 max-w-3xl mx-auto px-4 lg:px-8">
         <div className="flex items-center gap-3 mb-8">
           <Skull className="w-6 h-6 text-blood" />
-          <h2 className="font-heading text-2xl lg:text-3xl uppercase text-bone">{t('faq.title')}</h2>
+          <h2 className="font-heading text-2xl lg:text-3xl uppercase text-bone">{de ? 'Fragen und Antworten' : 'Questions and answers'}</h2>
         </div>
 
         <div className="space-y-2">

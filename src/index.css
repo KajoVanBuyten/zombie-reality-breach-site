@@ -98,3 +98,76 @@ body {
     radial-gradient(ellipse at 50% 60%, rgba(179, 18, 27, 0.12) 0%, transparent 60%),
     radial-gradient(ellipse at 50% 50%, #26262c 0%, #141417 70%, #0f0f12 100%);
 }
+
+/* ---------------------------------------------------------------- Page atmosphere (sub pages) */
+
+/* Fixed glow and grain behind every page, so sections never sit on a flat black. */
+.page-atmosphere {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 15% 0%, rgba(179, 18, 27, 0.14), transparent 70%),
+    radial-gradient(ellipse 50% 40% at 90% 100%, rgba(255, 106, 26, 0.07), transparent 70%),
+    radial-gradient(ellipse 80% 50% at 50% 50%, rgba(127, 166, 201, 0.03), transparent 70%);
+}
+.page-atmosphere::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='160' height='160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  mix-blend-mode: screen;
+}
+
+.hero-text-shadow { text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9), 0 0 32px rgba(0, 0, 0, 0.6); }
+
+/* "// SECTION" kicker with a short blood bar in front. */
+.kicker::before {
+  content: '';
+  display: inline-block;
+  width: 22px;
+  height: 2px;
+  margin-right: 10px;
+  vertical-align: middle;
+  background: linear-gradient(90deg, #b3121b, #ff6a1a);
+}
+
+/* Section headings get an ember underline. */
+.section-title::after {
+  content: '';
+  display: block;
+  width: 56px;
+  height: 3px;
+  margin-top: 10px;
+  background: linear-gradient(90deg, #b3121b, #ff6a1a 70%, transparent);
+}
+.section-title.text-center::after { margin-left: auto; margin-right: auto; }
+
+/* Steel cards: a lit top edge, and a lift with a blood glow on hover. */
+.steel-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+.steel-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(238, 230, 216, 0.14), transparent);
+  pointer-events: none;
+}
+.steel-card:hover {
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.5), 0 0 28px rgba(179, 18, 27, 0.14);
+}
+a > .steel-card:hover, .steel-card.group:hover { transform: translateY(-2px); }
+
+/* Table rows and FAQ rows light up a little on hover. */
+.steel-card tbody tr:hover { background: rgba(179, 18, 27, 0.06); }
+
+@media (prefers-reduced-motion: reduce) {
+  .steel-card { transition: none; }
+  .steel-card:hover { transform: none; }
+}

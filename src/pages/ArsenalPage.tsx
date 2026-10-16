@@ -5,9 +5,9 @@ import { useI18n } from '@/lib/i18n';
 import { keyArtThemes } from '@/lib/site';
 import SteelCard from '@/components/SteelCard';
 import HazardDivider from '@/components/HazardDivider';
-import KeyArt from '@/components/KeyArt';
 import WeaponImage from '@/components/WeaponImage';
 import { weapons, weaponClasses, weaponName, mods, supplies, armoryLadder, type WeaponClass } from '@/content/weapons';
+import PageHero from '@/components/PageHero';
 
 const classIcon: Record<WeaponClass, LucideIcon> = {
   pistol: Crosshair,
@@ -36,27 +36,20 @@ export default function ArsenalPage() {
 
   return (
     <div className="pt-16">
-      {/* HEADER */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0">
-          <KeyArt theme={keyArtThemes.game} kind="banner-clean" sizes="100vw" alt="" className="w-full h-full object-cover object-center opacity-40" loading="eager" />
-          <div className="absolute inset-0 bg-gradient-to-b from-bg/40 via-bg/70 to-bg" />
-        </div>
-        <div className="relative z-10 max-w-7xl mx-auto px-4 lg:px-8 pt-16 pb-10 lg:pt-24 lg:pb-14">
-          <span className="text-xs font-heading uppercase tracking-widest text-blood">// {t('arsenal.title')}</span>
-          <h1 className="font-heading text-3xl lg:text-5xl uppercase text-bone mt-2 mb-4">{t('arsenal.title')}</h1>
-          <p className="text-sm lg:text-base text-bone-muted font-body font-light leading-relaxed max-w-3xl">
-            {de
-              ? '24 Waffen, 17 Aufsätze, echte Handgriffe. Jede Waffe wird so geladen wie ihr Vorbild: Magazin, Schlitten, Pumpe, Knicklauf, Trommel oder Zuführdeckel. Zwei Startwaffen, 19 Freischaltungen im Arsenal, der Rest im Pausenshop.'
-              : '24 weapons, 17 attachments, real handling. Every gun loads like the real thing: magazine, slide, pump, break action, cylinder or feed cover. Two starter weapons, 19 Armory unlocks, the rest from the break shop.'}
-          </p>
+      <PageHero
+        theme={keyArtThemes.game}
+        kicker={`// ${t('arsenal.title')}`}
+        title={t('arsenal.title')}
+        intro={de
+          ? '24 Waffen, 17 Aufsätze, echte Handgriffe. Jede Waffe wird so geladen wie ihr Vorbild: Magazin, Schlitten, Pumpe, Knicklauf, Trommel oder Zuführdeckel. Zwei Startwaffen, 19 Freischaltungen im Arsenal, der Rest im Pausenshop.'
+          : '24 weapons, 17 attachments, real handling. Every gun loads like the real thing: magazine, slide, pump, break action, cylinder or feed cover. Two starter weapons, 19 Armory unlocks, the rest from the break shop.'}
+      >
           <div className="flex flex-wrap gap-x-6 gap-y-2 mt-6 text-[11px] font-heading uppercase tracking-wider">
             <span className="flex items-center gap-1.5 text-ember"><Sparkles className="w-3.5 h-3.5" /> {de ? 'Start: von Welle 1 an' : 'Starter: from wave 1'}</span>
             <span className="flex items-center gap-1.5 text-gold"><Lock className="w-3.5 h-3.5" /> {de ? 'Arsenal: Welle erreichen, einmal zahlen' : 'Armory: reach the wave, pay once'}</span>
             <span className="flex items-center gap-1.5 text-bone-muted"><ShoppingCart className="w-3.5 h-3.5" /> {de ? 'Shop: Preis je Lauf in der Pause' : 'Shop: price per run, in the break'}</span>
           </div>
-        </div>
-      </section>
+      </PageHero>
 
       {/* WEAPONS */}
       <section id="weapons" className="py-12 lg:py-16 max-w-7xl mx-auto px-4 lg:px-8 scroll-mt-20">
@@ -144,7 +137,7 @@ export default function ArsenalPage() {
 
       {/* ARMORY LADDER */}
       <section className="py-12 lg:py-16 max-w-7xl mx-auto px-4 lg:px-8">
-        <h2 className="font-heading text-2xl uppercase text-bone mb-2">{de ? 'Die Arsenal-Leiter' : 'The Armory ladder'}</h2>
+        <h2 className="section-title font-heading text-2xl uppercase text-bone mb-2">{de ? 'Die Arsenal-Leiter' : 'The Armory ladder'}</h2>
         <p className="text-sm text-bone-muted font-body font-light leading-relaxed max-w-3xl mb-6">
           {de
             ? 'Jede Freischaltung braucht eine beste erreichte Welle und wird einmal vom Geldkonto bezahlt, das über alle Läufe bleibt. Alle zwei bis drei Wellen gibt es etwas Neues. In OUTBREAK gilt dieselbe Leiter mit einem eigenen VR-Konto.'
@@ -173,7 +166,7 @@ export default function ArsenalPage() {
 
       {/* MODS */}
       <section className="py-12 lg:py-16 max-w-7xl mx-auto px-4 lg:px-8">
-        <h2 className="font-heading text-2xl uppercase text-bone mb-2">{de ? 'Aufsätze' : 'Mods'}</h2>
+        <h2 className="section-title font-heading text-2xl uppercase text-bone mb-2">{de ? 'Aufsätze' : 'Mods'}</h2>
         <p className="text-sm text-bone-muted font-body font-light leading-relaxed max-w-3xl mb-6">
           {de
             ? 'Aufsätze sind greifbare Teile. Du kaufst sie im Pausenshop, hältst sie an die Waffe, und sie rasten ein. Angebaut bedient sie nur die freie Hand: Abzug schaltet, Griff nimmt ab. Je Anbauplatz passt ein Aufsatz; am Ende des Laufs sind sie weg.'
@@ -212,7 +205,7 @@ export default function ArsenalPage() {
 
       {/* SUPPLIES */}
       <section className="py-12 lg:py-16 max-w-7xl mx-auto px-4 lg:px-8">
-        <h2 className="font-heading text-2xl uppercase text-bone mb-2">{de ? 'Vorräte & Upgrades' : 'Supplies & upgrades'}</h2>
+        <h2 className="section-title font-heading text-2xl uppercase text-bone mb-2">{de ? 'Vorräte & Upgrades' : 'Supplies & upgrades'}</h2>
         <p className="text-sm text-bone-muted font-body font-light leading-relaxed max-w-3xl mb-6">
           {de
             ? 'Der Reiter SUPPLIES im Pausenshop: Heilung, Munition, größere Magazine, Sprit und Bretter. Upgrades sind keine Gegenstände, sondern gekaufte Stufen an der Waffe.'
@@ -240,7 +233,7 @@ export default function ArsenalPage() {
 
       {/* SHOP & ARMORY */}
       <section className="py-12 lg:py-16 max-w-4xl mx-auto px-4 lg:px-8">
-        <h2 className="font-heading text-2xl uppercase text-bone mb-6">{t('arsenal.economy')}</h2>
+        <h2 className="section-title font-heading text-2xl uppercase text-bone mb-6">{t('arsenal.economy')}</h2>
         <div className="space-y-3 text-sm text-bone-muted font-body font-light leading-relaxed">
           <p>
             {de

@@ -20,7 +20,8 @@ export default function App() {
         <div className="min-h-screen bg-bg text-bone flex flex-col">
           <Navbar />
           <ScrollToTop />
-          <main className="flex-1">
+          <div className="page-atmosphere" aria-hidden="true" />
+          <main className="flex-1 relative z-[1]">
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/game" element={<TheGamePage />} />

@@ -141,7 +141,7 @@ export default function HomePage() {
 
       {/* GAME MODES TEASER */}
       <section className="py-20 lg:py-28 max-w-7xl mx-auto px-4 lg:px-8">
-        <h2 className="font-heading text-2xl lg:text-3xl uppercase text-bone mb-8 text-center">{t('home.modes')}</h2>
+        <h2 className="section-title font-heading text-2xl lg:text-3xl uppercase text-bone mb-8 text-center">{t('home.modes')}</h2>
         <div className="grid md:grid-cols-3 gap-6">
           {modeFamilies.map((m) => (
             <Link to="/modes" key={m.id}>
@@ -194,7 +194,7 @@ export default function HomePage() {
       {/* LEADERBOARD PREVIEW */}
       <section className="py-20 lg:py-28 max-w-7xl mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between mb-8 gap-4">
-          <h2 className="font-heading text-2xl lg:text-3xl uppercase text-bone">{t('home.top5')}</h2>
+          <h2 className="section-title font-heading text-2xl lg:text-3xl uppercase text-bone">{t('home.top5')}</h2>
           <Link to="/leaderboard" className="text-xs font-heading text-blood uppercase tracking-wider hover:text-blood-hover transition-colors flex items-center gap-1">
             {t('home.viewAll')} <ArrowRight className="w-3.5 h-3.5" />
           </Link>
@@ -207,7 +207,7 @@ export default function HomePage() {
       {/* LATEST NEWS */}
       <section className="py-20 lg:py-28 max-w-7xl mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between mb-8 gap-4">
-          <h2 className="font-heading text-2xl lg:text-3xl uppercase text-bone">{t('home.latestNews')}</h2>
+          <h2 className="section-title font-heading text-2xl lg:text-3xl uppercase text-bone">{t('home.latestNews')}</h2>
           <Link to="/news" className="text-xs font-heading text-blood uppercase tracking-wider hover:text-blood-hover transition-colors flex items-center gap-1">
             {t('home.allNews')} <ArrowRight className="w-3.5 h-3.5" />
           </Link>
@@ -247,7 +247,7 @@ export default function HomePage() {
           <div className="absolute inset-0 bg-gradient-to-r from-bg via-bg/80 to-bg/50" />
         </div>
         <div className="relative z-10 max-w-3xl mx-auto text-center px-4">
-          <h2 className="font-heading text-2xl lg:text-4xl uppercase text-bone mb-3">{t('home.cta.title')}</h2>
+          <h2 className="section-title font-heading text-2xl lg:text-4xl uppercase text-bone mb-3">{t('home.cta.title')}</h2>
           <p className="text-sm text-bone-muted font-body mb-6">{t('hero.ea')}</p>
           <a
             href={META_URL}

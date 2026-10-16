@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { Copy, Check, Download, FileText, Image, Film, FileArchive, Skull } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
-import { CONTACT_EMAIL, asset, keyArtGallery, keyArtJpg, keyArtSrcSet } from '@/lib/site';
+import { CONTACT_EMAIL, asset, keyArtGallery, keyArtJpg, keyArtSrcSet, keyArtThemes } from '@/lib/site';
 import manifest from '@/content/asset-manifest.json';
 import SteelCard from '@/components/SteelCard';
 import HazardDivider from '@/components/HazardDivider';
+import PageHero from '@/components/PageHero';
 
 const facts = [
   { label: 'Developer', value: 'KaMa Studios' },
@@ -13,16 +14,16 @@ const facts = [
   { label: 'Platforms', value: 'Meta Quest 3, Meta Quest 3S' },
   { label: 'Genre', value: 'Zombie survival shooter, mixed reality and VR' },
   { label: 'Modes', value: 'Reality Breach (MR, room scan) · Rift (MR, no room scan, roguelite) · Outbreak (full VR: Rooftop, Safe Zone, Gas Station)' },
-  { label: 'Players', value: '1–4 in Reality Breach and Rift, 1–3 in Rooftop (local and online co-op)' },
-  { label: 'Business model', value: 'Free to start: 90 minutes per mode family, then buy single modes or the complete pack. No loot boxes.' },
+  { label: 'Players', value: '1–4 in Reality Breach (same room), Rift (same room or online) and Gas Station; 1–3 in Rooftop and Safe Zone. Outbreak local or online.' },
+  { label: 'Business model', value: 'Free to start: 90 minutes per mode family, then buy single modes, bundles or the complete pack, plus an optional Armory add-on. No loot boxes, no purchasable currency.' },
   { label: 'Engine', value: 'Unity 6, Meta XR SDK' },
   { label: 'Website', value: 'zombierealitybreach.com' },
   { label: 'Press contact', value: CONTACT_EMAIL },
 ];
 
 const descriptions: { label: string; en: string }[] = [
-  { label: 'Short', en: 'Zombie Reality Breach is a zombie survival shooter for Meta Quest 3 and 3S: zombies smash through the real doors and walls of your home in mixed reality, or you hold out at a gas station in the woods at night in full VR.' },
-  { label: 'Medium', en: 'Zombie Reality Breach comes with three mode families. In REALITY BREACH the game reads your room scan and zombies break through your real doors and walls; between waves you restock in the shop. In RIFT a portal tears open your wall: two pistols, three hearts, an upgrade after every wave, bosses and roguelite runs. OUTBREAK is full VR at a gas station in the woods at night, starting with ROOFTOP, where up to three players each hold the roof of a car while the dead climb up. Play alone or in co-op. Coming soon to Meta Quest 3 and 3S.' },
+  { label: 'Short', en: 'Zombie Reality Breach is a zombie survival shooter for Meta Quest 3 and 3S: zombies smash through the real doors of your home in mixed reality, or you hold out at a gas station in the woods at night in full VR.' },
+  { label: 'Medium', en: 'Zombie Reality Breach comes with three mode families. In REALITY BREACH the game reads your room scan and zombies break through your real doors; between waves you restock in the shop and unlock weapons in the Armory. In RIFT a portal tears open your wall onto one of five worlds: pistols fixed to your hands, three hearts, an upgrade after every wave, a boss every tenth wave and roguelite runs. OUTBREAK is full VR at a gas station in the woods at night: hold the roof of a car in ROOFTOP, board up the shop in SAFE ZONE, or defend the whole site in GAS STATION. Play alone or in co-op for up to four. Coming soon to Meta Quest 3 and 3S.' },
 ];
 
 /** File size from src/content/asset-manifest.json (written by scripts/Build-WebAssets.ps1), e.g. "23.0 MB". */
@@ -70,15 +71,21 @@ export default function PressPage() {
   const de = lang === 'de';
 
   return (
-    <div className="pt-20">
+    <div className="pt-16">
+      <PageHero
+        theme={keyArtThemes.game}
+        kicker={`// ${t('press.title')}`}
+        title={t('press.title')}
+        intro={de
+          ? 'Fakten, Beschreibungen, Logo und Key Art zum Herunterladen. Presse und Content-Creator dürfen das Material für Berichte, Videos und Streams verwenden.'
+          : 'Facts, descriptions, logo and key art to download. Press and content creators may use the material for reporting, videos and streams.'}
+      />
       <section className="py-16 lg:py-24 max-w-7xl mx-auto px-4 lg:px-8">
-        <span className="text-xs font-heading uppercase tracking-widest text-blood">// {t('press.title')}</span>
-        <h1 className="font-heading text-3xl lg:text-4xl uppercase text-bone mt-2 mb-10">{t('press.title')}</h1>
 
         <div className="grid lg:grid-cols-2 gap-8">
           {/* FACT SHEET */}
           <div>
-            <h2 className="font-heading text-xl uppercase text-bone mb-5">{t('press.factsheet')}</h2>
+            <h2 className="section-title font-heading text-xl uppercase text-bone mb-5">{t('press.factsheet')}</h2>
             <div className="steel-card overflow-hidden divide-y divide-bg-steel/40">
               {facts.map((f) => (
                 <div key={f.label} className="grid grid-cols-[130px_1fr] gap-3 px-5 py-3 relative z-10">
@@ -91,7 +98,7 @@ export default function PressPage() {
 
           {/* DOWNLOADS */}
           <div>
-            <h2 className="font-heading text-xl uppercase text-bone mb-5">{t('press.downloads')}</h2>
+            <h2 className="section-title font-heading text-xl uppercase text-bone mb-5">{t('press.downloads')}</h2>
             <div className="space-y-3">
               {downloads.map((d) => {
                 const inner = (
@@ -125,7 +132,7 @@ export default function PressPage() {
 
       {/* KEY ART */}
       <section className="py-16 lg:py-24 max-w-7xl mx-auto px-4 lg:px-8">
-        <h2 className="font-heading text-xl uppercase text-bone mb-2">{t('press.keyart')}</h2>
+        <h2 className="section-title font-heading text-xl uppercase text-bone mb-2">{t('press.keyart')}</h2>
         <p className="text-sm text-bone-muted font-body font-light mb-6">{t('press.keyartNote')}</p>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {keyArtGallery.map((k) => (
@@ -168,7 +175,7 @@ export default function PressPage() {
 
       {/* DESCRIPTIONS */}
       <section className="py-16 lg:py-24 max-w-4xl mx-auto px-4 lg:px-8">
-        <h2 className="font-heading text-xl uppercase text-bone mb-6">{t('press.descriptions')}</h2>
+        <h2 className="section-title font-heading text-xl uppercase text-bone mb-6">{t('press.descriptions')}</h2>
         <div className="space-y-5">
           {descriptions.map((d) => (
             <SteelCard key={d.label} className="p-5">
@@ -186,7 +193,7 @@ export default function PressPage() {
 
       {/* ABOUT STUDIO */}
       <section className="py-16 lg:py-24 max-w-4xl mx-auto px-4 lg:px-8">
-        <h2 className="font-heading text-xl uppercase text-bone mb-5">{t('press.studio')}</h2>
+        <h2 className="section-title font-heading text-xl uppercase text-bone mb-5">{t('press.studio')}</h2>
         <SteelCard className="p-6">
           <div className="relative z-10 flex items-start gap-4">
             <Skull className="w-8 h-8 text-blood flex-shrink-0 mt-1" />
