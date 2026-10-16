@@ -3,7 +3,8 @@ import { useEffect, useRef } from 'react';
 /**
  * Full-page background layer: a grid of faint code characters whose brightness follows a slowly
  * drifting noise field, like smoke or water. A click on an empty part of the page (not on text,
- * images, cards, buttons or other UI) sends a red ring, round or heart-shaped, across the grid.
+ * images, cards, buttons or other UI) drops red "ink" into it: a soft, wobbling round or heart-shaped
+ * blot whose contours spread outwards like a drop of paint in water.
  * Purely local rendering: no network requests, nothing stored.
  */
 
@@ -17,16 +18,18 @@ const SMOKE_RGB = '154, 148, 138'; // bone-muted
 const SMOKE_MAX_ALPHA = 0.32;
 const RIPPLE_RGB = '230, 36, 46';
 
-const RIPPLE_SPEED = 240; // px per second
-const RIPPLE_LIFE = 3.4; // seconds
-const RIPPLE_WIDTH = 15; // px, gaussian half-width of the ring
-const MAX_RIPPLES = 8;
+const RIPPLE_REACH = 360; // px the ink front travels in the end (it slows down like ink in water)
+const RIPPLE_TAU = 1.8; // seconds; time constant of that slowing
+const RIPPLE_LIFE = 6.5; // seconds
+const RIPPLE_EDGE = 18; // px, soft edge of the front at the start; it widens as the blot spreads
+const MAX_RIPPLES = 24;
 
 interface Ripple {
   x: number;
   y: number;
   start: number;
   heart: boolean;
+  seed: number;
 }
 
 // ---- smooth value noise ---------------------------------------------------------------------
@@ -226,14 +229,24 @@ export default function AsciiSmoke() {
     const ripples: Ripple[] = [];
     let heartNext = Math.random() < 0.5;
 
+    // Only a drag (text selection) cancels a drop; quick repeated clicks each drop new ink.
+    const down = { x: 0, y: 0 };
+    const onMouseDown = (e: MouseEvent) => {
+      down.x = e.clientX;
+      down.y = e.clientY;
+      lastClick.x = e.clientX;
+      lastClick.y = e.clientY;
+      // Double and triple clicks on the background must not select nearby text.
+      if (e.detail > 1 && isBackgroundClick(e.target, root)) e.preventDefault();
+    };
+
     const onClick = (e: MouseEvent) => {
       if (e.button !== 0) return;
-      const sel = window.getSelection();
-      if (sel && !sel.isCollapsed) return;
+      if (Math.hypot(e.clientX - down.x, e.clientY - down.y) > 6) return;
       lastClick.x = e.clientX;
       lastClick.y = e.clientY;
       if (!isBackgroundClick(e.target, root)) return;
-      ripples.push({ x: e.clientX, y: e.clientY, start: performance.now() / 1000, heart: heartNext });
+      ripples.push({ x: e.clientX, y: e.clientY, start: performance.now() / 1000, heart: heartNext, seed: Math.random() * 100 });
       heartNext = Math.random() < 0.5;
       if (ripples.length > MAX_RIPPLES) ripples.shift();
     };
@@ -269,7 +282,15 @@ export default function AsciiSmoke() {
 
       const active = ripples.map((r) => {
         const age = now - r.start;
-        return { r, radius: age * RIPPLE_SPEED, fade: Math.pow(1 - age / RIPPLE_LIFE, 1.6) };
+        const life = age / RIPPLE_LIFE;
+        return {
+          r,
+          age,
+          radius: RIPPLE_REACH * (1 - Math.exp(-age / RIPPLE_TAU)) + 6,
+          edge: RIPPLE_EDGE + age * 14,
+          wobble: 0.12 + 0.09 * Math.min(age, 3), // the outline gets more ragged as the ink spreads
+          fade: Math.pow(1 - life, 1.4) * Math.min(1, age * 5),
+        };
       });
 
       const sd = smokeData.data;
@@ -285,21 +306,32 @@ export default function AsciiSmoke() {
           for (const a of active) {
             const dx = px - a.r.x;
             const dy = py - a.r.y;
-            const d = a.r.heart ? heartDistance(dx, dy) : Math.hypot(dx, dy);
-            const k = (d - a.radius) / RIPPLE_WIDTH;
-            if (k > -8 && k < 4) {
-              wave += Math.exp(-k * k) * a.fade;
-              // Faint echo ring behind the front.
-              const k2 = k + 4;
-              wave += Math.exp(-k2 * k2) * a.fade * 0.35;
+            if (Math.abs(dx) > a.radius * 1.8 + 120 || Math.abs(dy) > a.radius * 1.8 + 120) continue;
+            const ang = Math.atan2(dy, dx);
+            const ca = Math.cos(ang);
+            const sa = Math.sin(ang);
+            const base = a.r.heart ? heartDistance(dx, dy) : Math.hypot(dx, dy);
+            // Ragged outline: coarse lobes plus finer tendrils that drift outwards with the distance.
+            const n =
+              (noise(ca * 1.4 + a.r.seed, sa * 1.4 + a.age * 0.35) - 0.5) * 0.75 +
+              (noise(ca * 4 + a.r.seed * 2, sa * 4 + base / 90 - a.age * 0.4) - 0.5) * 0.35;
+            const d = base * (1 + n * a.wobble * 2);
+            const u = d / a.radius;
+            const f = (d - a.radius) / a.edge;
+            let ink = Math.exp(-f * f) * 0.95; // blurred front
+            if (u < 1) {
+              // A few broad contour bands travelling outwards, wider apart towards the edge.
+              const band = Math.pow(0.5 + 0.5 * Math.cos((Math.sqrt(u) * 3.2 - a.age * 0.55) * Math.PI * 2), 2.5);
+              ink = Math.max(ink, (0.1 + 0.5 * band) * (0.4 + 0.6 * u));
             }
+            wave += ink * a.fade;
           }
           rd[o] = Math.min(1, wave) * 0.9 * 255;
 
           const s = smoke(px / 260, ny, t);
           // Shape the field into soft bands: mostly dark, brighter ridges drifting through.
           const v = Math.max(0, (s - 0.36) / 0.64);
-          sd[o] = (0.035 + Math.pow(v, 1.6) * SMOKE_MAX_ALPHA) * (1 - Math.min(1, wave)) * 255;
+          sd[o] = (0.035 + Math.pow(v, 1.6) * SMOKE_MAX_ALPHA) * (1 - Math.min(1, wave) * 0.6) * 255;
         }
       }
       smokeMask.getContext('2d')?.putImageData(smokeData, 0, 0);
@@ -333,10 +365,12 @@ export default function AsciiSmoke() {
       draw(performance.now());
     };
     window.addEventListener('resize', onResize);
+    document.addEventListener('mousedown', onMouseDown);
     document.addEventListener('click', onClick);
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener('resize', onResize);
+      document.removeEventListener('mousedown', onMouseDown);
       document.removeEventListener('click', onClick);
     };
   }, []);
