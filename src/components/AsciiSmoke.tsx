@@ -24,6 +24,14 @@ const RIPPLE_LIFE = 6.5; // seconds
 const RIPPLE_EDGE = 18; // px, soft edge of the front at the start; it widens as the blot spreads
 const MAX_RIPPLES = 24;
 
+// Performance guard: if the effect costs too much on this device, it switches itself off and the
+// page falls back to the plain black background. Nothing is stored; every visit measures anew.
+const PERF_WARMUP_FRAMES = 15; // first frames (glyph setup, JIT) are not judged
+const PERF_MAX_DRAW_MS = 9; // average cost of one effect frame; above this the device is struggling
+const PERF_MAX_FRAME_MS = 70; // average time between frames while visible (~14 fps) ...
+const PERF_SLOW_FRAME_DRAW_MS = 4; // ... counts only if the effect itself takes a noticeable share
+const HEADER_FADE = 36; // px below the navigation bar over which the characters fade in
+
 interface Ripple {
   x: number;
   y: number;
@@ -343,32 +351,98 @@ export default function AsciiSmoke() {
         rippleMask.getContext('2d')?.putImageData(rippleData, 0, 0);
         composite(redLayer, rippleMask);
       }
+
+      // Keep the navigation bar clean: no characters behind it, a soft fade below it.
+      const header = document.querySelector('header');
+      const hb = header ? header.getBoundingClientRect().bottom : 0;
+      if (hb > 0) {
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, canvas.width, hb * dpr);
+        const fade = ctx.createLinearGradient(0, hb * dpr, 0, (hb + HEADER_FADE) * dpr);
+        fade.addColorStop(0, 'rgba(0,0,0,1)');
+        fade.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = fade;
+        ctx.fillRect(0, hb * dpr, canvas.width, HEADER_FADE * dpr);
+        ctx.globalCompositeOperation = 'source-over';
+      }
     };
 
     let raf = 0;
     let last = 0;
     let needsStill = false; // one more still frame after the last ripple when motion is reduced
+    let stopped = false;
+    let frames = 0;
+    let drawAvg = 0;
+    let frameAvg = FRAME_MS;
+    let prevFrame = 0;
+
+    const stop = () => {
+      stopped = true;
+      cancelAnimationFrame(raf);
+      window.removeEventListener('resize', onResize);
+      document.removeEventListener('mousedown', onMouseDown);
+      document.removeEventListener('click', onClick);
+      document.removeEventListener('visibilitychange', onVisibility);
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      canvas.style.display = 'none';
+      canvas.dataset.fallback = 'performance';
+    };
+
+    /** Judge the device on a smoothed draw cost and frame interval; switch off when it struggles. */
+    const measure = (nowMs: number, drawMs: number) => {
+      const interval = prevFrame ? nowMs - prevFrame : FRAME_MS;
+      prevFrame = nowMs;
+      frames++;
+      if (frames <= PERF_WARMUP_FRAMES) return;
+      drawAvg += (drawMs - drawAvg) * 0.1;
+      // Gaps over 200 ms come from throttling (hidden or covered window, debugger), not from this effect.
+      if (interval < 200) frameAvg += (interval - frameAvg) * 0.1;
+      if (frames < PERF_WARMUP_FRAMES + 20) return;
+      if (drawAvg > PERF_MAX_DRAW_MS || (frameAvg > PERF_MAX_FRAME_MS && drawAvg > PERF_SLOW_FRAME_DRAW_MS)) stop();
+    };
+
+    // Hidden tabs get no frames; restart the interval measurement when the page comes back.
+    const onVisibility = () => {
+      prevFrame = 0;
+    };
+
     const loop = (nowMs: number) => {
+      if (stopped) return;
       raf = requestAnimationFrame(loop);
       if (nowMs - last < FRAME_MS) return;
       last = nowMs;
       if (reduceMotion.matches && ripples.length === 0 && !needsStill) return;
       needsStill = ripples.length > 0;
+      const t0 = performance.now();
       draw(nowMs);
+      if (!reduceMotion.matches) measure(nowMs, performance.now() - t0);
     };
+
+    function onResize() {
+      resize();
+      draw(performance.now());
+    }
+
+    // Very weak devices or an explicit data-saver setting never start the effect.
+    const nav = navigator as Navigator & { connection?: { saveData?: boolean } };
+    if ((navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2) || nav.connection?.saveData) {
+      stop();
+      return;
+    }
 
     resize();
     draw(performance.now());
     raf = requestAnimationFrame(loop);
-    const onResize = () => {
-      resize();
-      draw(performance.now());
-    };
     window.addEventListener('resize', onResize);
     document.addEventListener('mousedown', onMouseDown);
     document.addEventListener('click', onClick);
+    document.addEventListener('visibilitychange', onVisibility);
     return () => {
+      stopped = true;
       cancelAnimationFrame(raf);
+      document.removeEventListener('visibilitychange', onVisibility);
       window.removeEventListener('resize', onResize);
       document.removeEventListener('mousedown', onMouseDown);
       document.removeEventListener('click', onClick);
