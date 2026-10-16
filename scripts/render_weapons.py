@@ -10,6 +10,14 @@ oder aus "textures"/"colors" der Konfiguration zuweisen, Modell auf 1 m normiere
 
 Das Katana liegt als FBX 6100 (Binär) vor, das Blenders Importer ablehnt; es wird über Blenders eigenen
 Low-Level-Parser gelesen und als Mesh gebaut ("builder": "fbx6100").
+
+Die Pipe Bomb hat im Spiel kein Modell: ThrowableItem.cs baut sie aus Unity-Primitiven (Rohr, zwei Kappen, Zündschnur).
+"builder": "primitives" baut dieselben Formen mit denselben Farben in Blender nach ("parts" in der Konfiguration:
+Unity-Zylinder mit localScale (sx, sy, sz) = Radius 0,5·sx, Länge 2·sy, entlang Z).
+
+Die Kamera wird nicht über camera_fit_coords eingepasst (lieferte abgeschnittene Bilder), sondern analytisch: für jeden
+Vertex der Abstand entlang der Blickachse, ab dem er innerhalb des horizontalen und vertikalen Öffnungswinkels liegt;
+das Maximum mal "margin" ist der Kameraabstand. So ist jedes Modell garantiert vollständig im Bild.
 """
 import json
 import math
@@ -89,6 +97,25 @@ def build_fbx6100(path):
         bpy.context.scene.collection.objects.link(obj)
         for poly in mesh.polygons:
             poly.use_smooth = True
+
+
+def build_primitives(item):
+    """Unity-style primitives: each part is {"type": "cylinder"|"cube", "pos": [x,y,z], "scale": [sx,sy,sz], "material": name}
+    in Unity's local frame after the game's Quaternion.Euler(90,0,0): the cylinder axis lies along Z."""
+    for i, part in enumerate(item['parts']):
+        sx, sy, sz = part['scale']
+        px, py, pz = part['pos']
+        if part['type'] == 'cylinder':
+            bpy.ops.mesh.primitive_cylinder_add(vertices=64, radius=0.5 * sx, depth=2.0 * sy, location=(px, py, pz))
+        else:
+            bpy.ops.mesh.primitive_cube_add(size=1.0, location=(px, py, pz))
+            bpy.context.active_object.scale = (sx, sy, sz)
+        obj = bpy.context.active_object
+        obj.name = '%s_%d' % (part['material'], i)
+        mat = bpy.data.materials.get(part['material']) or bpy.data.materials.new(part['material'])
+        obj.data.materials.append(mat)
+        if part['type'] == 'cylinder':
+            bpy.ops.object.shade_smooth_by_angle(angle=math.radians(35))
 
 
 # ----------------------------------------------------------------------------- Materials
@@ -211,9 +238,11 @@ def add_light(name, kind, location, target, energy, size, color=(1, 1, 1)):
 def render_item(name, item):
     bpy.ops.wm.read_factory_settings(use_empty=True)
     scene = bpy.context.scene
-    path = art(item['path'])
+    path = art(item.get('path', name))
     if item.get('builder') == 'fbx6100':
         build_fbx6100(path)
+    elif item.get('builder') == 'primitives':
+        build_primitives(item)
     else:
         import_fbx(path)
 
@@ -273,19 +302,26 @@ def render_item(name, item):
     scene.render.resolution_x, scene.render.resolution_y = RES
     scene.render.resolution_percentage = 100
     bpy.context.view_layer.update()
-    coords = []
-    for o in mesh_objects():
-        mw = o.matrix_world
-        for v in o.data.vertices:
-            coords.extend(mw @ v.co)
-    loc, _ = cam.camera_fit_coords(bpy.context.evaluated_depsgraph_get(), coords)
-    margin = item.get('margin', cfg.get('margin', 1.08))
-    cam.location = centre + (Vector(loc) - centre) * margin
 
-    # Lights in camera space: key from the upper left, fill from the right, rim from behind.
+    # Analytic fit: the camera looks along -d at the centre; a vertex with offset (x right, y up, z towards the camera)
+    # is inside the frame once the camera is at least z + |x| / tan(hfov/2) (or |y| / tan(vfov/2)) away.
     back = d
     right = back.cross(Vector((0, 0, 1))).normalized()
     up = right.cross(back).normalized()
+    tan_h = (cam_data.sensor_width / 2.0) / cam_data.lens  # sensor_fit AUTO, landscape: the width spans the sensor
+    tan_v = tan_h * RES[1] / RES[0]
+    need = 0.0
+    for o in mesh_objects():
+        mw = o.matrix_world
+        for v in o.data.vertices:
+            rel = (mw @ v.co) - centre
+            z = rel.dot(back)
+            need = max(need, z + abs(rel.dot(right)) / tan_h, z + abs(rel.dot(up)) / tan_v)
+    margin = item.get('margin', cfg.get('margin', 1.08))
+    cam.location = centre + back * (need * margin + cam_data.clip_start)
+    cam.rotation_euler = (centre - cam.location).to_track_quat('-Z', 'Y').to_euler()
+
+    # Lights in camera space: key from the upper left, fill from the right, rim from behind.
     dist = radius * 3.5
     lights = cfg.get('lights', {})
     scale = radius ** 2 * 4 * item.get('light_scale', 1.0)

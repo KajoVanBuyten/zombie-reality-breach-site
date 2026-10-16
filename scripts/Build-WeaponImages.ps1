@@ -5,8 +5,9 @@
 .DESCRIPTION
   Schritt 1: scripts/render_weapons.py (Blender headless) rendert jedes Modell aus scripts/weapon_renders.json als
   PNG mit Alphakanal (1600x900) in einen Zwischenordner.
-  Schritt 2: ImageMagick schneidet den transparenten Rand weg, setzt das Motiv mittig in ein 16:9-Feld und schreibt
-  WebP mit Alphakanal in zwei Breiten (<slug>_1200.webp, <slug>_600.webp).
+  Schritt 2: ImageMagick schneidet den transparenten Rand weg, passt das Motiv in 88 % x 80 % eines 16:9-Felds ein
+  (gleiche Luft bei jedem Modell, nichts abgeschnitten) und schreibt WebP mit Alphakanal in zwei Breiten
+  (<slug>_1200.webp, <slug>_600.webp).
 
   Benötigt Blender 4.5 und ImageMagick 7 (magick) im PATH.
 
@@ -47,10 +48,12 @@ foreach ($prop in $items.PSObject.Properties) {
   $png = Join-Path $RenderDir "$slug.png"
   if (-not (Test-Path $png)) { throw "Render fehlt: $png" }
   foreach ($w in 1200, 600) {
-    $h = [int]($w * 9 / 16)
+    $h = [int][math]::Round($w * 9 / 16)
+    $boxW = [int][math]::Round($w * 0.88)
+    $boxH = [int][math]::Round($h * 0.80)
     $dest = Join-Path $OutDir ("{0}_{1}.webp" -f $slug, $w)
-    # Rand wegschneiden, 6 % Luft lassen, mittig in 16:9 setzen, dann skalieren.
-    & magick $png -trim +repage -bordercolor none -border '6%' -background none -gravity center -extent '16:9' -filter Lanczos -resize "${w}x${h}" -define webp:method=6 -define webp:alpha-quality=90 -quality 85 $dest
+    # Rand wegschneiden, in das Feld einpassen (nur verkleinern), mittig in 16:9 setzen.
+    & magick $png -trim +repage -filter Lanczos -resize "${boxW}x${boxH}>" -background none -gravity center -extent "${w}x${h}" -define webp:method=6 -define webp:alpha-quality=90 -quality 85 $dest
     if ($LASTEXITCODE -ne 0) { throw "magick fehlgeschlagen: $slug" }
     $count++
   }

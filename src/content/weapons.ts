@@ -231,7 +231,7 @@ export const weapons: Weapon[] = [
     handling: 'Grab from the hip pouch and throw.', handlingDe: 'Aus der Hüfttasche greifen und werfen.',
   },
   {
-    id: 'pipe-bomb', name: 'Pipe Bomb', cls: 'special', type: 'Throwable', typeDe: 'Wurfwaffe', shop: 90, noImage: true,
+    id: 'pipe-bomb', name: 'Pipe Bomb', cls: 'special', type: 'Throwable', typeDe: 'Wurfwaffe', shop: 90,
     desc: 'Throw it: it goes off 2.5 seconds later and takes everything within four and a half metres.',
     descDe: 'Werfen: Sie geht nach 2,5 Sekunden hoch und nimmt alles im Umkreis von viereinhalb Metern mit.',
     mag: 'Hip pouch: 1 (Pouch+ 2, 3)', magDe: 'Hüfttasche: 1 (Tasche+ 2, 3)',
