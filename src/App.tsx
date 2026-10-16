@@ -3,6 +3,7 @@ import { I18nProvider } from '@/lib/i18n';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ScrollToTop from '@/components/ScrollToTop';
+import AsciiSmoke from '@/components/AsciiSmoke';
 import HomePage from '@/pages/HomePage';
 import TheGamePage from '@/pages/TheGamePage';
 import GameModesPage from '@/pages/GameModesPage';
@@ -21,6 +22,7 @@ export default function App() {
           <Navbar />
           <ScrollToTop />
           <div className="page-atmosphere" aria-hidden="true" />
+          <AsciiSmoke />
           <main className="flex-1 relative z-[1]">
             <Routes>
               <Route path="/" element={<HomePage />} />

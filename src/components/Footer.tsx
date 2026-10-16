@@ -8,7 +8,7 @@ export default function Footer() {
   const { t } = useI18n();
 
   return (
-    <footer className="relative bg-bg border-t border-bg-steel/40">
+    <footer className="relative bg-bg/40 border-t border-bg-steel/40">
       <div className="hazard-stripe w-full" />
       <div className="max-w-7xl mx-auto px-4 lg:px-8 py-14">
         <div className="grid md:grid-cols-3 gap-10 mb-10">

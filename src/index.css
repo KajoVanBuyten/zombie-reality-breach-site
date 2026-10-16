@@ -120,6 +120,13 @@ body {
   mix-blend-mode: screen;
 }
 
+.ascii-smoke {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
 .hero-text-shadow { text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9), 0 0 32px rgba(0, 0, 0, 0.6); }
 
 /* "// SECTION" kicker with a short blood bar in front. */
