@@ -2,8 +2,14 @@
 
 export const CONTACT_EMAIL = 'support@zombierealitybreach.com';
 
-/** Meta Quest link (currently the existing Meta share link; replace with the Coming Soon store URL when it is live). */
-export const META_URL = 'https://www.meta.com/s/67bQkabjj';
+/** Meta Quest release channels (Meta share links). */
+export const META_ALPHA_URL = 'https://www.meta.com/s/67bQkabjj';
+export const META_BETA_URL = 'https://www.meta.com/s/8lI8SshPw';
+/** The BETA channel has no build yet (2026-10-16); the website shows its button disabled until this is true. */
+export const BETA_OPEN = false;
+
+/** Meta Quest link used by the general calls to action (replace with the Coming Soon store URL when it is live). */
+export const META_URL = META_ALPHA_URL;
 
 /** Privacy policy of the game itself (not of this website). */
 export const GAME_PRIVACY_URL = 'https://kajovanbuyten.github.io/kamastudios-legal/zombie-reality-breach/privacy.html';

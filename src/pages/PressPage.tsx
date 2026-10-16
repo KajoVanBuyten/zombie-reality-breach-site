@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Copy, Check, Download, FileText, Image, Film, FileArchive, Skull } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
 import { CONTACT_EMAIL, asset, keyArtGallery, keyArtJpg, keyArtSrcSet } from '@/lib/site';
-import manifest from '../../public/assets/manifest.json';
+import manifest from '@/content/asset-manifest.json';
 import SteelCard from '@/components/SteelCard';
 import HazardDivider from '@/components/HazardDivider';
 
@@ -25,7 +25,7 @@ const descriptions: { label: string; en: string }[] = [
   { label: 'Medium', en: 'Zombie Reality Breach comes with three mode families. In REALITY BREACH the game reads your room scan and zombies break through your real doors and walls; between waves you restock in the shop. In RIFT a portal tears open your wall: two pistols, three hearts, an upgrade after every wave, bosses and roguelite runs. OUTBREAK is full VR at a gas station in the woods at night, starting with ROOFTOP, where up to three players each hold the roof of a car while the dead climb up. Play alone or in co-op. Coming soon to Meta Quest 3 and 3S.' },
 ];
 
-/** File size from public/assets/manifest.json (written by scripts/Build-WebAssets.ps1), e.g. "23.0 MB". */
+/** File size from src/content/asset-manifest.json (written by scripts/Build-WebAssets.ps1), e.g. "23.0 MB". */
 function fileSize(path: string): string {
   const entry = manifest.files.find((f) => f.path === path);
   if (!entry) return '';

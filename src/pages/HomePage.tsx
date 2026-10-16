@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import { Play, Crosshair, Hand, Users, ArrowRight, Skull, Gift } from 'lucide-react';
+import { Play, Crosshair, Hand, Users, ArrowRight, Skull, Gift, FlaskConical, Lock } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
-import { META_URL, keyArtThemes } from '@/lib/site';
+import { META_URL, META_ALPHA_URL, META_BETA_URL, BETA_OPEN, keyArtThemes } from '@/lib/site';
 import KeyArt from '@/components/KeyArt';
 import SteelCard from '@/components/SteelCard';
 import HazardDivider from '@/components/HazardDivider';
@@ -75,6 +75,43 @@ export default function HomePage() {
               {t('hero.trailer')}
             </button>
           </div>
+
+          {/* Release channels */}
+          <div className="flex flex-col sm:flex-row gap-4 mt-4">
+            <a
+              href={META_ALPHA_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-7 py-3 border border-ember text-ember hover:bg-ember hover:text-bg font-heading uppercase tracking-wider text-sm transition-all hover:scale-105 flex items-center justify-center gap-2"
+            >
+              <FlaskConical className="w-4 h-4" />
+              {t('hero.alpha')}
+            </a>
+            {BETA_OPEN ? (
+              <a
+                href={META_BETA_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-7 py-3 border border-gold text-gold hover:bg-gold hover:text-bg font-heading uppercase tracking-wider text-sm transition-all hover:scale-105 flex items-center justify-center gap-2"
+              >
+                <FlaskConical className="w-4 h-4" />
+                {t('hero.beta')}
+              </a>
+            ) : (
+              <button
+                className="px-7 py-3 border border-bg-steel text-bone-muted font-heading uppercase tracking-wider text-sm flex items-center justify-center gap-2 cursor-not-allowed"
+                disabled
+                title={t('hero.betaSoon')}
+                aria-label={`${t('hero.beta')}: ${t('hero.betaSoon')}`}
+              >
+                <Lock className="w-4 h-4" />
+                {t('hero.beta')}
+              </button>
+            )}
+          </div>
+          {!BETA_OPEN && (
+            <p className="text-[11px] text-bone-muted/60 font-body tracking-wider mt-3">{t('hero.betaSoon')}</p>
+          )}
         </div>
       </section>
 

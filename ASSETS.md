@@ -6,7 +6,7 @@ Stand: 16.10.2026. Alle Dateien unter `public/` werden von `scripts/Build-WebAss
 powershell -ExecutionPolicy Bypass -File scripts/Build-WebAssets.ps1
 ```
 
-Benötigt ImageMagick 7 (`magick`) im PATH. `-SkipPress` lässt die ZIP-Dateien weg. `public/assets/manifest.json` listet jede erzeugte Datei mit Maßen und Bytes.
+Benötigt ImageMagick 7 (`magick`) im PATH. `-SkipPress` lässt die ZIP-Dateien weg. `src/content/asset-manifest.json` listet jede erzeugte Datei mit Maßen und Bytes (liegt unter `src`, weil Vite keine Importe aus `public` erlaubt; die Presseseite liest die Dateigrößen daraus).
 
 ## Quellen
 
@@ -95,7 +95,7 @@ Stand 16.10.2026, Umstellung von `public/assets/images/` (gelöscht) und `favico
 - `src/components/BrandMark.tsx`: Signet (Totenkopf) auf schmalen Viewports, ab `sm` die Wortmarke; Navbar und Footer.
 - Startseite: Hero `ash-city` (2560/1920/1280/800, mobil Hochkant), Modus- und News-Karten `hero_1280/800`, Call-to-Action `daylight`.
 - Das Spiel / Spielmodi: Kopfbild pro Modus (`wall-breach`, `dead-signal`, `night-station`), keine Screenshots.
-- Presse: Downloads aus `public/assets/press/` mit Größen aus `manifest.json` (JSON-Import), Key-Art-Galerie `cover_1280.webp` → `cover_1920.jpg`.
+- Presse: Downloads aus `public/assets/press/` mit Größen aus `src/content/asset-manifest.json` (JSON-Import), Key-Art-Galerie `cover_1280.webp` → `cover_1920.jpg`.
 
 ## Waffenbilder (`public/assets/weapons/`)
 

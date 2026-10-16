@@ -12,7 +12,7 @@
     assets/keyart/<slug> Key Art je Thema in Web-Größen (WebP + JPG-Fallback)
     assets/og/           Social-Media-Vorschaubilder 1200x630
     assets/press/        Pressepaket als ZIP-Dateien
-    assets/manifest.json Liste aller erzeugten Dateien mit Maßen und Größe
+    src/content/asset-manifest.json Liste aller erzeugten Dateien mit Maßen und Größe (Import der Presseseite)
 
   Benötigt ImageMagick 7 (magick) im PATH. Bestehende Dateien werden überschrieben.
   Die Quellbilder in Media werden nicht verändert.
@@ -280,7 +280,8 @@ $doc = [ordered]@{
   totalBytes = $total
   files     = $entries
 }
-$mp = Join-Path $AssetsDir 'manifest.json'
+# Unter src, nicht public: Vite erlaubt keine Importe aus public, die Presseseite liest die Dateigrößen daraus.
+$mp = Join-Path $SiteRoot 'src\content\asset-manifest.json'
 [System.IO.File]::WriteAllText($mp, (($doc | ConvertTo-Json -Depth 5) + "`n"), (New-Object System.Text.UTF8Encoding($false)))
 
 Write-Host ("Fertig: {0} Dateien, {1:N1} MB unter {2}" -f $entries.Count, ($total / 1MB), $PublicDir)
