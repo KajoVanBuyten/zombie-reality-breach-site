@@ -1,0 +1,1054 @@
+{
+    "generated":  "2026-10-16",
+    "source":  "E:/source/Unity/zombie-reality-breach/Media (Store/Meta/Final_5_Themen, Brand/Source/Final_5_Themen, Brand/Logo)",
+    "script":  "scripts/Build-WebAssets.ps1",
+    "themes":  [
+                   {
+                       "slug":  "wall-breach",
+                       "name":  "Wanddurchbruch",
+                       "source":  "01_Wanddurchbruch",
+                       "logo":  "dark"
+                   },
+                   {
+                       "slug":  "daylight",
+                       "name":  "Daylight",
+                       "source":  "02_Daylight",
+                       "logo":  "light"
+                   },
+                   {
+                       "slug":  "night-station",
+                       "name":  "Night Station",
+                       "source":  "03_NightStation",
+                       "logo":  "dark"
+                   },
+                   {
+                       "slug":  "dead-signal",
+                       "name":  "Dead Signal",
+                       "source":  "04_DeadSignal",
+                       "logo":  "dark"
+                   },
+                   {
+                       "slug":  "ash-city",
+                       "name":  "Ash City",
+                       "source":  "05_AshCity",
+                       "logo":  "dark"
+                   }
+               ],
+    "totalBytes":  77805166,
+    "files":  [
+                  {
+                      "path":  "/apple-touch-icon.png",
+                      "bytes":  22930,
+                      "width":  180,
+                      "height":  180
+                  },
+                  {
+                      "path":  "/assets/brand/zrb_logo_mono_black.svg",
+                      "bytes":  146360
+                  },
+                  {
+                      "path":  "/assets/brand/zrb_logo_mono_white.svg",
+                      "bytes":  152028
+                  },
+                  {
+                      "path":  "/assets/brand/zrb_logo_on_dark.svg",
+                      "bytes":  242894
+                  },
+                  {
+                      "path":  "/assets/brand/zrb_logo_on_dark_1024.png",
+                      "bytes":  416012,
+                      "width":  1024,
+                      "height":  543
+                  },
+                  {
+                      "path":  "/assets/brand/zrb_logo_on_dark_2048.png",
+                      "bytes":  768690,
+                      "width":  2048,
+                      "height":  1086
+                  },
+                  {
+                      "path":  "/assets/brand/zrb_logo_on_dark_512.png",
+                      "bytes":  155247,
+                      "width":  512,
+                      "height":  272
+                  },
+                  {
+                      "path":  "/assets/brand/zrb_logo_on_light.svg",
+                      "bytes":  236768
+                  },
+                  {
+                      "path":  "/assets/brand/zrb_logo_on_light_1024.png",
+                      "bytes":  314604,
+                      "width":  1024,
+                      "height":  543
+                  },
+                  {
+                      "path":  "/assets/brand/zrb_logo_on_light_2048.png",
+                      "bytes":  518455,
+                      "width":  2048,
+                      "height":  1086
+                  },
+                  {
+                      "path":  "/assets/brand/zrb_logo_on_light_512.png",
+                      "bytes":  123593,
+                      "width":  512,
+                      "height":  272
+                  },
+                  {
+                      "path":  "/assets/brand/zrb_skull_on_dark.svg",
+                      "bytes":  33586
+                  },
+                  {
+                      "path":  "/assets/brand/zrb_skull_on_dark_256.png",
+                      "bytes":  53485,
+                      "width":  178,
+                      "height":  256
+                  },
+                  {
+                      "path":  "/assets/brand/zrb_skull_on_dark_512.png",
+                      "bytes":  131452,
+                      "width":  356,
+                      "height":  512
+                  },
+                  {
+                      "path":  "/assets/brand/zrb_skull_on_light.svg",
+                      "bytes":  27063
+                  },
+                  {
+                      "path":  "/assets/brand/zrb_skull_on_light_256.png",
+                      "bytes":  32536,
+                      "width":  178,
+                      "height":  256
+                  },
+                  {
+                      "path":  "/assets/brand/zrb_skull_on_light_512.png",
+                      "bytes":  77922,
+                      "width":  356,
+                      "height":  512
+                  },
+                  {
+                      "path":  "/assets/brand/zrb_symbol_512.png",
+                      "bytes":  90112,
+                      "width":  512,
+                      "height":  512
+                  },
+                  {
+                      "path":  "/assets/brand/zrb_wordmark_on_dark.svg",
+                      "bytes":  208623
+                  },
+                  {
+                      "path":  "/assets/brand/zrb_wordmark_on_dark_1024.png",
+                      "bytes":  341088,
+                      "width":  1024,
+                      "height":  436
+                  },
+                  {
+                      "path":  "/assets/brand/zrb_wordmark_on_dark_2048.png",
+                      "bytes":  645753,
+                      "width":  2048,
+                      "height":  872
+                  },
+                  {
+                      "path":  "/assets/brand/zrb_wordmark_on_dark_512.png",
+                      "bytes":  126921,
+                      "width":  512,
+                      "height":  218
+                  },
+                  {
+                      "path":  "/assets/brand/zrb_wordmark_on_light.svg",
+                      "bytes":  200637
+                  },
+                  {
+                      "path":  "/assets/brand/zrb_wordmark_on_light_1024.png",
+                      "bytes":  241207,
+                      "width":  1024,
+                      "height":  436
+                  },
+                  {
+                      "path":  "/assets/brand/zrb_wordmark_on_light_2048.png",
+                      "bytes":  399789,
+                      "width":  2048,
+                      "height":  872
+                  },
+                  {
+                      "path":  "/assets/brand/zrb_wordmark_on_light_512.png",
+                      "bytes":  95737,
+                      "width":  512,
+                      "height":  218
+                  },
+                  {
+                      "path":  "/assets/keyart/ash-city/banner_1600.jpg",
+                      "bytes":  212454,
+                      "width":  1600,
+                      "height":  480
+                  },
+                  {
+                      "path":  "/assets/keyart/ash-city/banner_1600.webp",
+                      "bytes":  157758,
+                      "width":  1600,
+                      "height":  480
+                  },
+                  {
+                      "path":  "/assets/keyart/ash-city/banner_2400.webp",
+                      "bytes":  261172,
+                      "width":  2400,
+                      "height":  720
+                  },
+                  {
+                      "path":  "/assets/keyart/ash-city/banner-clean_1400.jpg",
+                      "bytes":  165453,
+                      "width":  1400,
+                      "height":  467
+                  },
+                  {
+                      "path":  "/assets/keyart/ash-city/banner-clean_1400.webp",
+                      "bytes":  124064,
+                      "width":  1400,
+                      "height":  467
+                  },
+                  {
+                      "path":  "/assets/keyart/ash-city/banner-clean_2100.webp",
+                      "bytes":  221568,
+                      "width":  2100,
+                      "height":  700
+                  },
+                  {
+                      "path":  "/assets/keyart/ash-city/cover_1280.webp",
+                      "bytes":  167176,
+                      "width":  1280,
+                      "height":  720
+                  },
+                  {
+                      "path":  "/assets/keyart/ash-city/cover_1920.jpg",
+                      "bytes":  428246,
+                      "width":  1920,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/ash-city/cover_1920.webp",
+                      "bytes":  272328,
+                      "width":  1920,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/ash-city/hero_1280.webp",
+                      "bytes":  146728,
+                      "width":  1280,
+                      "height":  720
+                  },
+                  {
+                      "path":  "/assets/keyart/ash-city/hero_1920.jpg",
+                      "bytes":  393422,
+                      "width":  1920,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/ash-city/hero_1920.webp",
+                      "bytes":  247448,
+                      "width":  1920,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/ash-city/hero_2560.webp",
+                      "bytes":  333174,
+                      "width":  2560,
+                      "height":  1440
+                  },
+                  {
+                      "path":  "/assets/keyart/ash-city/hero_800.webp",
+                      "bytes":  71798,
+                      "width":  800,
+                      "height":  450
+                  },
+                  {
+                      "path":  "/assets/keyart/ash-city/portrait_1008.jpg",
+                      "bytes":  350988,
+                      "width":  1008,
+                      "height":  1440
+                  },
+                  {
+                      "path":  "/assets/keyart/ash-city/portrait_1008.webp",
+                      "bytes":  237130,
+                      "width":  1008,
+                      "height":  1440
+                  },
+                  {
+                      "path":  "/assets/keyart/ash-city/portrait_504.webp",
+                      "bytes":  89946,
+                      "width":  504,
+                      "height":  720
+                  },
+                  {
+                      "path":  "/assets/keyart/ash-city/portrait-clean_1000.jpg",
+                      "bytes":  312178,
+                      "width":  1000,
+                      "height":  1397
+                  },
+                  {
+                      "path":  "/assets/keyart/ash-city/portrait-clean_1000.webp",
+                      "bytes":  210578,
+                      "width":  1000,
+                      "height":  1397
+                  },
+                  {
+                      "path":  "/assets/keyart/ash-city/portrait-clean_500.webp",
+                      "bytes":  72376,
+                      "width":  500,
+                      "height":  698
+                  },
+                  {
+                      "path":  "/assets/keyart/ash-city/square_1080.jpg",
+                      "bytes":  304209,
+                      "width":  1080,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/ash-city/square_1080.webp",
+                      "bytes":  219574,
+                      "width":  1080,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/ash-city/square_540.webp",
+                      "bytes":  73168,
+                      "width":  540,
+                      "height":  540
+                  },
+                  {
+                      "path":  "/assets/keyart/ash-city/square-clean_1080.jpg",
+                      "bytes":  276139,
+                      "width":  1080,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/ash-city/square-clean_1080.webp",
+                      "bytes":  196282,
+                      "width":  1080,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/ash-city/square-clean_540.webp",
+                      "bytes":  60348,
+                      "width":  540,
+                      "height":  540
+                  },
+                  {
+                      "path":  "/assets/keyart/daylight/banner_1600.jpg",
+                      "bytes":  173028,
+                      "width":  1600,
+                      "height":  480
+                  },
+                  {
+                      "path":  "/assets/keyart/daylight/banner_1600.webp",
+                      "bytes":  114902,
+                      "width":  1600,
+                      "height":  480
+                  },
+                  {
+                      "path":  "/assets/keyart/daylight/banner_2400.webp",
+                      "bytes":  189296,
+                      "width":  2400,
+                      "height":  720
+                  },
+                  {
+                      "path":  "/assets/keyart/daylight/banner-clean_1400.jpg",
+                      "bytes":  129418,
+                      "width":  1400,
+                      "height":  467
+                  },
+                  {
+                      "path":  "/assets/keyart/daylight/banner-clean_1400.webp",
+                      "bytes":  86720,
+                      "width":  1400,
+                      "height":  467
+                  },
+                  {
+                      "path":  "/assets/keyart/daylight/banner-clean_2100.webp",
+                      "bytes":  154742,
+                      "width":  2100,
+                      "height":  700
+                  },
+                  {
+                      "path":  "/assets/keyart/daylight/cover_1280.webp",
+                      "bytes":  117628,
+                      "width":  1280,
+                      "height":  720
+                  },
+                  {
+                      "path":  "/assets/keyart/daylight/cover_1920.jpg",
+                      "bytes":  336149,
+                      "width":  1920,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/daylight/cover_1920.webp",
+                      "bytes":  189980,
+                      "width":  1920,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/daylight/hero_1280.webp",
+                      "bytes":  96898,
+                      "width":  1280,
+                      "height":  720
+                  },
+                  {
+                      "path":  "/assets/keyart/daylight/hero_1920.jpg",
+                      "bytes":  289375,
+                      "width":  1920,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/daylight/hero_1920.webp",
+                      "bytes":  152576,
+                      "width":  1920,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/daylight/hero_2560.webp",
+                      "bytes":  204942,
+                      "width":  2560,
+                      "height":  1440
+                  },
+                  {
+                      "path":  "/assets/keyart/daylight/hero_800.webp",
+                      "bytes":  48794,
+                      "width":  800,
+                      "height":  450
+                  },
+                  {
+                      "path":  "/assets/keyart/daylight/portrait_1008.jpg",
+                      "bytes":  279267,
+                      "width":  1008,
+                      "height":  1440
+                  },
+                  {
+                      "path":  "/assets/keyart/daylight/portrait_1008.webp",
+                      "bytes":  164100,
+                      "width":  1008,
+                      "height":  1440
+                  },
+                  {
+                      "path":  "/assets/keyart/daylight/portrait_504.webp",
+                      "bytes":  66996,
+                      "width":  504,
+                      "height":  720
+                  },
+                  {
+                      "path":  "/assets/keyart/daylight/portrait-clean_1000.jpg",
+                      "bytes":  223706,
+                      "width":  1000,
+                      "height":  1405
+                  },
+                  {
+                      "path":  "/assets/keyart/daylight/portrait-clean_1000.webp",
+                      "bytes":  128350,
+                      "width":  1000,
+                      "height":  1405
+                  },
+                  {
+                      "path":  "/assets/keyart/daylight/portrait-clean_500.webp",
+                      "bytes":  45594,
+                      "width":  500,
+                      "height":  703
+                  },
+                  {
+                      "path":  "/assets/keyart/daylight/square_1080.jpg",
+                      "bytes":  244784,
+                      "width":  1080,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/daylight/square_1080.webp",
+                      "bytes":  151314,
+                      "width":  1080,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/daylight/square_540.webp",
+                      "bytes":  55766,
+                      "width":  540,
+                      "height":  540
+                  },
+                  {
+                      "path":  "/assets/keyart/daylight/square-clean_1080.jpg",
+                      "bytes":  202833,
+                      "width":  1080,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/daylight/square-clean_1080.webp",
+                      "bytes":  123684,
+                      "width":  1080,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/daylight/square-clean_540.webp",
+                      "bytes":  40292,
+                      "width":  540,
+                      "height":  540
+                  },
+                  {
+                      "path":  "/assets/keyart/dead-signal/banner_1600.jpg",
+                      "bytes":  162195,
+                      "width":  1600,
+                      "height":  480
+                  },
+                  {
+                      "path":  "/assets/keyart/dead-signal/banner_1600.webp",
+                      "bytes":  104352,
+                      "width":  1600,
+                      "height":  480
+                  },
+                  {
+                      "path":  "/assets/keyart/dead-signal/banner_2400.webp",
+                      "bytes":  176782,
+                      "width":  2400,
+                      "height":  720
+                  },
+                  {
+                      "path":  "/assets/keyart/dead-signal/banner-clean_1400.jpg",
+                      "bytes":  115972,
+                      "width":  1400,
+                      "height":  477
+                  },
+                  {
+                      "path":  "/assets/keyart/dead-signal/banner-clean_1400.webp",
+                      "bytes":  72884,
+                      "width":  1400,
+                      "height":  477
+                  },
+                  {
+                      "path":  "/assets/keyart/dead-signal/banner-clean_2100.webp",
+                      "bytes":  135492,
+                      "width":  2100,
+                      "height":  715
+                  },
+                  {
+                      "path":  "/assets/keyart/dead-signal/cover_1280.webp",
+                      "bytes":  122938,
+                      "width":  1280,
+                      "height":  720
+                  },
+                  {
+                      "path":  "/assets/keyart/dead-signal/cover_1920.jpg",
+                      "bytes":  353707,
+                      "width":  1920,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/dead-signal/cover_1920.webp",
+                      "bytes":  208196,
+                      "width":  1920,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/dead-signal/hero_1280.webp",
+                      "bytes":  104324,
+                      "width":  1280,
+                      "height":  720
+                  },
+                  {
+                      "path":  "/assets/keyart/dead-signal/hero_1920.jpg",
+                      "bytes":  308654,
+                      "width":  1920,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/dead-signal/hero_1920.webp",
+                      "bytes":  173290,
+                      "width":  1920,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/dead-signal/hero_2560.webp",
+                      "bytes":  241882,
+                      "width":  2560,
+                      "height":  1440
+                  },
+                  {
+                      "path":  "/assets/keyart/dead-signal/hero_800.webp",
+                      "bytes":  48258,
+                      "width":  800,
+                      "height":  450
+                  },
+                  {
+                      "path":  "/assets/keyart/dead-signal/portrait_1008.jpg",
+                      "bytes":  281500,
+                      "width":  1008,
+                      "height":  1440
+                  },
+                  {
+                      "path":  "/assets/keyart/dead-signal/portrait_1008.webp",
+                      "bytes":  172452,
+                      "width":  1008,
+                      "height":  1440
+                  },
+                  {
+                      "path":  "/assets/keyart/dead-signal/portrait_504.webp",
+                      "bytes":  64516,
+                      "width":  504,
+                      "height":  720
+                  },
+                  {
+                      "path":  "/assets/keyart/dead-signal/portrait-clean_1000.jpg",
+                      "bytes":  224363,
+                      "width":  1000,
+                      "height":  1395
+                  },
+                  {
+                      "path":  "/assets/keyart/dead-signal/portrait-clean_1000.webp",
+                      "bytes":  134510,
+                      "width":  1000,
+                      "height":  1395
+                  },
+                  {
+                      "path":  "/assets/keyart/dead-signal/portrait-clean_500.webp",
+                      "bytes":  45192,
+                      "width":  500,
+                      "height":  697
+                  },
+                  {
+                      "path":  "/assets/keyart/dead-signal/square_1080.jpg",
+                      "bytes":  245109,
+                      "width":  1080,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/dead-signal/square_1080.webp",
+                      "bytes":  155134,
+                      "width":  1080,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/dead-signal/square_540.webp",
+                      "bytes":  53918,
+                      "width":  540,
+                      "height":  540
+                  },
+                  {
+                      "path":  "/assets/keyart/dead-signal/square-clean_1080.jpg",
+                      "bytes":  206496,
+                      "width":  1080,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/dead-signal/square-clean_1080.webp",
+                      "bytes":  127308,
+                      "width":  1080,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/dead-signal/square-clean_540.webp",
+                      "bytes":  40130,
+                      "width":  540,
+                      "height":  540
+                  },
+                  {
+                      "path":  "/assets/keyart/night-station/banner_1600.jpg",
+                      "bytes":  175371,
+                      "width":  1600,
+                      "height":  480
+                  },
+                  {
+                      "path":  "/assets/keyart/night-station/banner_1600.webp",
+                      "bytes":  116662,
+                      "width":  1600,
+                      "height":  480
+                  },
+                  {
+                      "path":  "/assets/keyart/night-station/banner_2400.webp",
+                      "bytes":  197926,
+                      "width":  2400,
+                      "height":  720
+                  },
+                  {
+                      "path":  "/assets/keyart/night-station/banner-clean_1400.jpg",
+                      "bytes":  127455,
+                      "width":  1400,
+                      "height":  467
+                  },
+                  {
+                      "path":  "/assets/keyart/night-station/banner-clean_1400.webp",
+                      "bytes":  84144,
+                      "width":  1400,
+                      "height":  467
+                  },
+                  {
+                      "path":  "/assets/keyart/night-station/banner-clean_2100.webp",
+                      "bytes":  150652,
+                      "width":  2100,
+                      "height":  700
+                  },
+                  {
+                      "path":  "/assets/keyart/night-station/cover_1280.webp",
+                      "bytes":  157724,
+                      "width":  1280,
+                      "height":  720
+                  },
+                  {
+                      "path":  "/assets/keyart/night-station/cover_1920.jpg",
+                      "bytes":  417445,
+                      "width":  1920,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/night-station/cover_1920.webp",
+                      "bytes":  264360,
+                      "width":  1920,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/night-station/hero_1280.webp",
+                      "bytes":  144156,
+                      "width":  1280,
+                      "height":  720
+                  },
+                  {
+                      "path":  "/assets/keyart/night-station/hero_1920.jpg",
+                      "bytes":  385585,
+                      "width":  1920,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/night-station/hero_1920.webp",
+                      "bytes":  238552,
+                      "width":  1920,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/night-station/hero_2560.webp",
+                      "bytes":  330596,
+                      "width":  2560,
+                      "height":  1440
+                  },
+                  {
+                      "path":  "/assets/keyart/night-station/hero_800.webp",
+                      "bytes":  67934,
+                      "width":  800,
+                      "height":  450
+                  },
+                  {
+                      "path":  "/assets/keyart/night-station/portrait_1008.jpg",
+                      "bytes":  337708,
+                      "width":  1008,
+                      "height":  1440
+                  },
+                  {
+                      "path":  "/assets/keyart/night-station/portrait_1008.webp",
+                      "bytes":  231028,
+                      "width":  1008,
+                      "height":  1440
+                  },
+                  {
+                      "path":  "/assets/keyart/night-station/portrait_504.webp",
+                      "bytes":  81576,
+                      "width":  504,
+                      "height":  720
+                  },
+                  {
+                      "path":  "/assets/keyart/night-station/portrait-clean_1000.jpg",
+                      "bytes":  303919,
+                      "width":  1000,
+                      "height":  1429
+                  },
+                  {
+                      "path":  "/assets/keyart/night-station/portrait-clean_1000.webp",
+                      "bytes":  205350,
+                      "width":  1000,
+                      "height":  1429
+                  },
+                  {
+                      "path":  "/assets/keyart/night-station/portrait-clean_500.webp",
+                      "bytes":  66276,
+                      "width":  500,
+                      "height":  714
+                  },
+                  {
+                      "path":  "/assets/keyart/night-station/square_1080.jpg",
+                      "bytes":  280860,
+                      "width":  1080,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/night-station/square_1080.webp",
+                      "bytes":  194420,
+                      "width":  1080,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/night-station/square_540.webp",
+                      "bytes":  64956,
+                      "width":  540,
+                      "height":  540
+                  },
+                  {
+                      "path":  "/assets/keyart/night-station/square-clean_1080.jpg",
+                      "bytes":  250097,
+                      "width":  1080,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/night-station/square-clean_1080.webp",
+                      "bytes":  169924,
+                      "width":  1080,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/night-station/square-clean_540.webp",
+                      "bytes":  52410,
+                      "width":  540,
+                      "height":  540
+                  },
+                  {
+                      "path":  "/assets/keyart/wall-breach/banner_1600.jpg",
+                      "bytes":  205307,
+                      "width":  1600,
+                      "height":  480
+                  },
+                  {
+                      "path":  "/assets/keyart/wall-breach/banner_1600.webp",
+                      "bytes":  150984,
+                      "width":  1600,
+                      "height":  480
+                  },
+                  {
+                      "path":  "/assets/keyart/wall-breach/banner_2400.webp",
+                      "bytes":  255958,
+                      "width":  2400,
+                      "height":  720
+                  },
+                  {
+                      "path":  "/assets/keyart/wall-breach/banner-clean_1400.jpg",
+                      "bytes":  157558,
+                      "width":  1400,
+                      "height":  467
+                  },
+                  {
+                      "path":  "/assets/keyart/wall-breach/banner-clean_1400.webp",
+                      "bytes":  118288,
+                      "width":  1400,
+                      "height":  467
+                  },
+                  {
+                      "path":  "/assets/keyart/wall-breach/banner-clean_2100.webp",
+                      "bytes":  215702,
+                      "width":  2100,
+                      "height":  700
+                  },
+                  {
+                      "path":  "/assets/keyart/wall-breach/cover_1280.webp",
+                      "bytes":  184666,
+                      "width":  1280,
+                      "height":  720
+                  },
+                  {
+                      "path":  "/assets/keyart/wall-breach/cover_1920.jpg",
+                      "bytes":  454856,
+                      "width":  1920,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/wall-breach/cover_1920.webp",
+                      "bytes":  300928,
+                      "width":  1920,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/wall-breach/hero_1280.webp",
+                      "bytes":  169664,
+                      "width":  1280,
+                      "height":  720
+                  },
+                  {
+                      "path":  "/assets/keyart/wall-breach/hero_1920.jpg",
+                      "bytes":  421553,
+                      "width":  1920,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/wall-breach/hero_1920.webp",
+                      "bytes":  273126,
+                      "width":  1920,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/wall-breach/hero_2560.webp",
+                      "bytes":  368596,
+                      "width":  2560,
+                      "height":  1440
+                  },
+                  {
+                      "path":  "/assets/keyart/wall-breach/hero_800.webp",
+                      "bytes":  84516,
+                      "width":  800,
+                      "height":  450
+                  },
+                  {
+                      "path":  "/assets/keyart/wall-breach/portrait_1008.jpg",
+                      "bytes":  378863,
+                      "width":  1008,
+                      "height":  1440
+                  },
+                  {
+                      "path":  "/assets/keyart/wall-breach/portrait_1008.webp",
+                      "bytes":  272714,
+                      "width":  1008,
+                      "height":  1440
+                  },
+                  {
+                      "path":  "/assets/keyart/wall-breach/portrait_504.webp",
+                      "bytes":  99014,
+                      "width":  504,
+                      "height":  720
+                  },
+                  {
+                      "path":  "/assets/keyart/wall-breach/portrait-clean_1000.jpg",
+                      "bytes":  346659,
+                      "width":  1000,
+                      "height":  1429
+                  },
+                  {
+                      "path":  "/assets/keyart/wall-breach/portrait-clean_1000.webp",
+                      "bytes":  249834,
+                      "width":  1000,
+                      "height":  1429
+                  },
+                  {
+                      "path":  "/assets/keyart/wall-breach/portrait-clean_500.webp",
+                      "bytes":  85518,
+                      "width":  500,
+                      "height":  714
+                  },
+                  {
+                      "path":  "/assets/keyart/wall-breach/square_1080.jpg",
+                      "bytes":  290330,
+                      "width":  1080,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/wall-breach/square_1080.webp",
+                      "bytes":  202752,
+                      "width":  1080,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/wall-breach/square_540.webp",
+                      "bytes":  72220,
+                      "width":  540,
+                      "height":  540
+                  },
+                  {
+                      "path":  "/assets/keyart/wall-breach/square-clean_1080.jpg",
+                      "bytes":  255054,
+                      "width":  1080,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/wall-breach/square-clean_1080.webp",
+                      "bytes":  178888,
+                      "width":  1080,
+                      "height":  1080
+                  },
+                  {
+                      "path":  "/assets/keyart/wall-breach/square-clean_540.webp",
+                      "bytes":  59314,
+                      "width":  540,
+                      "height":  540
+                  },
+                  {
+                      "path":  "/assets/og/og_ash-city_1200x630.jpg",
+                      "bytes":  206699,
+                      "width":  1200,
+                      "height":  630
+                  },
+                  {
+                      "path":  "/assets/og/og_daylight_1200x630.jpg",
+                      "bytes":  167829,
+                      "width":  1200,
+                      "height":  630
+                  },
+                  {
+                      "path":  "/assets/og/og_dead-signal_1200x630.jpg",
+                      "bytes":  168420,
+                      "width":  1200,
+                      "height":  630
+                  },
+                  {
+                      "path":  "/assets/og/og_night-station_1200x630.jpg",
+                      "bytes":  202133,
+                      "width":  1200,
+                      "height":  630
+                  },
+                  {
+                      "path":  "/assets/og/og_wall-breach_1200x630.jpg",
+                      "bytes":  227701,
+                      "width":  1200,
+                      "height":  630
+                  },
+                  {
+                      "path":  "/assets/press/zrb_app_icon_512.png",
+                      "bytes":  74404,
+                      "width":  512,
+                      "height":  512
+                  },
+                  {
+                      "path":  "/assets/press/zrb-keyart.zip",
+                      "bytes":  20030351
+                  },
+                  {
+                      "path":  "/assets/press/zrb-logo.zip",
+                      "bytes":  2940880
+                  },
+                  {
+                      "path":  "/assets/press/zrb-presskit.zip",
+                      "bytes":  22971829
+                  },
+                  {
+                      "path":  "/favicon.ico",
+                      "bytes":  15086,
+                      "width":  48,
+                      "height":  48
+                  },
+                  {
+                      "path":  "/favicon-16x16.png",
+                      "bytes":  695,
+                      "width":  16,
+                      "height":  16
+                  },
+                  {
+                      "path":  "/favicon-32x32.png",
+                      "bytes":  1651,
+                      "width":  32,
+                      "height":  32
+                  },
+                  {
+                      "path":  "/favicon-48x48.png",
+                      "bytes":  2990,
+                      "width":  48,
+                      "height":  48
+                  },
+                  {
+                      "path":  "/icon-192.png",
+                      "bytes":  25532,
+                      "width":  192,
+                      "height":  192
+                  },
+                  {
+                      "path":  "/icon-512.png",
+                      "bytes":  90112,
+                      "width":  512,
+                      "height":  512
+                  },
+                  {
+                      "path":  "/icon-maskable-512.png",
+                      "bytes":  228111,
+                      "width":  512,
+                      "height":  512
+                  },
+                  {
+                      "path":  "/site.webmanifest",
+                      "bytes":  910
+                  }
+              ]
+}
