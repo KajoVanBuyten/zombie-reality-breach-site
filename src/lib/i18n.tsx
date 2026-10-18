@@ -103,6 +103,7 @@ const translations: Record<string, Record<Lang, string>> = {
   'footer.impressum': { en: 'Legal Notice', de: 'Impressum' },
   'footer.privacy': { en: 'Privacy Policy', de: 'Datenschutz' },
   'footer.gamePrivacy': { en: 'Game Privacy', de: 'Datenschutz Spiel' },
+  'footer.terms': { en: 'Terms of Use', de: 'Nutzungsbedingungen' },
   'footer.press': { en: 'Press', de: 'Presse' },
   'footer.contact': { en: 'Contact', de: 'Kontakt' },
   'footer.about': { en: 'Zombie Reality Breach by KaMa Studios. Zombie survival in mixed reality and VR for Meta Quest 3 and 3S. Coming soon.', de: 'Zombie Reality Breach von KaMa Studios. Zombie-Survival in Mixed Reality und VR für Meta Quest 3 und 3S. Bald verfügbar.' },

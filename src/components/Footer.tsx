@@ -56,6 +56,7 @@ export default function Footer() {
             <Link to="/datenschutz" className="text-bone-muted/50 hover:text-bone-muted transition-colors font-body">{t('footer.privacy')}</Link>
             {/* The game's own policy is a static page (public/privacy.html), not a React route. */}
             <a href="/privacy" className="text-bone-muted/50 hover:text-bone-muted transition-colors font-body">{t('footer.gamePrivacy')}</a>
+            <a href="/terms" className="text-bone-muted/50 hover:text-bone-muted transition-colors font-body">{t('footer.terms')}</a>
             <Link to="/press" className="text-bone-muted/50 hover:text-bone-muted transition-colors font-body">{t('footer.press')}</Link>
           </div>
         </div>
