@@ -12,7 +12,7 @@ export const BETA_OPEN = false;
 export const META_URL = META_ALPHA_URL;
 
 /** Privacy policy of the game itself (not of this website). */
-export const GAME_PRIVACY_URL = 'https://kajovanbuyten.github.io/kamastudios-legal/zombie-reality-breach/privacy.html';
+export const GAME_PRIVACY_URL = 'https://zombierealitybreach.com/privacy';
 
 /** Base-relative URL for files in /public, so the site works at the domain root and under a sub path. */
 export function asset(path: string): string {
