@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Play, Crosshair, Hand, Users, ArrowRight, Skull, Gift, FlaskConical, Lock } from 'lucide-react';
+import { Play, Crosshair, Hand, Users, ArrowRight, Skull, Gift, FlaskConical, Lock, ScanLine } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
 import { META_URL, META_ALPHA_URL, META_BETA_URL, BETA_OPEN, keyArtThemes } from '@/lib/site';
 import KeyArt from '@/components/KeyArt';
@@ -8,12 +8,15 @@ import HazardDivider from '@/components/HazardDivider';
 import { newsPosts } from '@/content/news';
 import { modeFamilies } from '@/content/modes';
 import HomeLeaderboardPreview from '@/components/HomeLeaderboardPreview';
+import { useImmersiveArSupported } from '@/lib/xrSupport';
 
 const pitchIcons = [Crosshair, Hand, Users];
 
 export default function HomePage() {
   const { t, lang } = useI18n();
   const de = lang === 'de';
+  // Only the Quest browser (immersive AR) gets the web quest button.
+  const arSupported = useImmersiveArSupported();
 
   const latestNews = newsPosts.slice(0, 3);
 
@@ -56,6 +59,16 @@ export default function HomePage() {
           <p className="text-sm text-bone-muted font-body tracking-wider mb-8">
             {t('hero.sub')}
           </p>
+
+          {arSupported && (
+            <Link
+              to="/breach"
+              className="mb-6 px-8 py-4 bg-gold hover:bg-ember text-bg font-heading uppercase tracking-wider text-base sm:text-lg transition-all hover:scale-105 flex items-center justify-center gap-3 shadow-[0_0_32px_rgba(232,179,58,0.45)]"
+            >
+              <ScanLine className="w-5 h-5" />
+              {t('hero.ar')}
+            </Link>
+          )}
 
           <div className="flex flex-col sm:flex-row gap-4">
             <a

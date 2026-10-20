@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { I18nProvider } from '@/lib/i18n';
 import Navbar from '@/components/Navbar';
@@ -13,6 +14,10 @@ import { NewsListPage, NewsDetailPage } from '@/pages/NewsPage';
 import PressPage from '@/pages/PressPage';
 import FAQPage from '@/pages/FAQPage';
 import { ImpressumPage, DatenschutzPage } from '@/pages/LegalPages';
+
+// The web AR quest (three.js) loads as its own chunk, so the landing page bundle does not grow.
+const BreachPage = lazy(() => import('@/pages/BreachPage'));
+const BreachLinkedPage = lazy(() => import('@/pages/BreachLinkedPage'));
 
 export default function App() {
   return (
@@ -36,6 +41,8 @@ export default function App() {
               <Route path="/faq" element={<FAQPage />} />
               <Route path="/impressum" element={<ImpressumPage />} />
               <Route path="/datenschutz" element={<DatenschutzPage />} />
+              <Route path="/breach" element={<Suspense fallback={<Loading />}><BreachPage /></Suspense>} />
+              <Route path="/breach/linked" element={<Suspense fallback={<Loading />}><BreachLinkedPage /></Suspense>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
@@ -54,4 +61,8 @@ function NotFound() {
       <Link to="/" className="text-blood mt-4 inline-block font-heading text-sm uppercase">Home</Link>
     </div>
   );
+}
+
+function Loading() {
+  return <div className="pt-40 pb-24 text-center text-bone-muted font-heading uppercase tracking-wider text-sm">Loading…</div>;
 }

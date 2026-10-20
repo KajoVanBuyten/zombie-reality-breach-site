@@ -26,6 +26,7 @@ const translations: Record<string, Record<Lang, string>> = {
   'hero.trailer': { en: 'Trailer coming soon', de: 'Trailer folgt' },
   'hero.alpha': { en: 'Join ALPHA', de: 'ALPHA beitreten' },
   'hero.beta': { en: 'Join BETA', de: 'BETA beitreten' },
+  'hero.ar': { en: 'Start your AR Zombie Journey', de: 'Start your AR Zombie Journey' },
   'hero.betaSoon': { en: 'BETA channel opens later', de: 'BETA-Kanal öffnet später' },
   'pitch.1.title': { en: 'Your room is the level.', de: 'Dein Raum ist das Level.' },
   'pitch.1.text': { en: 'In Reality Breach the game reads your room scan. Zombies smash through your real doors, or through a door you mark on any wall.', de: 'In Reality Breach liest das Spiel deinen Raumscan. Zombies brechen durch deine echten Türen, oder durch eine Tür, die du an einer Wand markierst.' },
