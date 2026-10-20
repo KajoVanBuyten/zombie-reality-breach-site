@@ -14,6 +14,7 @@
 // post-processing.
 
 import {
+  ACESFilmicToneMapping,
   AdditiveBlending,
   BufferAttribute,
   BufferGeometry,
@@ -37,6 +38,7 @@ import {
   SphereGeometry,
   Sprite,
   SpriteMaterial,
+  SRGBColorSpace,
   Vector3,
   WebGLRenderer,
 } from 'three';
@@ -52,8 +54,8 @@ import type { Surface } from './room';
 import { Horde, raySphere } from './zombies';
 import { ZOMBIE_FILES } from './zombieModels';
 import type { Zombie } from './zombies';
-import { GOLD, buildStarterPistol, disposeTree, loadGoldenSet, makeFlash, makeLaser, mountGun } from './weapons';
-import type { GoldenSet, Gun } from './weapons';
+import { GOLD, alignGrip, buildStarterPistol, disposeTree, loadGoldenSet, loadStarterPistol, makeFlash, makeLaser, mountGun, setMountedGun } from './weapons';
+import type { GoldenSet, Gun, GunMount } from './weapons';
 import { formatTime } from './api';
 import { asset } from '@/lib/site';
 
@@ -93,6 +95,10 @@ interface Part {
 }
 
 const SCAN_TIMEOUT = 3;
+// Dim-room lighting (see the constructor).
+const EXPOSURE = 0.7;
+const AMBIENT = 0.25;
+const KEY_LIGHT = 1.3;
 const PISTOL_COOLDOWN = 0.2;
 const DEAGLE_COOLDOWN = 0.32;
 const HUNT_MAX_ALIVE = 4;
@@ -201,8 +207,8 @@ export class BreachGame {
   private golden: GoldenSet | null = null;
   private goldenLoad: Promise<GoldenSet>;
   private pistol: Gun = buildStarterPistol();
-  private pistolMount: Group;
-  private goldMount: Group | null = null;
+  private pistolMount: GunMount;
+  private goldMount: GunMount | null = null;
   private gunSlot: Slot | null = null;
   private gunMode: 'none' | 'pistol' | 'gold' = 'none';
   private cooldown = 0;
@@ -234,14 +240,21 @@ export class BreachGame {
     this.renderer.xr.setReferenceSpaceType(this.localFloor ? 'local-floor' : 'local');
     this.renderer.xr.setFramebufferScaleFactor(1);
 
-    // Image-based light for the gold; computed once.
+    // Lighting for passthrough: the scene has to sit in a dim real room. ACES tone mapping with explicit sRGB output, a
+    // moderate warm key light from above, little ambient. The RoomEnvironment IBL is there for the reflections of the
+    // gold and the pistol; on the zombies it is turned almost off (zombieModels.ts), because its bright diffuse light
+    // washed the dark Tripo skin out to pale pink (with hemisphere 1.1 + key 1.4 and no tone mapping). Unlit UI and
+    // effect materials are not tone mapped (toneMapped: false), the gold keeps its untonemapped look.
+    this.renderer.outputColorSpace = SRGBColorSpace;
+    this.renderer.toneMapping = ACESFilmicToneMapping;
+    this.renderer.toneMappingExposure = EXPOSURE;
     const pmrem = new PMREMGenerator(this.renderer);
     this.scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
     pmrem.dispose();
-    this.scene.add(new HemisphereLight(0xfff2e0, 0x30262a, 1.1));
-    const sun = new DirectionalLight(0xffe6c8, 1.4);
-    sun.position.set(1, 3, 1.5);
-    this.scene.add(sun, this.camera);
+    this.scene.add(new HemisphereLight(0xffeedd, 0x2a2224, AMBIENT));
+    const key = new DirectionalLight(0xffe2c0, KEY_LIGHT);
+    key.position.set(1, 3, 1.5);
+    this.scene.add(key, this.camera);
 
     this.particles = new Particles(this.scene);
     this.horde = new Horde(
@@ -255,15 +268,19 @@ export class BreachGame {
     );
     this.scene.add(this.panel.mesh);
 
-    this.pistolMount = mountGun(this.pistol);
-    this.pistolMount.visible = false;
-    const pistolLaser = makeLaser(0xff5040);
-    pistolLaser.position.set(0, 0, -0.14);
-    this.pistolMount.add(pistolLaser);
+    // The block pistol until the A3500X is loaded (it stays if public/breach/private/a3500x.glb is missing).
+    this.pistolMount = mountGun(this.pistol, 0xff5040);
+    this.pistolMount.root.visible = false;
+    loadStarterPistol(asset('breach/private/a3500x.glb')).then((gun) => {
+      if (gun.model === this.pistol.model) return;
+      disposeTree(this.pistol.model);
+      this.pistol = gun;
+      setMountedGun(this.pistolMount, gun);
+    });
 
     const tracerGeo = new BufferGeometry();
     tracerGeo.setAttribute('position', new BufferAttribute(new Float32Array(6), 3));
-    this.tracer = new Line(tracerGeo, new LineBasicMaterial({ color: 0xffc070, transparent: true, blending: AdditiveBlending, depthWrite: false }));
+    this.tracer = new Line(tracerGeo, new LineBasicMaterial({ color: 0xffc070, transparent: true, blending: AdditiveBlending, depthWrite: false, toneMapped: false }));
     this.tracer.frustumCulled = false;
     this.tracer.visible = false;
     this.scene.add(this.tracer, this.flash);
@@ -340,8 +357,8 @@ export class BreachGame {
     if (next === this.gunSlot) return;
     this.gunSlot = next;
     if (next) {
-      next.ray.add(this.pistolMount);
-      if (this.goldMount) next.ray.add(this.goldMount);
+      next.ray.add(this.pistolMount.root);
+      if (this.goldMount) next.ray.add(this.goldMount.root);
     }
   }
 
@@ -812,11 +829,8 @@ export class BreachGame {
 
   private mountGolden(): void {
     if (!this.golden || this.goldMount) return;
-    this.goldMount = mountGun(this.golden.gun);
-    const laser = makeLaser(0xffc040);
-    laser.position.set(0, 0, -0.14);
-    this.goldMount.add(laser);
-    this.gunSlot?.ray.add(this.goldMount);
+    this.goldMount = mountGun(this.golden.gun, 0xffc040);
+    this.gunSlot?.ray.add(this.goldMount.root);
     this.gunMode = 'gold';
   }
 
@@ -864,7 +878,7 @@ export class BreachGame {
   private makeSeals(rift: Rift): void {
     const geo = new SphereGeometry(0.07, 12, 8);
     for (const y of [0.55, 0, -0.5]) {
-      const mat = new MeshBasicMaterial({ color: 0xffd060, transparent: true, opacity: 0.9, blending: AdditiveBlending, depthWrite: false });
+      const mat = new MeshBasicMaterial({ color: 0xffd060, transparent: true, opacity: 0.9, blending: AdditiveBlending, depthWrite: false, toneMapped: false });
       const seal = new Mesh(geo, mat);
       rift.point(0.04 * Math.sin(y * 9), y * rift.height * 0.5, 0.12, seal.position);
       seal.renderOrder = 12;
@@ -933,10 +947,14 @@ export class BreachGame {
   private updateGun(dt: number): void {
     this.cooldown = Math.max(0, this.cooldown - dt);
     this.recoil = Math.max(0, this.recoil - dt * 6);
-    this.pistolMount.visible = this.gunMode === 'pistol';
-    if (this.goldMount) this.goldMount.visible = this.gunMode === 'gold';
+    this.pistolMount.root.visible = this.gunMode === 'pistol';
+    if (this.goldMount) this.goldMount.root.visible = this.gunMode === 'gold';
     const mount = this.gunMode === 'gold' ? this.goldMount : this.pistolMount;
-    if (mount) mount.rotation.x = this.recoil * 0.35;
+    if (mount) {
+      mount.root.rotation.x = this.recoil * 0.35;
+      // Grip in the hand (controller or tracked hand), barrel along the ray.
+      if (this.gunSlot) alignGrip(mount, this.gunSlot.ray, this.gunSlot.grip);
+    }
     // The free hand shows a pointer while it can grab at a distance.
     for (const s of this.slots) s.laser.visible = Boolean(s.source) && s !== this.gunSlot && (this.stage === 'hunt' || this.stage === 'assemble' || this.panel.mesh.visible);
     if (this.gunSlot && this.panel.mesh.visible && (this.stage === 'scan' || this.stage === 'reward')) this.gunSlot.laser.visible = true;
@@ -1107,7 +1125,7 @@ function makeHalo(): Sprite {
   grad.addColorStop(1, 'rgba(232,179,58,0)');
   g.fillStyle = grad;
   g.fillRect(0, 0, 64, 64);
-  const sprite = new Sprite(new SpriteMaterial({ map: new CanvasTexture(c), blending: AdditiveBlending, depthWrite: false, transparent: true }));
+  const sprite = new Sprite(new SpriteMaterial({ map: new CanvasTexture(c), blending: AdditiveBlending, depthWrite: false, transparent: true, toneMapped: false }));
   sprite.scale.setScalar(0.42);
   sprite.renderOrder = 11;
   return sprite;

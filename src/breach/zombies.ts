@@ -1,8 +1,9 @@
 // The horde: the game's Tripo zombies (zombieModels.ts), skinned and animated, one AnimationMixer each. Zombies step out
 // of a rift in their normal walk or run (no breaching or crawl-out move: owner decision, as in the game), turn towards the
-// player, attack at arm's length, flinch on a hit and play a death clip when killed, then fade out. Hits are tested
-// against three invisible spheres per zombie (head, chest, hips) that follow the skeleton, never against skinned
-// geometry. Blob shadows for the whole horde are one InstancedMesh.
+// player, attack at arm's length with one of their Tripo attack loops (the swing peak lands on the damage tick), flinch
+// on a hit and play a death clip when killed, then fade out. Hits are tested against three invisible spheres per zombie
+// (head, chest, hips) that follow the skeleton, never against skinned geometry. Blob shadows for the whole horde are one
+// InstancedMesh.
 //
 // Fallback: if no zombie GLB can be loaded (logged), the old stylized zombies built from primitives stand in: every body
 // part type is one InstancedMesh (torso, head, arms, legs, glowing eyes). A zombie that has to appear while the GLBs are
@@ -35,6 +36,8 @@ const STAND_PITCH = 0.12;
 const BIG_SCALE = 1.55;
 const RUNNER_SHARE = 0.25;
 const HIT_TIME = 0.6;
+/** Seconds from reaching the player to the damage; an attack clip is started so its swing peak lands right then. */
+const ATTACK_HIT = 0.9;
 const FADE_TIME = 0.8;
 
 type Phase = 'emerge' | 'walk' | 'hit' | 'attack' | 'stagger' | 'dying';
@@ -57,6 +60,9 @@ export interface Zombie {
   variety: number;
   runner: boolean;
   body: ZombieBody | null;
+  /** Attack loop picked when the zombie reached the player (null: none in the model, Idle_Breathe instead). */
+  attack: string | null;
+  swinging: boolean;
   /** Seconds of the death clip before the body fades. */
   dieFor: number;
   cycle: number;
@@ -164,7 +170,7 @@ export class Horde {
   constructor(private scene: Scene, private events: HordeEvents, urls: string[]) {
     const blob = new PlaneGeometry(0.9, 0.9);
     blob.rotateX(-Math.PI / 2);
-    this.blobs = instanced(blob, new MeshBasicMaterial({ map: blobTexture(), transparent: true, depthWrite: false }), MAX_ZOMBIES, scene, false);
+    this.blobs = instanced(blob, new MeshBasicMaterial({ map: blobTexture(), transparent: true, depthWrite: false, toneMapped: false }), MAX_ZOMBIES, scene, false);
     this.blobs.renderOrder = 1;
     loadZombieModels(urls)
       .then((models) => {
@@ -213,6 +219,8 @@ export class Horde {
       variety: 0.9 + Math.random() * 0.2,
       runner,
       body: null,
+      attack: null,
+      swinging: false,
       dieFor: 0.8,
       cycle: Math.random() * 6,
       flash: 0,
@@ -381,6 +389,9 @@ export class Horde {
         if (d < reach) {
           z.phase = 'attack';
           z.t = 0;
+          const attacks = z.body?.model.attacks ?? [];
+          z.attack = attacks.length ? pick(attacks) : null;
+          z.swinging = false;
           break;
         }
         z.cycle += dt * (z.big ? 4 : z.runner ? 9 : 5.5);
@@ -399,7 +410,7 @@ export class Horde {
         break;
       case 'attack':
         z.cycle += dt * 10;
-        if (z.t > 0.9) {
+        if (z.t > ATTACK_HIT) {
           this.events.attack(z);
           z.phase = 'stagger';
           z.t = 0;
@@ -477,7 +488,13 @@ export class Horde {
         continue;
       }
       if (z.phase !== 'dying' && !b.busy) {
-        if (z.phase === 'attack') b.loop(IDLE, 1.4, 0.2);
+        if (z.phase === 'attack') {
+          if (z.attack && b.has(z.attack)) {
+            // Swing peak on the damage tick (started late, e.g. after a flinch, it still peaks on the tick).
+            if (!z.swinging) b.swing(z.attack, Math.max(0, ATTACK_HIT - z.t));
+            z.swinging = true;
+          } else b.loop(IDLE, 1.4, 0.2);
+        }
         else if (z.phase === 'stagger') b.loop(z.clip, -z.rate * 0.9, 0.15);
         else b.loop(z.clip, z.rate, 0.3);
       }

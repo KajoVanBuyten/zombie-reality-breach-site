@@ -106,3 +106,7 @@ Die `<id>` sind die Waffen-IDs aus `src/content/weapons.ts` (23 Waffen, davon `p
 Aufsätze und Vorräte ohne eigenes Modell werden so gebaut, wie das Spiel sie baut: `ModModels.cs` setzt Rotpunkt, Vordergriff, Schulterstütze, Schalldämpfer, Choke, Mündungsbremse, Lauf, Nägel, Griffband, Sägezähne und Kopfgewicht aus Unity-Primitiven in festen Farben zusammen, `ThrowableItem.cs` die Rohrbombe; `weapon_renders.json` enthält dieselben Maße und Farben (`"builder": "primitives"`). Die Taschenlampe wird aus ihrem Unity-Mesh-Asset gelesen (`"builder": "unity_mesh"`), Munition aus dem Munitionshaufen in `Resources/Ammo`, Mag+ aus dem AK-Magazin, Bretter wie die Barrikadenbretter des Spiels, Sprit als der Kanister der Tankstelle (`Art/Vr/Props/metal_jerrycan_green`). Zwei Bilder sind reine Darstellungen ohne Vorbild im Spiel: die Stirnlampe (im Spiel nur eine Lichtquelle, `HeadLamp.cs`) und die Hüfttasche (im Spiel unsichtbar, `Throwables.cs`); beide in den Farben der Mod-Teile.
 
 Asset-Store-Modelle (A3500X, Pistol 92, Katana) dürfen als Render der Spielszene gezeigt, aber nicht als Rohdateien weitergegeben werden; die Renders sind davon nicht betroffen.
+
+## 3D-Modelle der Web-AR-Quest
+
+Herkunft, Lizenzen und die nötige Namensnennung (CC-BY 4.0 der goldenen Desert Eagle) stehen in `CREDITS.md`. Die A3500X (Asset Store) wird nur lokal nach `public/breach/private/` erzeugt und nie committet (`DEPLOY.md`, „Private Assets der Web-AR-Quest“).

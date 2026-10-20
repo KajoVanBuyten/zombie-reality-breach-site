@@ -27,7 +27,7 @@ Wrangler wird nicht global installiert; `npx wrangler` holt die Version aus dem 
 npm run typecheck && npm run lint
 ```
 
-2. Bauen (schreibt `dist/`, kopiert `index.html` nach `404.html` für die Routen der Single-Page-App):
+2. Bauen (schreibt `dist/`, kopiert `index.html` nach `404.html` für die Routen der Single-Page-App). **Vorher die privaten Assets der Web-AR-Quest erzeugen** (Abschnitt „Private Assets der Web-AR-Quest“), sonst fehlt die A3500X; der Build warnt dann mit `public/breach/private/a3500x.glb FEHLT`:
 
 ```bash
 npm run build
@@ -150,6 +150,23 @@ Den fertigen Build samt Worker lokal wie in Produktion laufen lassen:
 ```bash
 npm run build && npx wrangler dev
 ```
+
+## Private Assets der Web-AR-Quest
+
+Die Startpistole der Quest ist die A3500X des Spiels, ein Unity-Asset-Store-Modell (Standard-EULA): Sie darf im Produkt ausgeliefert, ihre Dateien dürfen aber nicht weitergegeben werden, und dieses Repository ist öffentlich. Deshalb liegt das GLB unter `public/breach/private/`, das in `.gitignore` steht, und wird **vor jedem `npm run build` bzw. Deploy lokal aus dem privaten Spiel-Repo erzeugt** (Blender 4.5, rund 10 s):
+
+```bash
+"C:/Program Files/Blender Foundation/Blender 4.5/blender.exe" -b --factory-startup --python scripts/export_a3500x.py -- "E:/source/Unity/zombie-reality-breach/Assets/_Project/Art/Weapons/A3500X" public/breach/private/a3500x.glb
+```
+
+Das Skript entfernt Herstellerschriftzüge, Modellnamen und Seriennummer aus den Texturen, reduziert auf 7600 Dreiecke und 1024er-Texturen (etwa 1 MB). Prüfen, dass die Datei nie im Repository landet:
+
+```bash
+git check-ignore -v public/breach/private/a3500x.glb   # muss die .gitignore-Zeile zeigen
+git ls-files public/breach/private                     # muss leer sein
+```
+
+Fehlt die Datei, warnt `npm run build` laut (`public/breach/private/a3500x.glb FEHLT`), und die Quest nimmt mit einer Konsolenwarnung die alte Klotzpistole. Die Zombies (`public/breach/zombies/`, eigene Tripo-Modelle des Besitzers) und die goldene Desert Eagle (CC-BY 4.0, siehe `CREDITS.md`) sind dagegen im Repository.
 
 ## Größere Assets
 

@@ -27,3 +27,6 @@ dist-ssr
 # Blender-Zwischenrenders (scripts/Build-WeaponImages.ps1) und lokale Preview-Konfiguration
 build
 .claude/
+
+# Asset-Store-Modelle (Standard-EULA, nicht weiterverteilbar): lokal aus dem privaten Spiel-Repo erzeugt, nie committen
+public/breach/private/

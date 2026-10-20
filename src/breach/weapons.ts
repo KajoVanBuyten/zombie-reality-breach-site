@@ -1,8 +1,10 @@
 // The two guns of the quest and the three golden parts.
 // Model convention for both guns: grip point at the origin, +Y up, muzzle towards +Z (as exported by
-// scripts/export_golden_deagle.py). The golden Desert Eagle is the game's model (public/breach/golden_deagle.glb) with
-// gold PBR from the file plus an orange crack glow generated here; if it cannot be loaded, a stylized gold gun built
-// from boxes stands in.
+// scripts/export_golden_deagle.py and scripts/export_a3500x.py). The starter pistol is the game's A3500X
+// (public/breach/private/a3500x.glb: an Asset Store model, generated locally before the build and never committed, see
+// DEPLOY.md); without the file the old block pistol stands in. The golden Desert Eagle is the game's model
+// (public/breach/golden_deagle.glb) with gold PBR from the file plus an orange crack glow generated here; if it cannot
+// be loaded, a stylized gold gun built from boxes stands in.
 
 import {
   AdditiveBlending,
@@ -10,6 +12,7 @@ import {
   CanvasTexture,
   Color,
   CylinderGeometry,
+  FrontSide,
   Group,
   Mesh,
   MeshBasicMaterial,
@@ -54,10 +57,35 @@ export function buildStarterPistol(): Gun {
   grip.rotation.x = -0.25;
   const guard = new Mesh(new BoxGeometry(0.006, 0.006, 0.05), polymer);
   guard.position.set(0, 0.006, 0.045);
-  const sight = new Mesh(new BoxGeometry(0.006, 0.008, 0.008), new MeshBasicMaterial({ color: 0x7fffa0 }));
+  const sight = new Mesh(new BoxGeometry(0.006, 0.008, 0.008), new MeshBasicMaterial({ color: 0x7fffa0, toneMapped: false }));
   sight.position.set(0, 0.079, 0.15);
   model.add(slide, frame, grip, guard, sight);
   return { model, muzzle: new Vector3(0, 0.058, 0.165) };
+}
+
+/** The game's A3500X; resolves to the block pistol (with a console warning) when the GLB is missing or broken. */
+export async function loadStarterPistol(url: string): Promise<Gun> {
+  try {
+    const gltf = await new GLTFLoader().loadAsync(url);
+    const model = new Group();
+    model.add(gltf.scene);
+    const node = gltf.scene.getObjectByName('Muzzle');
+    if (!node) throw new Error('no Muzzle node');
+    gltf.scene.updateMatrixWorld(true);
+    const muzzle = node.getWorldPosition(new Vector3());
+    gltf.scene.traverse((o) => {
+      if (o instanceof Mesh) {
+        const m = o.material as MeshStandardMaterial;
+        m.side = FrontSide;
+        m.envMapIntensity = 0.9;
+        if (m.map) m.map.colorSpace = SRGBColorSpace;
+      }
+    });
+    return { model, muzzle };
+  } catch (error) {
+    console.warn(`[breach] starter pistol ${url} missing (generate it with scripts/export_a3500x.py, see DEPLOY.md); using the block pistol`, error);
+    return buildStarterPistol();
+  }
 }
 
 /** Thin glowing cracks for the emissive map: random jagged lines on black. */
@@ -97,6 +125,8 @@ function goldMaterial(base?: MeshStandardMaterial, cracks?: CanvasTexture): Mesh
   m.emissive = new Color(EMBER);
   m.emissiveMap = cracks ?? null;
   m.emissiveIntensity = 0.9;
+  // The renderer tone maps (ACES) for the zombies; the gold keeps the bright untonemapped look it was tuned with.
+  m.toneMapped = false;
   m.needsUpdate = true;
   return m;
 }
@@ -187,15 +217,61 @@ function boundsCenter(o: Object3D): Vector3 {
   return min.add(max).multiplyScalar(0.5);
 }
 
-/** Mounts a gun on a controller's target-ray space so the barrel lies on the pointing ray. */
-export function mountGun(gun: Gun): Group {
-  const mount = new Group();
+/** A gun on a controller's target-ray space: the barrel lies along the ray, the grip sits in the hand (see alignGrip). */
+export interface GunMount {
+  /** Child of the ray space; recoil rotates it. */
+  root: Group;
+  /** Turns the model (muzzle +Z) onto the ray (-Z) and carries the grip offset. */
+  holder: Group;
+  gun: Gun;
+  /** Aim line, starting at the muzzle. */
+  laser: Mesh | null;
+}
+
+const _grip = new Vector3();
+
+export function mountGun(gun: Gun, laserColor?: number): GunMount {
+  const root = new Group();
   const holder = new Group();
   holder.rotation.y = Math.PI; // model +Z (muzzle) -> ray -Z
-  holder.position.set(0, -gun.muzzle.y, gun.muzzle.z * 0.35);
-  holder.add(gun.model);
-  mount.add(holder);
+  root.add(holder);
+  const mount: GunMount = { root, holder, gun, laser: null };
+  if (laserColor !== undefined) {
+    mount.laser = makeLaser(laserColor);
+    mount.laser.rotation.y = Math.PI; // laser runs along -Z of its parent: along the barrel in holder space
+    holder.add(mount.laser);
+  }
+  setMountedGun(mount, gun);
   return mount;
+}
+
+/** Swaps the model in a mount (the A3500X replacing the block pistol once its GLB is loaded). */
+export function setMountedGun(mount: GunMount, gun: Gun): void {
+  mount.holder.remove(mount.gun.model);
+  mount.gun = gun;
+  mount.holder.add(gun.model);
+  mount.laser?.position.copy(gun.muzzle);
+  alignGrip(mount, null, null);
+}
+
+/**
+ * Puts the gun's grip point (model origin) on the controller's grip pose, or the hand's grip pose in hand tracking,
+ * while the barrel stays parallel to the target ray: the shot leaves the muzzle along the ray, as the barrel shows.
+ * Without a usable grip pose the old fixed offset puts the bore on the ray, a little in front of the hand.
+ */
+export function alignGrip(mount: GunMount, ray: Object3D | null, grip: Object3D | null): void {
+  const h = mount.holder;
+  if (ray && grip && grip.visible) {
+    ray.updateMatrixWorld(true);
+    grip.updateMatrixWorld(true);
+    ray.worldToLocal(grip.getWorldPosition(_grip));
+    // The mount's recoil rotation pivots at the ray origin; the offset is applied in ray space underneath it.
+    if (_grip.lengthSq() < 0.25 * 0.25) {
+      h.position.copy(_grip);
+      return;
+    }
+  }
+  h.position.set(0, -mount.gun.muzzle.y, mount.gun.muzzle.z * 0.35);
 }
 
 /** Glowing aim line from the muzzle, 2.5 m long, fading out. */
@@ -203,7 +279,7 @@ export function makeLaser(color: number): Mesh {
   const geo = new CylinderGeometry(0.0012, 0.0005, 2.5, 5, 1, true);
   geo.rotateX(Math.PI / 2);
   geo.translate(0, 0, -1.25);
-  const mat = new MeshBasicMaterial({ color, transparent: true, opacity: 0.45, blending: AdditiveBlending, depthWrite: false });
+  const mat = new MeshBasicMaterial({ color, transparent: true, opacity: 0.45, blending: AdditiveBlending, depthWrite: false, toneMapped: false });
   const m = new Mesh(geo, mat);
   m.renderOrder = 15;
   return m;
@@ -220,7 +296,7 @@ export function makeFlash(): Mesh {
   grad.addColorStop(1, 'rgba(255,80,0,0)');
   g.fillStyle = grad;
   g.fillRect(0, 0, 64, 64);
-  const mat = new MeshBasicMaterial({ map: new CanvasTexture(c), transparent: true, blending: AdditiveBlending, depthWrite: false });
+  const mat = new MeshBasicMaterial({ map: new CanvasTexture(c), transparent: true, blending: AdditiveBlending, depthWrite: false, toneMapped: false });
   const m = new Mesh(new PlaneGeometry(0.12, 0.12), mat);
   m.visible = false;
   m.renderOrder = 16;

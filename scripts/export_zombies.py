@@ -1,20 +1,23 @@
 """Exports the game's Tripo zombies for the web AR quest (public/breach/zombies/*.glb), headless, without Unity.
 
 Call (from the site repo):
-  "<blender.exe>" -b --factory-startup --python scripts/export_zombies.py -- <Tripo dir> <animation FBX> <out dir> [F_Zombie_XX ...]
+  "<blender.exe>" -b --factory-startup --python scripts/export_zombies.py -- <Tripo dir> <animation FBX> <out dir>
+      [--attacks <attack FBX>] [F_Zombie_XX ...]
 
 <Tripo dir> is Assets/_Project/Art/Zombie/Tripo of the Unity project (one folder per model with F_Zombie_XX.fbx and
 Textures/), <animation FBX> is Assets/_Project/Animations/TripoSource/F_Zombie_16_Animations.fbx: the owner's Tripo takes on
 the F_Zombie_16 rig. Only Tripo models and Tripo takes go into the files (no Mixamo or store assets: the site may not
-redistribute those).
+redistribute those). <attack FBX> holds the owner's Tripo attack takes on the F_Zombie_05 rig (F_Zombie_05_Animations.fbx,
+no longer in the game repo; pass it from wherever the owner keeps it, it is never copied into the site repo). Without
+--attacks the files get no attack clips and the page falls back to Idle_Breathe at arm's length.
 
 All Tripo models share the 67 bone names, but each has its own rest pose. The takes are retargeted per model: every bone
 gets the source's parent-relative rotation (q_target = rest_target^-1 * rest_source * q_source), so the limbs move as in
-the take; only the hips keep a translation, scaled to the model's hip height. Loops lose their horizontal drift (they are
+the take; only the hips keep a translation, scaled by the ratio of the leg lengths. Loops lose their horizontal drift (they are
 in place, the page moves the zombie), hits and deaths keep it. The mesh is decimated to about TARGET_TRIS triangles,
 scaled so the head sits at HEAD_HEIGHT m, base color 1024 px and normal 512 px as JPEG, no metallic map (metallic 0,
 roughness 0.85). glTF is +Y up; the zombies face +Z, the feet are at the origin. Clip names follow
-Scripts/Editor/TripoAnimationLibrary.cs of the game.
+Scripts/Editor/TripoAnimationLibrary.cs of the game; the attack clips are named Attack_*.
 """
 import math
 import os
@@ -25,6 +28,11 @@ import bpy
 from mathutils import Quaternion, Vector
 
 argv = sys.argv[sys.argv.index('--') + 1:]
+ATTACK_FBX = None
+if '--attacks' in argv:
+    i = argv.index('--attacks')
+    ATTACK_FBX = argv[i + 1]
+    del argv[i:i + 2]
 TRIPO, ANIM_FBX, OUT = argv[0], argv[1], argv[2]
 MODELS = argv[3:] or ['F_Zombie_01', 'F_Zombie_06', 'F_Zombie_10', 'F_Zombie_16']
 TARGET_TRIS = 7500
@@ -43,6 +51,26 @@ CLIPS = {
     'Death_Forward': ('a zombie collapses forward', False),
     'Death_Back': ('a zombie is shot, its head snaps back', False),
 }
+# Attack takes from the F_Zombie_05 rig: clip name -> start of the Tripo prompt. Exported in place and as loops (a zombie
+# at arm's length keeps swinging); ATTACKS_PER_MODEL picks the ones that read well on each body (checked on rendered
+# frames: upright, swinging forward, hands not through the own body).
+ATTACKS = {
+    'Attack': 'a zombie melee attack',
+    'Attack_Bite': 'a close-range zombie bite attack',
+    'Attack_ClawRight': 'a zombie swipes downward with its right',
+    'Attack_ClawLeft': 'a zombie swipes horizontally with its left',
+    'Attack_Grab': 'a person quickly reaches forward',
+    'Attack_Lunge': 'a person leans forward, reaches out',
+}
+# Skipped on every body: Attack_ClawLeft (the left hand swings behind and through the own torso) and Attack_Bite (the
+# arms barely move, the bite does not read at arm's length).
+ATTACKS_PER_MODEL = {
+    'F_Zombie_01': ['Attack', 'Attack_Grab', 'Attack_ClawRight'],
+    'F_Zombie_06': ['Attack_Lunge', 'Attack_Grab', 'Attack_ClawRight'],
+    'F_Zombie_10': ['Attack', 'Attack_Lunge', 'Attack_ClawRight'],
+    'F_Zombie_16': ['Attack', 'Attack_Lunge', 'Attack_Grab'],
+}
+ATTACKS_DEFAULT = ['Attack', 'Attack_Grab', 'Attack_Lunge']
 HEAVY = ('Walk_Heavy', ('a huge heavy zombie walks forward in place', True))
 HEAVY_MODEL = 'F_Zombie_16'
 
@@ -68,8 +96,17 @@ def rest_relative(arm):
     return rel
 
 
-def find_action(prompt):
-    for a in bpy.data.actions:
+def leg_length(arm):
+    """Hip joint to ankle to toe of both legs, averaged: a rest-pose-independent size of the rig."""
+    total = 0.0
+    for side in ('Left', 'Right'):
+        chain = [arm.data.bones[f'{side}_{n}'].head_local for n in ('UpperLeg', 'LowerLeg', 'Foot', 'Toes')]
+        total += sum((b - a).length for a, b in zip(chain, chain[1:]))
+    return total / 2
+
+
+def find_action(prompt, actions=None):
+    for a in actions if actions is not None else bpy.data.actions:
         name = a.name.split('|', 1)[-1].strip().lower()
         if name.startswith(prompt):
             return a
@@ -142,7 +179,9 @@ def retarget(name, src_action, loop, src_arm, dst_arm):
 
     # Hips: armature-space position of the source, mapped to the target's hip height.
     sb, db = src_arm.data.bones['Hips'], dst_arm.data.bones['Hips']
-    k = db.head_local.z / sb.head_local.z
+    # Scale by leg length, not by the rest hip height: the F_Zombie_05 take rig rests lying down (its takes still stand
+    # up, the hips keys carry the height), so its rest hips sit near the floor.
+    k = leg_length(dst_arm) / leg_length(src_arm)
     s_rot, d_rot = sb.matrix_local.to_3x3(), db.matrix_local.to_3x3().inverted()
     pos = [sb.head_local + s_rot @ hips_loc(f) for f in frames]
     if loop and len(pos) > 1:
@@ -207,6 +246,16 @@ def export(model):
     bpy.data.objects.remove(src_mesh)
     src_arm.name = 'Source'
     takes = [a for a in bpy.data.actions]
+    atk_arm, atk_takes = None, []
+    if ATTACK_FBX:
+        objs = import_fbx(ATTACK_FBX)
+        atk_arm = next(o for o in objs if o.type == 'ARMATURE')
+        for o in objs:
+            if o is not atk_arm:
+                bpy.data.objects.remove(o)
+        atk_arm.name = 'AttackSource'
+        atk_takes = [a for a in bpy.data.actions if a not in takes]
+        takes += atk_takes
     dst_arm, dst_mesh = armature_and_mesh(import_fbx(os.path.join(TRIPO, model, f'{model}.fbx')))
     for a in list(bpy.data.actions):
         if a not in takes:
@@ -217,6 +266,8 @@ def export(model):
     dst_names = {b.name for b in dst_arm.data.bones}
     if src_names != dst_names:
         raise RuntimeError(f'{model}: bone names differ from the take rig: {sorted(src_names ^ dst_names)}')
+    if atk_arm and {b.name for b in atk_arm.data.bones} != dst_names:
+        raise RuntimeError(f'{model}: bone names differ from the attack rig')
     print('MODEL', model)
 
     # Scale to meters (head at HEAD_HEIGHT) and apply, so bone rests and hips keys are in meters.
@@ -249,11 +300,17 @@ def export(model):
     if model == HEAVY_MODEL:
         clips[HEAVY[0]] = HEAVY[1]
     made = []
+    main_takes = [a for a in takes if a not in atk_takes]
     for name, (prompt, loop) in clips.items():
-        made.append(retarget(name, find_action(prompt), loop, src_arm, dst_arm))
+        made.append(retarget(name, find_action(prompt, main_takes), loop, src_arm, dst_arm))
+    if atk_arm:
+        for name in ATTACKS_PER_MODEL.get(model, ATTACKS_DEFAULT):
+            made.append(retarget(name, find_action(ATTACKS[name], atk_takes), True, atk_arm, dst_arm))
     for a in takes:
         bpy.data.actions.remove(a)
     bpy.data.objects.remove(src_arm)
+    if atk_arm:
+        bpy.data.objects.remove(atk_arm)
     # One NLA track per clip, so the exporter writes each as its own animation.
     for action in made:
         track = dst_arm.animation_data.nla_tracks.new()

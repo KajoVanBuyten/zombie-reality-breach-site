@@ -4,7 +4,7 @@
 // geometry, material and textures and has its own AnimationMixer. Model convention: feet at the origin, +Y up, facing +Z,
 // about 1.75 m tall, clips in place (the horde moves the zombie).
 
-import { AnimationMixer, FrontSide, LoopOnce, LoopRepeat, Mesh, MeshStandardMaterial, Sphere, SkinnedMesh, Vector3 } from 'three';
+import { AnimationMixer, FrontSide, LoopOnce, LoopRepeat, Mesh, MeshStandardMaterial, NoColorSpace, SRGBColorSpace, Sphere, SkinnedMesh, Vector3 } from 'three';
 import type { AnimationAction, AnimationClip, Material, Object3D, Texture } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { clone as cloneSkinned } from 'three/examples/jsm/utils/SkeletonUtils.js';
@@ -14,6 +14,10 @@ export const WALKS = ['Walk_Hunched', 'Walk_Stagger'];
 export const RUN = 'Run_Lope';
 export const HEAVY_WALK = 'Walk_Heavy';
 export const IDLE = 'Idle_Breathe';
+/** Attack loops (Attack, Attack_Grab, Attack_Lunge, Attack_ClawRight, ...): each GLB carries two or three of them. */
+export const ATTACK_PREFIX = 'Attack';
+const ZOMBIE_ENV = 0.08;
+const SKIN_TINT = 0xc8b4a8;
 
 export interface ZombieModel {
   name: string;
@@ -21,6 +25,9 @@ export interface ZombieModel {
   clips: Map<string, AnimationClip>;
   /** Ground speed of each walk/run loop in m/s at scale 1 and timeScale 1, measured from the planted feet. */
   speeds: Map<string, number>;
+  /** The model's attack loops and, per clip, the time of the swing peak (hands or head furthest forward), in s. */
+  attacks: string[];
+  peaks: Map<string, number>;
   material: MeshStandardMaterial;
   /** Same look, bright and hot, swapped in for a few frames on a hit (shared by all clones of the model). */
   flash: MeshStandardMaterial;
@@ -55,7 +62,16 @@ function prepare(url: string, scene: Object3D, animations: AnimationClip[]): Zom
   const skinned = mesh as SkinnedMesh;
   const material = skinned.material as MeshStandardMaterial;
   material.side = FrontSide;
-  material.envMapIntensity = 0.5;
+  // Lit by the key and hemisphere lights only; the room IBL (there for the gold) would wash the dark skin out.
+  material.envMapIntensity = ZOMBIE_ENV;
+  // Base color is sRGB, the normal map is data (GLTFLoader does this already; kept explicit so a re-export cannot break it).
+  if (material.map) material.map.colorSpace = SRGBColorSpace;
+  if (material.normalMap) material.normalMap.colorSpace = NoColorSpace;
+  // The Tripo skin islands are a light pinkish beige; a dirty tint keeps them in the game's darker, muddier range.
+  material.color.set(SKIN_TINT);
+  material.emissive.set(0x000000);
+  material.metalness = 0;
+  material.roughness = 0.8;
   const flash = material.clone();
   flash.emissive.set(0xff6a3a);
   flash.emissiveIntensity = 0.9;
@@ -74,7 +90,36 @@ function prepare(url: string, scene: Object3D, animations: AnimationClip[]): Zom
     const clip = clips.get(name);
     if (clip) speeds.set(name, measureSpeed(scene, clip));
   }
-  return { name: url.split('/').pop()!.replace('.glb', ''), scene, clips, speeds, material, flash };
+  const attacks = [...clips.keys()].filter((n) => n.startsWith(ATTACK_PREFIX));
+  const peaks = new Map<string, number>();
+  for (const name of attacks) peaks.set(name, measurePeak(scene, clips.get(name)!));
+  return { name: url.split('/').pop()!.replace('.glb', ''), scene, clips, speeds, attacks, peaks, material, flash };
+}
+
+/** Time in an attack loop where a hand (or the head, for a lunge with the teeth) reaches furthest forward (+Z). */
+function measurePeak(scene: Object3D, clip: AnimationClip): number {
+  const mixer = new AnimationMixer(scene);
+  mixer.clipAction(clip).play();
+  const parts = ['Left_Hand', 'Right_Hand', 'Head'].map((n) => scene.getObjectByName(n));
+  const steps = 64;
+  let best = -Infinity;
+  let at = 0;
+  for (let i = 0; i < steps; i++) {
+    const t = (i / steps) * clip.duration;
+    mixer.setTime(t);
+    scene.updateMatrixWorld(true);
+    parts.forEach((p, k) => {
+      if (!p) return;
+      const z = p.getWorldPosition(_v).z - (k === 2 ? 0.25 : 0);
+      if (z > best) {
+        best = z;
+        at = t;
+      }
+    });
+  }
+  mixer.stopAllAction();
+  mixer.uncacheRoot(scene);
+  return at;
 }
 
 /** Average backward speed of a foot while it is planted (near its lowest point): the speed the loop walks at. */
@@ -172,6 +217,25 @@ export class ZombieBody {
     if (first) next.time = Math.random() * next.getClip().duration;
     else next.fadeIn(fade);
     this.loopAction?.fadeOut(fade);
+    this.loopAction = next;
+  }
+
+  /**
+   * Cross-fades into an attack loop, started so that its swing peak comes `hitIn` seconds from now (the moment the
+   * horde deals the damage). The loop keeps swinging until the horde asks for another clip.
+   */
+  swing(name: string, hitIn: number, fade = 0.2): void {
+    if (this.dead || !this.has(name)) return;
+    const next = this.action(name);
+    const duration = next.getClip().duration;
+    const peak = this.model.peaks.get(name) ?? 0;
+    next.reset().setLoop(LoopRepeat, Infinity).play();
+    next.timeScale = 1;
+    next.time = (((peak - hitIn) % duration) + duration) % duration;
+    if (this.loopAction !== next) {
+      next.fadeIn(fade);
+      this.loopAction?.fadeOut(fade);
+    }
     this.loopAction = next;
   }
 

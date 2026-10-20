@@ -333,6 +333,15 @@ export default function BreachPage() {
           {' · '}
           <Link to="/" className="text-blood hover:text-blood-hover">zombierealitybreach.com</Link>
         </p>
+        {/* Required by CC-BY 4.0 for public/breach/golden_deagle.glb (see CREDITS.md). */}
+        <p className="mt-2 text-[11px] text-bone-muted font-body font-light leading-relaxed">
+          Breach Gold: This work is based on "
+          <a href="https://sketchfab.com/3d-models/desert-eagle-cabde59f5cf24effaf80536e35d04e95" className="underline hover:text-bone" rel="noopener noreferrer">Desert Eagle</a>
+          " by{' '}
+          <a href="https://sketchfab.com/ELIZION" className="underline hover:text-bone" rel="noopener noreferrer">ELIZION</a>
+          {' '}licensed under{' '}
+          <a href="http://creativecommons.org/licenses/by/4.0/" className="underline hover:text-bone" rel="noopener noreferrer">CC-BY-4.0</a>.
+        </p>
       </section>
     </div>
   );
