@@ -1,6 +1,6 @@
 # Deployment mit Wrangler
 
-Die Website läuft als Cloudflare Worker mit statischen Assets (Konfiguration in `wrangler.jsonc`): der Worker liefert den Vite-Build aus `dist/` und beantwortet `/api/leaderboards` selbst (`worker/index.ts`). Beide Domains `zombierealitybreach.com` und `www.zombierealitybreach.com` hängen als Custom Domains am Worker.
+Die Website läuft als Cloudflare Worker mit statischen Assets (Konfiguration in `wrangler.jsonc`): der Worker liefert den Vite-Build aus `dist/` und beantwortet `/api/*` selbst (`worker/index.ts`: Bestenlisten, Web-AR-Quest, Meta-Verknüpfung, Belohnungen für Cloud Code). Beide Domains `zombierealitybreach.com` und `www.zombierealitybreach.com` hängen als Custom Domains am Worker.
 
 ## Voraussetzungen
 
@@ -60,6 +60,8 @@ npm run typecheck && npm run lint && npm run build && npx wrangler deploy
 | `run_worker_first = ["/api/*"]` | API-Aufrufe gehen an den Worker, nicht an den SPA-Fallback. |
 | `keep_vars = true` | Variablen und Secrets aus dem Cloudflare-Dashboard bleiben bei jedem Deploy erhalten. Ohne diese Zeile löscht ein Deploy sie. |
 | `vars.UGS_ENVIRONMENT_ID` | Die Unity-Gaming-Services-Umgebung für die Bestenlisten (kein Geheimnis). |
+| `vars.META_APP_ID`, `vars.META_ORG_ID` | Meta-App-ID und Team-ID (Organisations-ID) für die Kontoverknüpfung der Web-AR-Quest (keine Geheimnisse). `META_ORG_ID` ist leer, bis der Besitzer sie einträgt. |
+| `d1_databases` (`DB`) | D1-Datenbank `zrb-web-quest` für Quest-Läufe, Belohnungen und Codes; Schema in `migrations/`. |
 
 ## Secrets
 
@@ -74,6 +76,48 @@ npx wrangler secret put UGS_SECRET
 ```
 
 Beide Befehle fragen den Wert interaktiv ab. Nur der Besitzer setzt sie; ein normales Deploy fasst sie nicht an.
+
+## Web-AR-Quest: einmalige Schritte (nur Besitzer)
+
+Die Quest unter `/breach` und ihre API (`/api/quest/*`, `/api/meta/*`, `/api/rewards/*`, Vertrag in `Docs/WEB_AR_QUEST.md` des Spiel-Repos) brauchen einmalig eine Datenbank, drei Secrets und die Meta-Einstellungen. Bis dahin antworten die Endpunkte `503 { configured: false }`; die Quest ist spielbar, die Belohnung wird dann als „noch nicht eingeschaltet“ angezeigt.
+
+1. D1-Datenbank anlegen und die ausgegebene `database_id` in `wrangler.jsonc` bei `d1_databases` eintragen (ersetzt den Platzhalter aus Nullen):
+
+```bash
+npx wrangler d1 create zrb-web-quest
+```
+
+2. Schema einspielen:
+
+```bash
+npx wrangler d1 migrations apply zrb-web-quest --remote
+```
+
+3. Secrets setzen (jeder Befehl fragt den Wert interaktiv ab):
+
+```bash
+npx wrangler secret put META_APP_SECRET
+```
+
+```bash
+npx wrangler secret put QUEST_SECRET
+```
+
+```bash
+npx wrangler secret put WEB_REWARDS_KEY
+```
+
+- `META_APP_SECRET`: App Secret aus dem Meta Developer Dashboard (Development > API > App Credentials, nur mit Admin-Konto sichtbar).
+- `QUEST_SECRET`: eine lange Zufallszeichenkette, nur hier gebraucht (signiert die Lauf-Token und das tägliche Salz der IP-Hashes). Wechselt sie, werden laufende Quest-Läufe ungültig.
+- `WEB_REWARDS_KEY`: eine lange Zufallszeichenkette, **derselbe Wert** wie `ZRB_WEB_REWARDS_KEY` im UGS Secret Manager (Cloud Code `claimWebRewards` schickt ihn als `Authorization: Bearer`).
+
+4. Meta Developer Dashboard → Team → SSO: Login-URI `https://zombierealitybreach.com/breach/linked` eintragen und speichern.
+
+5. Die Organisations-ID (Team-ID) des Meta-Teams in `wrangler.jsonc` unter `vars.META_ORG_ID` eintragen (kein Secret).
+
+6. Bauen und deployen wie oben. Prüfen: `curl -s -X POST https://zombierealitybreach.com/api/quest/start -H "content-type: application/json" -d "{}"` liefert `{ run, token }`; `/api/meta/link` ohne Lauf antwortet `400 invalid_run` statt `503`.
+
+Lokal testen ohne Cloudflare-Ressourcen: `npx wrangler d1 migrations apply zrb-web-quest --local`, dann `npx wrangler dev --var QUEST_SECRET:<test> --var WEB_REWARDS_KEY:<test>` (Testwerte, nie die echten).
 
 ## Versionen und Zurückrollen
 
