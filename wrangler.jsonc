@@ -14,7 +14,7 @@
   "vars": {
     "UGS_ENVIRONMENT_ID": "7fa5df87-b89f-4fc5-86ae-ddd3b58e52c9",
     "META_APP_ID": "25218570581111764",
-    "META_ORG_ID": ""
+    "META_ORG_ID": "845634371971248"
   },
   // Web AR quest runs, rewards and codes (migrations/). database_id is a placeholder until the owner runs
   // `npx wrangler d1 create zrb-web-quest` and pastes the printed id here (DEPLOY.md).
