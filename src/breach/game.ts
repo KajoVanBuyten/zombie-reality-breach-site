@@ -1,16 +1,17 @@
 // The web AR quest "Breach in your home" (Docs/WEB_AR_QUEST.md in the game repo), rendered with three.js in an
 // immersive-ar session on Meta Quest. Five stages:
-//   1 rift      a glowing crack tears open on a real wall, zombie arms reach through, the starter pistol appears
-//   2 hunt      three golden parts lie on detected surfaces (table/couch, floor, second wall); zombies crawl out of
-//               the wall rifts; shoot them and grab the parts
+//   1 rift      a glowing crack tears open on a real wall, zombies lurk in the dark behind it, the starter pistol appears
+//   2 hunt      three golden parts lie on detected surfaces (table/couch, floor, second wall); zombies walk or run out
+//               of the wall rifts; shoot them and grab the parts
 //   3 assemble  the parts float in front of the player; take them in both hands and bring the hands together
 //   4 finale    a big zombie breaks through the main rift; kill it with the golden Desert Eagle, then shoot the three
 //               seal points to close the rift
 //   5 reward    "Weapon secured"; the page takes over with account linking or a code
 // Room planes are only read here and never leave the browser.
 //
-// Performance (Quest 2, 72 fps): no shadow maps (blob shadows only), instanced zombies, one particle draw call,
-// canvas panels redrawn only on change, no post-processing.
+// Performance (Quest 2, 72 fps): no shadow maps (blob shadows only), at most 10 skinned zombies (~7.5k triangles each,
+// shared geometry, materials and textures), one particle draw call, canvas panels redrawn only on change, no
+// post-processing.
 
 import {
   AdditiveBlending,
@@ -49,6 +50,7 @@ import { Rift } from './rift';
 import { Room } from './room';
 import type { Surface } from './room';
 import { Horde, raySphere } from './zombies';
+import { ZOMBIE_FILES } from './zombieModels';
 import type { Zombie } from './zombies';
 import { GOLD, buildStarterPistol, disposeTree, loadGoldenSet, makeFlash, makeLaser, mountGun } from './weapons';
 import type { GoldenSet, Gun } from './weapons';
@@ -242,11 +244,15 @@ export class BreachGame {
     this.scene.add(sun, this.camera);
 
     this.particles = new Particles(this.scene);
-    this.horde = new Horde(this.scene, {
-      groan: (at, big) => this.audio.groan(at, big),
-      attack: (z) => this.playerHit(z),
-      died: (z) => this.zombieDied(z),
-    });
+    this.horde = new Horde(
+      this.scene,
+      {
+        groan: (at, big) => this.audio.groan(at, big),
+        attack: (z) => this.playerHit(z),
+        died: (z) => this.zombieDied(z),
+      },
+      ZOMBIE_FILES.map((f) => asset(`breach/zombies/${f}.glb`)),
+    );
     this.scene.add(this.panel.mesh);
 
     this.pistolMount = mountGun(this.pistol);
@@ -971,7 +977,7 @@ export class BreachGame {
     } else if (hit) {
       end = hit.point;
       const damage = (gold ? 3 : 1) * (hit.head ? 2 : 1);
-      this.horde.damage(hit.zombie, damage);
+      this.horde.damage(hit.zombie, damage, hit.head);
       this.audio.hit(hit.point, hit.head);
       this.particles.emit(hit.point, { count: hit.head ? 24 : 14, color: 0xff7a30, speed: 1.4, size: 0.018, life: 0.4, dir: dir.clone().negate(), spread: 0.9, gravity: 4 });
       this.particles.emit(hit.point, { count: 10, color: 0x6a0c08, speed: 0.8, size: 0.03, life: 0.6, gravity: 5 });
