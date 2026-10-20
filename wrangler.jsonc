@@ -1,7 +1,7 @@
-// Cloudflare Worker that serves the built site (dist/) at zombierealitybreach.com, plus /api/leaderboards
-// (worker/index.ts, reads the game's scores from Unity Gaming Services).
+// Cloudflare Worker that serves the built site (dist/) at zombierealitybreach.com, plus the API under /api/* (worker/index.ts):
+// leaderboards from Unity Gaming Services and the web AR quest (D1 database "zrb-web-quest", Meta account linking).
 // Deploy: npm run build && npx wrangler deploy
-// Secrets (owner only): npx wrangler secret put UGS_KEY_ID / UGS_SECRET
+// Secrets (owner only): npx wrangler secret put UGS_KEY_ID / UGS_SECRET / META_APP_SECRET / QUEST_SECRET / WEB_REWARDS_KEY
 {
   "name": "zombie-reality-breach-site",
   "main": "worker/index.ts",
@@ -9,7 +9,23 @@
   // Keep variables set in the Cloudflare dashboard; without this every deploy deletes them.
   "keep_vars": true,
   // UGS environment "production" (not a secret).
-  "vars": { "UGS_ENVIRONMENT_ID": "7fa5df87-b89f-4fc5-86ae-ddd3b58e52c9" },
+  // META_APP_ID: public Meta app id. META_ORG_ID: Meta team (organization) id for account linking, not a secret;
+  // empty until the owner fills it in (the /api/meta endpoints answer 503 { configured: false } until then).
+  "vars": {
+    "UGS_ENVIRONMENT_ID": "7fa5df87-b89f-4fc5-86ae-ddd3b58e52c9",
+    "META_APP_ID": "25218570581111764",
+    "META_ORG_ID": ""
+  },
+  // Web AR quest runs, rewards and codes (migrations/). database_id is a placeholder until the owner runs
+  // `npx wrangler d1 create zrb-web-quest` and pastes the printed id here (DEPLOY.md).
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "zrb-web-quest",
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations"
+    }
+  ],
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
