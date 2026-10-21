@@ -233,6 +233,8 @@ if (-not $SkipPress) {
   $readme = @"
 ZOMBIE REALITY BREACH - PRESS KIT
 KaMa Studios - https://zombierealitybreach.com - support@zombierealitybreach.com
+TikTok https://www.tiktok.com/@zombierealitybreach - Instagram https://www.instagram.com/zombierealitybreach/
+YouTube https://www.youtube.com/@ZombieRealityBreach
 
 Logo/        Logo (ZOMBIE lettering + REALITY BREACH), wordmark, skull signet, app icon.
              *_on_dark for dark backgrounds, *_on_light for light backgrounds. SVG scales freely.

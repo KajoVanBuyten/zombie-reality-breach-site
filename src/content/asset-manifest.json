@@ -1,5 +1,5 @@
 {
-    "generated":  "2026-10-16",
+    "generated":  "2026-10-21",
     "source":  "E:/source/Unity/zombie-reality-breach/Media (Store/Meta/Final_5_Themen, Brand/Source/Final_5_Themen, Brand/Logo)",
     "script":  "scripts/Build-WebAssets.ps1",
     "themes":  [
@@ -34,7 +34,7 @@
                        "logo":  "dark"
                    }
                ],
-    "totalBytes":  77805166,
+    "totalBytes":  77805340,
     "files":  [
                   {
                       "path":  "/apple-touch-icon.png",
@@ -994,15 +994,15 @@
                   },
                   {
                       "path":  "/assets/press/zrb-keyart.zip",
-                      "bytes":  20030351
+                      "bytes":  20030409
                   },
                   {
                       "path":  "/assets/press/zrb-logo.zip",
-                      "bytes":  2940880
+                      "bytes":  2940938
                   },
                   {
                       "path":  "/assets/press/zrb-presskit.zip",
-                      "bytes":  22971829
+                      "bytes":  22971887
                   },
                   {
                       "path":  "/favicon.ico",
