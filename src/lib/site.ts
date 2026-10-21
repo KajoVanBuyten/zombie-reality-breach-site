@@ -11,6 +11,13 @@ export const BETA_OPEN = false;
 /** Meta Quest link used by the general calls to action (replace with the Coming Soon store URL when it is live). */
 export const META_URL = META_ALPHA_URL;
 
+/** The game's social media profiles (account address social@zombierealitybreach.com, created 2026-10-21). Plain links, no embeds. */
+export const SOCIAL_LINKS = [
+  { id: 'tiktok', label: 'TikTok', url: 'https://www.tiktok.com/@zombierealitybreach' },
+  { id: 'instagram', label: 'Instagram', url: 'https://www.instagram.com/zombierealitybreach/' },
+  { id: 'youtube', label: 'YouTube', url: 'https://www.youtube.com/@ZombieRealityBreach' },
+] as const;
+
 /** Privacy policy of the game itself (not of this website). */
 export const GAME_PRIVACY_URL = 'https://zombierealitybreach.com/privacy';
 

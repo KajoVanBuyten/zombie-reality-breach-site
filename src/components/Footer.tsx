@@ -3,6 +3,7 @@ import { Mail } from 'lucide-react';
 import { brand } from '@/lib/site';
 import { useI18n } from '@/lib/i18n';
 import { CONTACT_EMAIL } from '@/lib/site';
+import SocialLinks from '@/components/SocialLinks';
 
 export default function Footer() {
   const { t } = useI18n();
@@ -46,6 +47,8 @@ export default function Footer() {
               <Mail className="w-4 h-4" />
               {CONTACT_EMAIL}
             </a>
+            <h4 className="text-xs font-heading uppercase tracking-widest text-bone-muted mt-8 mb-4">{t('footer.follow')}</h4>
+            <SocialLinks />
           </div>
         </div>
 

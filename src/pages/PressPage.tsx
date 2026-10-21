@@ -6,6 +6,7 @@ import manifest from '@/content/asset-manifest.json';
 import SteelCard from '@/components/SteelCard';
 import HazardDivider from '@/components/HazardDivider';
 import PageHero from '@/components/PageHero';
+import SocialLinks from '@/components/SocialLinks';
 
 const facts = [
   { label: 'Developer', value: 'KaMa Studios' },
@@ -19,6 +20,7 @@ const facts = [
   { label: 'Engine', value: 'Unity 6, Meta XR SDK' },
   { label: 'Website', value: 'zombierealitybreach.com' },
   { label: 'Press contact', value: CONTACT_EMAIL },
+  { label: 'Social', value: 'TikTok and Instagram @zombierealitybreach · YouTube @ZombieRealityBreach' },
 ];
 
 const descriptions: { label: string; en: string }[] = [
@@ -210,6 +212,7 @@ export default function PressPage() {
         <div className="mt-6 p-5 border border-dashed border-bg-steel text-center">
           <p className="text-[10px] font-heading uppercase tracking-wider text-bone-muted mb-1">{t('press.contact')}</p>
           <a href={`mailto:${CONTACT_EMAIL}`} className="text-sm text-blood hover:text-blood-hover font-body">{CONTACT_EMAIL}</a>
+          <SocialLinks className="justify-center mt-4" />
         </div>
 
         <div className="mt-6 steel-card p-5">
