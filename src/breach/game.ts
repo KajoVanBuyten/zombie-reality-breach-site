@@ -95,6 +95,14 @@ interface Part {
 }
 
 const SCAN_TIMEOUT = 3;
+// Player health: a normal hit takes 1/PLAYER_HITS, the finale zombie's twice that. It refills after REGEN_DELAY s without
+// damage. At zero the player goes down for DOWN_TIME s: nearby zombies are pushed back, health refills and the quest
+// goes on at the same stage (no restart; the server's step and run times only get longer).
+const PLAYER_HITS = 10;
+const REGEN_DELAY = 4;
+const REGEN_PER_S = 0.25;
+const DOWN_TIME = 2.5;
+const DOWN_CLEAR_RADIUS = 3;
 // Dim-room lighting (see the constructor).
 const EXPOSURE = 0.7;
 const AMBIENT = 0.25;
@@ -141,6 +149,8 @@ const TEXT = {
     finaleText: 'Something big is coming through the wall…',
     finaleBig: 'Bring it down with the golden Desert Eagle!',
     sealText: 'Shoot the three seal points to close the rift!',
+    downTitle: 'You went down',
+    downText: 'Catch your breath. The rift pushes them back…',
     rewardTitle: 'Weapon secured',
     rewardText: 'Breach Gold is yours. Take off the headset view to link your Meta account or show your code.',
     time: 'Time',
@@ -171,6 +181,8 @@ const TEXT = {
     finaleText: 'Etwas Großes kommt durch die Wand…',
     finaleBig: 'Leg es mit der goldenen Desert Eagle um!',
     sealText: 'Schieß auf die drei Siegelpunkte, um den Riss zu schließen!',
+    downTitle: 'Du bist zu Boden gegangen',
+    downText: 'Kurz durchatmen. Der Riss drängt sie zurück…',
     rewardTitle: 'Waffe gesichert',
     rewardText: 'Breach Gold gehört dir. Verlasse die Brillenansicht, um dein Meta-Konto zu verknüpfen oder deinen Code anzuzeigen.',
     time: 'Zeit',
@@ -218,6 +230,11 @@ export class BreachGame {
   private tracerTime = 0;
   private hurtMat: ShaderMaterial;
   private hurt = 0;
+  /** 1 = full, 0 = down. */
+  private health = 1;
+  private sinceHit = Infinity;
+  /** Seconds since going down, -1 while standing. */
+  private downT = -1;
   private kills = 0;
   private spawnTimer = 0;
   private spawnSide = 0;
@@ -261,6 +278,7 @@ export class BreachGame {
       this.scene,
       {
         groan: (at, big) => this.audio.groan(at, big),
+        lunge: (z) => this.audio.attack(z.head, z.big),
         attack: (z) => this.playerHit(z),
         died: (z) => this.zombieDied(z),
       },
@@ -441,7 +459,8 @@ export class BreachGame {
     _fwd.set(0, 0, -1).transformDirection(cam.matrixWorld);
     this.audio.updateListener(cam);
 
-    switch (this.stage) {
+    if (this.downT >= 0) this.stageTime -= dt;
+    else switch (this.stage) {
       case 'scan':
         this.updateScan();
         break;
@@ -471,8 +490,7 @@ export class BreachGame {
     this.updateGun(dt);
     this.updateHover();
     this.particles.update(dt);
-    this.hurt = Math.max(0, this.hurt - dt * 1.6);
-    this.hurtMat.uniforms.uAmount.value = this.hurt;
+    this.updateHealth(dt);
     this.goldPulse += dt;
     if (this.golden) for (const m of this.golden.materials) m.emissiveIntensity = 0.55 + 0.45 * Math.sin(this.goldPulse * 3);
 
@@ -493,7 +511,8 @@ export class BreachGame {
     }
   }
 
-  private hud(content: Omit<PanelContent, 'corner'>, smooth = 0.06): void {
+  private hud(content: Omit<PanelContent, 'corner'>, smooth = 0.06, force = false): void {
+    if (this.downT >= 0 && !force) return;
     const corner = this.questStart ? formatTime((this.time - this.questStart) * 1000) : undefined;
     this.panel.show({ ...content, corner });
     this.panel.placeInFront(_head, _fwd, this.stage === 'scan' || this.stage === 'reward' ? 0.9 : 1.15, this.stage === 'scan' || this.stage === 'reward' ? 0.1 : 0.42, smooth);
@@ -527,7 +546,14 @@ export class BreachGame {
   /** Places rifts and parts from the detected planes (or a virtual wall), then starts stage 1. */
   private setupWorld(): void {
     if (this.stage !== 'scan') return;
-    this.floorY = this.room.floorY(this.localFloor ? 0 : _head.y - 1.6);
+    const fallback = this.localFloor ? 0 : _head.y - 1.6;
+    const planeFloor = this.room.floorY(fallback);
+    // In local-floor space y = 0 is the real floor (the headset's own floor); a "floor" plane far from it is a
+    // mislabeled surface (a rug, a bed) and would make the zombies float.
+    this.floorY = this.localFloor && Math.abs(planeFloor) > 0.25 ? 0 : planeFloor;
+    console.info(
+      `[breach] floor y ${this.floorY.toFixed(3)} (floor plane ${planeFloor.toFixed(3)}, ${this.localFloor ? 'local-floor' : 'local'}), head ${(_head.y - this.floorY).toFixed(2)} m above it`,
+    );
     const head = _head.clone();
     const forward = _fwd.clone().setY(0);
     if (forward.lengthSq() < 1e-4) forward.set(0, 0, -1);
@@ -635,7 +661,7 @@ export class BreachGame {
     });
     this.at(7, () => {
       this.gunMode = 'pistol';
-      this.audio.snap(_head);
+      this.audio.slide(_head, false);
       this.pulse(this.gunSlot, 0.5, 60);
     });
     this.at(11.5, () => {
@@ -815,6 +841,7 @@ export class BreachGame {
       this.rebuildHeld(done);
       this.mountGolden();
       this.audio.snap(this.handPosition(done, _v), true);
+      this.audio.slide(_v, true);
       this.particles.emit(_v, { count: 90, color: GOLD, speed: 1.6, size: 0.02, life: 0.9 });
       this.pulse(done, 1, 200);
     }
@@ -995,8 +1022,8 @@ export class BreachGame {
     } else if (hit) {
       end = hit.point;
       const damage = (gold ? 3 : 1) * (hit.head ? 2 : 1);
-      this.horde.damage(hit.zombie, damage, hit.head);
-      this.audio.hit(hit.point, hit.head);
+      // A kill plays the death cry (zombieDied), any other hit a grunt from the zombie's head.
+      if (!this.horde.damage(hit.zombie, damage, hit.head)) this.audio.hit(hit.zombie.head, hit.head);
       this.particles.emit(hit.point, { count: hit.head ? 24 : 14, color: 0xff7a30, speed: 1.4, size: 0.018, life: 0.4, dir: dir.clone().negate(), spread: 0.9, gravity: 4 });
       this.particles.emit(hit.point, { count: 10, color: 0x6a0c08, speed: 0.8, size: 0.03, life: 0.6, gravity: 5 });
     }
@@ -1015,15 +1042,45 @@ export class BreachGame {
 
   private zombieDied(z: Zombie): void {
     this.kills++;
-    this.audio.hit(z.chest, false);
+    this.audio.death(z.head, z.big);
     this.particles.emit(z.chest, { count: z.big ? 140 : 40, color: 0xff6a1a, speed: z.big ? 2 : 1.3, size: z.big ? 0.035 : 0.022, life: 0.9, gravity: 2 });
     if (z.big) this.audio.rumble(z.chest, 1.5, 1.2);
   }
 
   private playerHit(z: Zombie): void {
-    this.hurt = Math.min(1, this.hurt + (z.big ? 1 : 0.7));
+    if (this.downT >= 0 || this.stage === 'reward') return;
+    this.health = Math.max(0, this.health - (z.big ? 2 : 1) / PLAYER_HITS);
+    this.sinceHit = 0;
+    this.hurt = Math.min(1, this.hurt + 0.45);
     this.audio.hurt();
     for (const s of this.slots) this.pulse(s, 1, 150);
+    if (this.health <= 0) {
+      // Down, not out: clear the space around the player and carry on with everything kept.
+      this.downT = 0;
+      this.horde.repel(_head, DOWN_CLEAR_RADIUS);
+      this.audio.rumble(_head, 1.2, 0.7);
+      for (const s of this.slots) this.pulse(s, 1, 400);
+    }
+  }
+
+  /** Regeneration, the down moment and the red vignette (stronger the lower the health). */
+  private updateHealth(dt: number): void {
+    this.hurt = Math.max(0, this.hurt - dt * 1.6);
+    if (this.downT >= 0) {
+      this.downT += dt;
+      this.horde.repel(_head, DOWN_CLEAR_RADIUS);
+      this.hud({ title: this.t.downTitle, lines: [this.t.downText], accent: 'blood' }, 0.3, true);
+      if (this.downT >= DOWN_TIME) {
+        this.downT = -1;
+        this.health = 1;
+        this.sinceHit = Infinity;
+      }
+    } else {
+      this.sinceHit += dt;
+      if (this.sinceHit > REGEN_DELAY) this.health = Math.min(1, this.health + REGEN_PER_S * dt);
+    }
+    const low = this.downT >= 0 ? 1 : (1 - this.health) * 0.85;
+    this.hurtMat.uniforms.uAmount.value = Math.min(1, Math.max(this.hurt, low));
   }
 
   private updateRiftEmbers(dt: number): void {

@@ -341,6 +341,10 @@ export default function BreachPage() {
           <a href="https://sketchfab.com/ELIZION" className="underline hover:text-bone" rel="noopener noreferrer">ELIZION</a>
           {' '}licensed under{' '}
           <a href="http://creativecommons.org/licenses/by/4.0/" className="underline hover:text-bone" rel="noopener noreferrer">CC-BY-4.0</a>.
+          {' '}Pistol sound: "
+          <a href="https://opengameart.org/content/chaingun-pistol-rifle-shotgun-shots" className="underline hover:text-bone" rel="noopener noreferrer">Chaingun, pistol, rifle, shotgun shots</a>
+          " by Michel Baradari, licensed under{' '}
+          <a href="https://creativecommons.org/licenses/by/3.0/" className="underline hover:text-bone" rel="noopener noreferrer">CC-BY 3.0</a>.
         </p>
       </section>
     </div>

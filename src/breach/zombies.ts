@@ -26,14 +26,21 @@ import {
 } from 'three';
 import type { BufferGeometry, Material, Scene } from 'three';
 import type { Rift } from './rift';
-import { HEAVY_WALK, IDLE, RUN, WALKS, ZombieBody, disposeZombieModels, loadZombieModels } from './zombieModels';
+import { HEAVY_WALK, IDLE, RUN, WALKS, ZombieBody, disposeZombieModels, loadZombieModels, skinnedExtent } from './zombieModels';
 import type { ZombieModel } from './zombieModels';
 
 const MAX_ZOMBIES = 10;
 const MAX_HANDS = 6;
 const MAX_LURKERS = 3;
 const STAND_PITCH = 0.12;
-const BIG_SCALE = 1.55;
+/** World heights (soles to top of head, m): normal zombies NORMAL_HEIGHT, the finale zombie BIG_HEIGHT (fits under a
+ * 2.4 m ceiling). The scale of each body comes from the model's measured standing height (ZombieModel.height). */
+const NORMAL_HEIGHT: [number, number] = [1.62, 1.78];
+const BIG_HEIGHT = 2.05;
+/** Height of the primitive fallback zombies at scale 1. */
+const PRIMITIVE_HEIGHT = 1.75;
+/** How many zombies log their measured size (console, for checking on the headset). */
+const SIZE_LOGS = 8;
 const RUNNER_SHARE = 0.25;
 const HIT_TIME = 0.6;
 /** Seconds from reaching the player to the damage; an attack clip is started so its swing peak lands right then. */
@@ -51,6 +58,11 @@ export interface Zombie {
   yaw: number;
   pitch: number;
   scale: number;
+  /** Target world height (m); the scale follows from it once the model is known. */
+  height: number;
+  /** Sole height above the root at scale 1 (from the model). */
+  footY: number;
+  sizeLogged: boolean;
   hp: number;
   /** Ground speed in m/s; with a model it matches the clip so the feet do not slide. */
   speed: number;
@@ -103,6 +115,8 @@ interface Hand {
 
 export interface HordeEvents {
   groan(at: Vector3, big: boolean): void;
+  /** A zombie starts its attack (shout); `attack` follows on the damage tick. */
+  lunge(zombie: Zombie): void;
   attack(zombie: Zombie): void;
   died(zombie: Zombie): void;
 }
@@ -164,6 +178,7 @@ export class Horde {
   private disposed = false;
   private primitive: PrimitiveBodies | null = null;
   private target = new Vector3();
+  private sizeLogs = 0;
   floorY = 0;
 
   /** `urls`: the zombie GLBs; loading starts right away, zombies get their model as soon as it is there. */
@@ -211,7 +226,10 @@ export class Horde {
       pos: start,
       yaw: Math.atan2(rift.normal.x, rift.normal.z),
       pitch: STAND_PITCH,
-      scale: big ? BIG_SCALE : 0.95 + Math.random() * 0.1,
+      scale: 1,
+      height: big ? BIG_HEIGHT : NORMAL_HEIGHT[0] + Math.random() * (NORMAL_HEIGHT[1] - NORMAL_HEIGHT[0]),
+      footY: 0,
+      sizeLogged: false,
       hp: big ? 30 : 2,
       speed: big ? 0.38 : runner ? 1 : 0.42 + Math.random() * 0.22,
       clip: big ? HEAVY_WALK : runner ? RUN : pick(WALKS),
@@ -237,6 +255,7 @@ export class Horde {
       base: new Matrix4(),
     };
     if (big) z.skin.set(0x6a7a58);
+    z.scale = z.height / PRIMITIVE_HEIGHT;
     this.attach(z);
     this.zombies.push(z);
     return z;
@@ -251,6 +270,9 @@ export class Horde {
     const body = new ZombieBody(model);
     this.scene.add(body.root);
     z.body = body;
+    // Height normalisation: scale from the measured standing height of this model, feet on the floor.
+    z.scale = Math.max(0.6, Math.min(1.6, z.height / model.height));
+    z.footY = model.footY;
     const natural = (model.speeds.get(z.clip) ?? 0.5) * z.scale;
     const [lo, hi] = z.big ? [0.3, 0.5] : z.runner ? [0.85, 1.2] : [0.35, 0.7];
     z.speed = Math.max(lo, Math.min(hi, natural * z.variety));
@@ -306,6 +328,30 @@ export class Horde {
     }
     this.events.died(z);
     return true;
+  }
+
+  /**
+   * The player went down: zombies within `radius` (on the floor plane) fade out where they stand, without a kill; the
+   * finale zombie is shoved back to the edge of the radius instead.
+   */
+  repel(center: Vector3, radius: number): void {
+    for (const z of this.zombies) {
+      if (z.phase === 'dying') continue;
+      _v.subVectors(z.pos, center).setY(0);
+      const d = _v.length();
+      if (d >= radius) continue;
+      if (z.big) {
+        if (d > 1e-3) _v.divideScalar(d);
+        else _v.set(0, 0, -1);
+        z.pos.set(center.x, z.pos.y, center.z).addScaledVector(_v, radius);
+        z.phase = 'walk';
+        z.t = 0;
+        continue;
+      }
+      z.phase = 'dying';
+      z.t = 0;
+      z.dieFor = 0;
+    }
   }
 
   /** Lets every zombie collapse (end of the hunt). */
@@ -376,7 +422,7 @@ export class Horde {
         if (z.emerged >= z.emergeTo) {
           z.phase = 'walk';
           z.t = 0;
-          this.events.groan(z.pos, z.big);
+          this.events.groan(z.head, z.big);
         }
         break;
       }
@@ -392,6 +438,7 @@ export class Horde {
           const attacks = z.body?.model.attacks ?? [];
           z.attack = attacks.length ? pick(attacks) : null;
           z.swinging = false;
+          this.events.lunge(z);
           break;
         }
         z.cycle += dt * (z.big ? 4 : z.runner ? 9 : 5.5);
@@ -458,6 +505,7 @@ export class Horde {
       }
       if (!l.body && this.models && l.t >= 0) {
         l.body = new ZombieBody(pick(this.models));
+        l.body.root.scale.setScalar(1.7 / l.body.model.height);
         this.scene.add(l.body.root);
       }
       const b = l.body;
@@ -506,10 +554,20 @@ export class Horde {
         b.setFade(1 - k);
         sink = k * 0.12;
       }
-      b.root.position.set(z.pos.x, z.pos.y - sink, z.pos.z);
+      b.root.position.set(z.pos.x, z.pos.y - sink - z.footY * z.scale, z.pos.z);
       b.root.rotation.set(0, z.yaw, 0);
       b.root.scale.setScalar(z.scale);
       b.root.updateMatrixWorld(true);
+      if (!z.sizeLogged) {
+        z.sizeLogged = true;
+        if (this.sizeLogs++ < SIZE_LOGS || z.big) {
+          const { min, max } = skinnedExtent(b.mesh);
+          console.info(
+            `[breach] zombie ${b.model.name}${z.big ? ' (finale)' : ''}: standing height ${b.model.height.toFixed(3)} m at scale 1, ` +
+              `scale ${z.scale.toFixed(3)}, target ${z.height.toFixed(2)} m, measured in its current ${z.clip} pose ${(max - min).toFixed(3)} m, soles ${(min - this.floorY).toFixed(3)} m above the floor (y ${this.floorY.toFixed(3)})`,
+          );
+        }
+      }
       b.centers(z.head, z.chest, z.hips);
       // Blob shadow under the hips, gone with the body.
       const shade = z.phase === 'dying' ? Math.max(0, 1 - z.t / (z.dieFor + 0.2)) : 1;

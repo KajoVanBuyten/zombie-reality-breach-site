@@ -28,6 +28,10 @@ export interface ZombieModel {
   /** The model's attack loops and, per clip, the time of the swing peak (hands or head furthest forward), in s. */
   attacks: string[];
   peaks: Map<string, number>;
+  /** Standing height (soles to top of the head, m) and sole height above the origin, measured on the skinned mesh in
+   * the first Idle_Breathe pose at scale 1: the horde scales every body from this to its target height. */
+  height: number;
+  footY: number;
   material: MeshStandardMaterial;
   /** Same look, bright and hot, swapped in for a few frames on a hit (shared by all clones of the model). */
   flash: MeshStandardMaterial;
@@ -93,7 +97,36 @@ function prepare(url: string, scene: Object3D, animations: AnimationClip[]): Zom
   const attacks = [...clips.keys()].filter((n) => n.startsWith(ATTACK_PREFIX));
   const peaks = new Map<string, number>();
   for (const name of attacks) peaks.set(name, measurePeak(scene, clips.get(name)!));
-  return { name: url.split('/').pop()!.replace('.glb', ''), scene, clips, speeds, attacks, peaks, material, flash };
+  const { height, footY } = measureHeight(skinned, scene, clips.get(IDLE) ?? null);
+  return { name: url.split('/').pop()!.replace('.glb', ''), scene, clips, speeds, attacks, peaks, height, footY, material, flash };
+}
+
+/** Vertical extent of a skinned mesh in world space (every `step`-th vertex, with the current bone pose). */
+export function skinnedExtent(mesh: SkinnedMesh, step = 3): { min: number; max: number } {
+  const pos = mesh.geometry.attributes.position;
+  let min = Infinity;
+  let max = -Infinity;
+  for (let i = 0; i < pos.count; i += step) {
+    mesh.getVertexPosition(i, _v).applyMatrix4(mesh.matrixWorld);
+    if (_v.y < min) min = _v.y;
+    if (_v.y > max) max = _v.y;
+  }
+  return { min, max };
+}
+
+function measureHeight(mesh: SkinnedMesh, scene: Object3D, idle: AnimationClip | null): { height: number; footY: number } {
+  const mixer = new AnimationMixer(scene);
+  if (idle) {
+    mixer.clipAction(idle).play();
+    mixer.setTime(0);
+  }
+  scene.updateMatrixWorld(true);
+  const { min, max } = skinnedExtent(mesh, 2);
+  mixer.stopAllAction();
+  mixer.uncacheRoot(scene);
+  const height = max - min;
+  // A broken export (wrong unit, lying rest pose) must not produce a giant: fall back to the export convention.
+  return height > 0.5 && height < 3 ? { height, footY: min } : { height: 1.7, footY: 0 };
 }
 
 /** Time in an attack loop where a hand (or the head, for a lunge with the teeth) reaches furthest forward (+Z). */
