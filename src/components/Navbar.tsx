@@ -34,17 +34,17 @@ export default function Navbar() {
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       scrolled ? 'bg-bg/95 backdrop-blur-md border-b border-bg-steel/60' : 'bg-transparent'
     }`}>
-      <nav className="max-w-7xl mx-auto px-4 lg:px-8 h-16 flex items-center justify-between">
-        <Link to="/" className="flex items-center group" aria-label="Zombie Reality Breach, home">
+      <nav className="max-w-7xl mx-auto px-4 lg:px-8 h-16 flex items-center justify-between gap-4">
+        <Link to="/" className="flex shrink-0 items-center group" aria-label="Zombie Reality Breach, home">
           <BrandMark skullClass="h-9" wordmarkClass="h-11" />
         </Link>
 
-        <ul className="hidden xl:flex items-center gap-5">
+        <ul className="hidden lg:flex shrink-0 items-center gap-3 min-[1100px]:gap-5 xl:gap-6 whitespace-nowrap">
           {navLinks.map((l) => (
             <li key={l.to}>
               <Link
                 to={l.to}
-                className={`text-sm font-heading uppercase tracking-wider transition-colors relative group ${
+                className={`text-xs min-[1100px]:text-sm font-heading uppercase tracking-wider transition-colors relative group ${
                   location.pathname === l.to ? 'text-blood' : 'text-bone-muted hover:text-bone'
                 }`}
               >
@@ -57,7 +57,7 @@ export default function Navbar() {
           ))}
         </ul>
 
-        <div className="flex items-center gap-3">
+        <div className="flex shrink-0 items-center gap-3">
           <button
             onClick={toggle}
             className="text-xs font-heading uppercase tracking-wider text-bone-muted hover:text-ember transition-colors px-2 py-1 border border-bg-steel hover:border-ember/50"
@@ -74,14 +74,14 @@ export default function Navbar() {
             {t('nav.join')}
           </a>
 
-          <button className="xl:hidden text-bone p-1" onClick={() => setOpen(!open)} aria-label="Menu">
+          <button className="lg:hidden text-bone p-1" onClick={() => setOpen(!open)} aria-label="Menu" aria-expanded={open} aria-controls="mobile-navigation">
             {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
       </nav>
 
       {open && (
-        <div className="xl:hidden bg-bg/95 backdrop-blur-md border-t border-bg-steel/60 animate-fade-in-up">
+        <div id="mobile-navigation" className="lg:hidden bg-bg/95 backdrop-blur-md border-t border-bg-steel/60 animate-fade-in-up">
           <ul className="px-4 py-4 space-y-2">
             {navLinks.map((l) => (
               <li key={l.to}>
