@@ -2,14 +2,11 @@
 
 export const CONTACT_EMAIL = 'support@zombierealitybreach.com';
 
-/** Meta Quest release channels (Meta share links). */
-export const META_ALPHA_URL = 'https://www.meta.com/s/67bQkabjj';
+/** Meta Quest BETA release channel (Meta share link). Since 2026-11-13 the website links only the BETA; the ALPHA button is gone. */
 export const META_BETA_URL = 'https://www.meta.com/s/8lI8SshPw';
-/** The BETA channel has no build yet (2026-10-16); the website shows its button disabled until this is true. */
-export const BETA_OPEN = false;
 
 /** Meta Quest link used by the general calls to action (replace with the Coming Soon store URL when it is live). */
-export const META_URL = META_ALPHA_URL;
+export const META_URL = META_BETA_URL;
 
 /** The game's social media profiles (account address social@zombierealitybreach.com, created 2026-10-21). Plain links, no embeds. */
 export const SOCIAL_LINKS = [

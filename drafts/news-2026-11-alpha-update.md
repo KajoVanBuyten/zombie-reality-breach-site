@@ -1,6 +1,6 @@
 # Entwurf: News-Beitrag ALPHA-Update November 2026
 
-Status: **Entwurf, nicht veröffentlicht.** Erst nach Kajos Freigabe als Eintrag oben in `src/content/news.ts` übernehmen, dann bauen und deployen.
+Status: **Veröffentlicht am 13.11.2026** als `beta-open-wall-breach` in `src/content/news.ts`, auf Kajos Anweisung als BETA-Beitrag umgeschrieben (Titel „The BETA is open: the wall gives way“, Kategorie Update, ALPHA-Hinweis durch BETA-Button ersetzt). Maßgeblich ist der Text in news.ts; dieser Entwurf bleibt nur wegen der Belegtabelle.
 
 Geplante Felder für `news.ts`:
 

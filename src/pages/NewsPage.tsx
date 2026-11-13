@@ -21,7 +21,7 @@ const roadmap = [
   { done: true, en: 'Closed ALPHA on Meta Quest', de: 'Geschlossene ALPHA auf Meta Quest' },
   { done: 'wip', en: 'Balancing and polish from the playtests', de: 'Balancing und Feinschliff aus den Playtests' },
   { done: 'wip', en: 'Store products and the free trial', de: 'Store-Produkte und die kostenlose Testzeit' },
-  { done: false, en: 'BETA channel', de: 'BETA-Kanal' },
+  { done: true, en: 'BETA on Meta Quest', de: 'BETA auf Meta Quest' },
   { done: false, en: 'Release on Meta Quest 3 and 3S (Early Access planned)', de: 'Release für Meta Quest 3 und 3S (Early Access geplant)' },
 ];
 

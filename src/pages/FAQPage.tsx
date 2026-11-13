@@ -25,8 +25,8 @@ export default function FAQPage() {
               <span className="text-[10px] font-heading uppercase tracking-widest text-ember">{t('faq.statusTitle')}</span>
               <p className="text-sm text-bone font-body font-light leading-relaxed mt-1">
                 {de
-                  ? 'Zombie Reality Breach erscheint bald für Meta Quest 3 und 3S. Ein Early-Access-Release ist geplant; eine geschlossene ALPHA läuft.'
-                  : 'Zombie Reality Breach is coming soon to Meta Quest 3 and 3S. An Early Access release is planned; a closed ALPHA is running.'}
+                  ? 'Zombie Reality Breach erscheint bald für Meta Quest 3 und 3S. Ein Early-Access-Release ist geplant; die BETA läuft.'
+                  : 'Zombie Reality Breach is coming soon to Meta Quest 3 and 3S. An Early Access release is planned; the BETA is running.'}
               </p>
             </div>
             <a href={META_URL} target="_blank" rel="noopener noreferrer"

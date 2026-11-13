@@ -16,6 +16,18 @@ export interface NewsPost {
 
 export const newsPosts: NewsPost[] = [
   {
+    slug: 'beta-open-wall-breach',
+    title: 'The BETA is open: the wall gives way',
+    titleDe: 'Die BETA ist offen: Die Wand gibt nach',
+    category: 'Update',
+    date: '2026-11-13',
+    theme: keyArtThemes.realityBreach,
+    excerpt: 'The BETA is open on Meta Quest. The new build brings zombies from every side of your room, a wall that breaks open, mixed co-op in Rift and new gun sounds.',
+    excerptDe: 'Die BETA auf Meta Quest ist offen. Der neue Build bringt Zombies von allen Seiten deines Raums, eine Wand, die aufbricht, gemischten Co-op in Rift und neue Waffenklänge.',
+    body: 'Zombie Reality Breach is now in BETA on Meta Quest: the Join BETA button on the home page takes you to the release channel. Here is what changed since our last post. In Reality Breach the dead no longer queue up at one door: they come from all around your room and take the nearest way in. Hold out long enough and the wall gives way: from wave 8 on Hard and wave 12 on Easy, zombies tear a door-sized hole into a wall away from your doors, once per run. Climbing onto the bed, the sofa or the table no longer keeps you safe; the dead climb up after you, attack from above and climb back down. The break between waves is now 90 seconds, and the shop opens before wave 1. In Rift, two players in the same room can now team up with a third player online. You can join a match that is already running while a seat is free, and the host has a player list with kick and ban. The zombies move with their feet now instead of sliding, and they look sharper up close and darker overall. Most guns got new sounds, from the A3500X to the LMG. Online features are now asked for when the menu starts; if you turn them off, the game uses a new random ID, and you can delete your online data in the game with a confirmation through your Meta account. And you can now follow the game on TikTok and Instagram (@zombierealitybreach) and on YouTube (@ZombieRealityBreach).',
+    bodyDe: 'Zombie Reality Breach ist jetzt in der BETA auf Meta Quest: Der Button „BETA beitreten“ auf der Startseite führt dich zum Release-Kanal. Das hat sich seit unserem letzten Beitrag geändert. In Reality Breach stehen die Toten nicht mehr an einer Tür Schlange: Sie kommen von überall rund um deinen Raum und nehmen den nächsten Weg hinein. Hältst du lange genug durch, gibt die Wand nach: ab Welle 8 auf Hard und ab Welle 12 auf Easy reißen Zombies ein türgroßes Loch in eine Wand abseits deiner Türen, einmal pro Lauf. Auf Bett, Sofa oder Tisch bist du nicht mehr sicher; die Toten klettern dir nach, greifen von oben an und steigen wieder herunter. Die Pause zwischen den Wellen dauert jetzt 90 Sekunden, und der Shop öffnet schon vor Welle 1. In Rift können zwei Spieler im selben Raum jetzt mit einem dritten Spieler online zusammenspielen. Du kannst einem laufenden Match beitreten, solange ein Platz frei ist, und der Host hat eine Spielerliste mit Kick und Bann. Die Zombies bewegen sich jetzt mit ihren Füßen statt zu rutschen, sehen aus der Nähe schärfer und insgesamt dunkler aus. Die meisten Schusswaffen haben neue Klänge, von der A3500X bis zum LMG. Die Online-Funktionen fragt das Spiel jetzt beim Start des Menüs ab; schaltest du sie aus, nutzt das Spiel eine neue Zufalls-ID, und deine Online-Daten kannst du im Spiel löschen, bestätigt über dein Meta-Konto. Und du kannst dem Spiel jetzt auf TikTok und Instagram (@zombierealitybreach) und auf YouTube (@ZombieRealityBreach) folgen.',
+  },
+  {
     slug: 'three-mode-families',
     title: 'Reality Breach, Rift, Outbreak',
     titleDe: 'Reality Breach, Rift, Outbreak',
