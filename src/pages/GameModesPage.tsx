@@ -15,12 +15,12 @@ export default function GameModesPage() {
   return (
     <div className="pt-16">
       <PageHero
-        theme={keyArtThemes.outbreak}
+        theme={keyArtThemes.daylight}
         kicker={`// ${t('modes.title')}`}
         title={t('modes.title')}
         intro={de
-          ? 'Drei Modusfamilien: REALITY BREACH und RIFT in Mixed Reality in deinem eigenen Raum, OUTBREAK in vollem VR an einer Tankstelle im Wald bei Nacht. Das Spiel erscheint bald für Meta Quest 3 und 3S (Early Access geplant).'
-          : 'Three mode families: REALITY BREACH and RIFT in mixed reality in your own room, OUTBREAK in full VR at a gas station in the woods at night. The game is coming soon to Meta Quest 3 and 3S (Early Access planned).'}
+          ? 'Drei Modusfamilien: REALITY BREACH und RIFT in Mixed Reality in deinem eigenen Raum, dazu OUTBREAK in vollem VR an einer Tankstelle im Wald bei Nacht, das noch in Entwicklung ist. Das Spiel erscheint bald für Meta Quest 3 und 3S (Early Access geplant).'
+          : 'Three mode families: REALITY BREACH and RIFT in mixed reality in your own room, plus OUTBREAK in full VR at a gas station in the woods at night, which is still in development. The game is coming soon to Meta Quest 3 and 3S (Early Access planned).'}
       />
 
       <section className="py-16 lg:py-24 max-w-7xl mx-auto px-4 lg:px-8">
@@ -79,7 +79,7 @@ export default function GameModesPage() {
             <div className="relative z-10 p-6 md:p-8">
               <h2 className="section-title font-heading text-2xl uppercase text-bone mb-1">{de ? 'Mehrspieler (Co-op)' : 'Multiplayer (Co-op)'}</h2>
               <p className="text-xs font-heading text-ember uppercase tracking-wider mb-4">
-                {de ? 'Bis zu 4 in Reality Breach, Rift und Gas Station · bis zu 3 in Rooftop und Safe Zone' : 'Up to 4 in Reality Breach, Rift and Gas Station · up to 3 in Rooftop and Safe Zone'}
+                {de ? 'Bis zu 4 in Reality Breach und Rift · Outbreak (in Entwicklung): bis zu 4 in Gas Station, bis zu 3 in Rooftop und Safe Zone' : 'Up to 4 in Reality Breach and Rift · Outbreak (in development): up to 4 in Gas Station, up to 3 in Rooftop and Safe Zone'}
               </p>
               <p className="text-sm text-bone-muted font-body font-light leading-relaxed mb-5">
                 {de
@@ -97,7 +97,7 @@ export default function GameModesPage() {
                 </div>
                 <div className="p-4 bg-bg/60 border border-bg-steel">
                   <h3 className="font-heading text-sm uppercase text-ember mb-2">Outbreak</h3>
-                  <p className="text-xs text-bone-muted font-body font-light">{de ? 'Rooftop bis drei (jeder auf seinem Auto, auch im selben Raum), Safe Zone bis drei (jeder in seinem Zimmer), Gas Station bis vier. Mit Meta-Avataren, lokal oder online.' : 'Rooftop up to three (one car each, same room allowed), Safe Zone up to three (each in their own room), Gas Station up to four. With Meta avatars, local or online.'}</p>
+                  <p className="text-xs text-bone-muted font-body font-light">{de ? 'In Entwicklung. Geplant: Rooftop bis drei (jeder auf seinem Auto, auch im selben Raum), Safe Zone bis drei (jeder in seinem Zimmer), Gas Station bis vier. Mit Meta-Avataren, lokal oder online.' : 'In development. Planned: Rooftop up to three (one car each, same room allowed), Safe Zone up to three (each in their own room), Gas Station up to four. With Meta avatars, local or online.'}</p>
                 </div>
               </div>
               <p className="text-xs text-bone-muted/60 font-body font-light">

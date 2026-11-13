@@ -3,6 +3,8 @@ import { keyArtThemes, type KeyArtTheme } from '@/lib/site';
 /**
  * Mode content. Source of truth: Docs/GAME_DESIGN.md, Docs/RIFT_DESIGN.md, Docs/VR_GAME_DESIGN.md and the code
  * (WaveScaling, Difficulty assets, RiftUpgrades.cs, ZombieKind.cs, LocalSession.cs) as of 16 October 2026.
+ * Since 3 November 2026 OUTBREAK plays only in development builds (VrModes.Playable); store builds, the ALPHA
+ * included, show it as COMING SOON. Its sub-modes are therefore listed as in development.
  */
 
 export type ModeStatus = 'playable' | 'inDev';
@@ -82,16 +84,16 @@ export const modeFamilies: ModeFamily[] = [
   {
     id: 'outbreak',
     name: 'Outbreak',
-    kind: 'Full VR · gas station in the woods at night',
-    kindDe: 'Volles VR · Tankstelle im Wald bei Nacht',
+    kind: 'Full VR · gas station in the woods at night · in development',
+    kindDe: 'Volles VR · Tankstelle im Wald bei Nacht · in Entwicklung',
     theme: keyArtThemes.outbreak,
     imageAlt: 'A gas station in the woods at night',
     short: 'Full VR at a gas station in the woods at night.',
     shortDe: 'Volles VR an einer Tankstelle im Wald bei Nacht.',
-    desc: 'Outbreak leaves your room behind: Pine Creek Station, a gas station in the woods at night, with zombies coming from every side. Three modes on the same site, from one square metre on the roof of a car to the whole 60 by 45 metres. Endless waves, Easy and Hard, a boss every fifth wave, a headlamp on every forehead, and the same Armory ladder as Reality Breach with its own VR account.',
-    descDe: 'Outbreak lässt deinen Raum hinter sich: Pine Creek Station, eine Tankstelle im Wald bei Nacht, und die Zombies kommen von allen Seiten. Drei Modi auf demselben Gelände, vom Quadratmeter auf dem Autodach bis zu den ganzen 60 mal 45 Metern. Endlose Wellen, Easy und Hard, jede fünfte Welle ein Boss, eine Stirnlampe an jedem Kopf, und dieselbe Arsenal-Leiter wie in Reality Breach mit eigenem VR-Konto.',
-    tags: ['Full VR', 'Solo', 'Co-op local or online', 'Meta avatars'],
-    tagsDe: ['Volles VR', 'Solo', 'Co-op lokal oder online', 'Meta-Avatare'],
+    desc: 'Outbreak leaves your room behind: Pine Creek Station, a gas station in the woods at night, with zombies coming from every side. Three modes on the same site, from one square metre on the roof of a car to the whole 60 by 45 metres. Endless waves, Easy and Hard, a boss every fifth wave, a headlamp on every forehead, and the same Armory ladder as Reality Breach with its own VR account. Outbreak is still in development: it runs in our development builds, is not part of the ALPHA and shows as COMING SOON in the game.',
+    descDe: 'Outbreak lässt deinen Raum hinter sich: Pine Creek Station, eine Tankstelle im Wald bei Nacht, und die Zombies kommen von allen Seiten. Drei Modi auf demselben Gelände, vom Quadratmeter auf dem Autodach bis zu den ganzen 60 mal 45 Metern. Endlose Wellen, Easy und Hard, jede fünfte Welle ein Boss, eine Stirnlampe an jedem Kopf, und dieselbe Arsenal-Leiter wie in Reality Breach mit eigenem VR-Konto. Outbreak ist noch in Entwicklung: Es läuft in unseren Entwicklungsversionen, ist nicht Teil der ALPHA und steht im Spiel als COMING SOON.',
+    tags: ['In development', 'Full VR', 'Solo', 'Co-op local or online', 'Meta avatars'],
+    tagsDe: ['In Entwicklung', 'Volles VR', 'Solo', 'Co-op lokal oder online', 'Meta-Avatare'],
     points: [
       { en: 'Optional power outages; the generator decides how far you see.', de: 'Optionale Stromausfälle; der Generator entscheidet, wie weit du siehst.' },
       { en: 'Online co-op over relay with a code, local co-op in the same Wi-Fi.', de: 'Online-Co-op über Relay mit Code, lokaler Co-op im selben WLAN.' },
@@ -100,7 +102,7 @@ export const modeFamilies: ModeFamily[] = [
       {
         id: 'rooftop',
         name: 'Rooftop',
-        status: 'playable',
+        status: 'inDev',
         players: 'Up to 3, one car each',
         playersDe: 'Bis 3, jeder auf seinem Auto',
         desc: 'Stand on the roof of a sedan, one square metre, turn but never walk. The dead hammer the car and climb up at eight points; hit the hands at the edge and they drop.',
@@ -114,7 +116,7 @@ export const modeFamilies: ModeFamily[] = [
       {
         id: 'safe-zone',
         name: 'Safe Zone',
-        status: 'playable',
+        status: 'inDev',
         players: 'Up to 3, each in their own real room',
         playersDe: 'Bis 3, jeder in seinem eigenen Zimmer',
         desc: 'The gas station shop shrinks or grows to your play space, 1.5 to 5 metres a side. Real steps, no stick movement. One door and two to five windows: board them up from the till and hold the line.',
@@ -128,7 +130,7 @@ export const modeFamilies: ModeFamily[] = [
       {
         id: 'gas-station',
         name: 'Gas Station',
-        status: 'playable',
+        status: 'inDev',
         players: 'Up to 4',
         playersDe: 'Bis 4',
         desc: 'The whole site: stick movement, teleport, sprint with stamina, a ladder. Repair the generator (fill the canister, pull the cord) and you see the dead at 16 metres instead of 10. From wave 6 they go for the generator.',

@@ -16,7 +16,7 @@ const roadmap = [
   { done: true, en: 'Reality Breach: mixed reality with room scan', de: 'Reality Breach: Mixed Reality mit Raumscan' },
   { done: true, en: 'Rift: portal in your wall, no room scan, five worlds', de: 'Rift: Portal in deiner Wand, ohne Raumscan, fünf Welten' },
   { done: true, en: 'Local and online co-op', de: 'Lokaler und Online-Co-op' },
-  { done: true, en: 'Outbreak: Rooftop, Safe Zone and Gas Station playable', de: 'Outbreak: Rooftop, Safe Zone und Gas Station spielbar' },
+  { done: 'wip', en: 'Outbreak (full VR): Rooftop, Safe Zone and Gas Station, in development', de: 'Outbreak (volles VR): Rooftop, Safe Zone und Gas Station, in Entwicklung' },
   { done: true, en: 'Global leaderboards in the game and on this website', de: 'Globale Bestenlisten im Spiel und auf dieser Website' },
   { done: true, en: 'Closed ALPHA on Meta Quest', de: 'Geschlossene ALPHA auf Meta Quest' },
   { done: 'wip', en: 'Balancing and polish from the playtests', de: 'Balancing und Feinschliff aus den Playtests' },

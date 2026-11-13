@@ -140,8 +140,8 @@ export default function ArsenalPage() {
         <h2 className="section-title font-heading text-2xl uppercase text-bone mb-2">{de ? 'Die Arsenal-Leiter' : 'The Armory ladder'}</h2>
         <p className="text-sm text-bone-muted font-body font-light leading-relaxed max-w-3xl mb-6">
           {de
-            ? 'Jede Freischaltung braucht eine beste erreichte Welle und wird einmal vom Geldkonto bezahlt, das über alle Läufe bleibt. Alle zwei bis drei Wellen gibt es etwas Neues. In OUTBREAK gilt dieselbe Leiter mit einem eigenen VR-Konto.'
-            : 'Every unlock needs a best wave you have reached and is paid once from the money account that persists across runs. Something new every two or three waves. OUTBREAK uses the same ladder with its own VR account.'}
+            ? 'Jede Freischaltung braucht eine beste erreichte Welle und wird einmal vom Geldkonto bezahlt, das über alle Läufe bleibt. Alle zwei bis drei Wellen gibt es etwas Neues. OUTBREAK (in Entwicklung) bekommt dieselbe Leiter mit einem eigenen VR-Konto.'
+            : 'Every unlock needs a best wave you have reached and is paid once from the money account that persists across runs. Something new every two or three waves. OUTBREAK (in development) gets the same ladder with its own VR account.'}
         </p>
         <div className="steel-card overflow-x-auto">
           <ol className="flex gap-0 min-w-max relative z-10 p-4">
@@ -237,8 +237,8 @@ export default function ArsenalPage() {
         <div className="space-y-3 text-sm text-bone-muted font-body font-light leading-relaxed">
           <p>
             {de
-              ? 'In REALITY BREACH und OUTBREAK bringen Kills und abgeschlossene Wellen Spielgeld: 10 $ pro Zombie, 25 $ pro Welle, mehr für Brutes und Bosse. Damit kaufst du in der Pause Waffen, Munition, Aufsätze und Vorräte für diesen Lauf. Das Arsenal im Hauptmenü schaltet Waffen dauerhaft frei: beste erreichte Welle plus Einmalpreis. OUTBREAK führt ein eigenes VR-Konto mit denselben Preisen.'
-              : 'In REALITY BREACH and OUTBREAK, kills and cleared waves earn in-game money: 10 $ per zombie, 25 $ per wave, more for brutes and bosses. You spend it in the break on weapons, ammo, mods and supplies for that run. The Armory in the main menu unlocks weapons for good: best wave reached plus a one-time price. OUTBREAK keeps its own VR account with the same prices.'}
+              ? 'In REALITY BREACH (und künftig in OUTBREAK) bringen Kills und abgeschlossene Wellen Spielgeld: 10 $ pro Zombie, 25 $ pro Welle, mehr für Brutes und Bosse. Damit kaufst du in der Pause Waffen, Munition, Aufsätze und Vorräte für diesen Lauf. Das Arsenal im Hauptmenü schaltet Waffen dauerhaft frei: beste erreichte Welle plus Einmalpreis. OUTBREAK wird ein eigenes VR-Konto mit denselben Preisen führen.'
+              : 'In REALITY BREACH (and later in OUTBREAK), kills and cleared waves earn in-game money: 10 $ per zombie, 25 $ per wave, more for brutes and bosses. You spend it in the break on weapons, ammo, mods and supplies for that run. The Armory in the main menu unlocks weapons for good: best wave reached plus a one-time price. OUTBREAK will keep its own VR account with the same prices.'}
           </p>
           <p>
             {de

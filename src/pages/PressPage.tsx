@@ -13,10 +13,10 @@ const facts = [
   { label: 'Based in', value: 'Cologne, Germany' },
   { label: 'Release', value: 'Coming soon to Meta Quest 3 and 3S · Early Access planned' },
   { label: 'Platforms', value: 'Meta Quest 3, Meta Quest 3S' },
-  { label: 'Genre', value: 'Zombie survival shooter, mixed reality and VR' },
-  { label: 'Modes', value: 'Reality Breach (MR, room scan) · Rift (MR, no room scan, roguelite) · Outbreak (full VR: Rooftop, Safe Zone, Gas Station)' },
-  { label: 'Players', value: '1–4 in Reality Breach (same room), Rift (same room or online) and Gas Station; 1–3 in Rooftop and Safe Zone. Outbreak local or online.' },
-  { label: 'Business model', value: 'Free to start: 90 minutes per mode family, then buy single modes, bundles or the complete pack, plus an optional Armory add-on. No loot boxes, no purchasable currency.' },
+  { label: 'Genre', value: 'Zombie survival shooter, mixed reality (VR mode in development)' },
+  { label: 'Modes', value: 'Reality Breach (MR, room scan) · Rift (MR, no room scan, roguelite) · Outbreak (full VR, in development: Rooftop, Safe Zone, Gas Station)' },
+  { label: 'Players', value: '1–4 in Reality Breach (same room) and Rift (same room or online). Outbreak (in development): 1–4 in Gas Station, 1–3 in Rooftop and Safe Zone, local or online.' },
+  { label: 'Business model', value: 'Free to start: 90 minutes each for Reality Breach and Rift, then buy single modes or bundles, plus an optional Armory add-on; the complete pack follows with Outbreak. No loot boxes, no purchasable currency.' },
   { label: 'Engine', value: 'Unity 6, Meta XR SDK' },
   { label: 'Website', value: 'zombierealitybreach.com' },
   { label: 'Press contact', value: CONTACT_EMAIL },
@@ -24,8 +24,8 @@ const facts = [
 ];
 
 const descriptions: { label: string; en: string }[] = [
-  { label: 'Short', en: 'Zombie Reality Breach is a zombie survival shooter for Meta Quest 3 and 3S: zombies smash through the real doors of your home in mixed reality, or you hold out at a gas station in the woods at night in full VR.' },
-  { label: 'Medium', en: 'Zombie Reality Breach comes with three mode families. In REALITY BREACH the game reads your room scan and zombies break through your real doors; between waves you restock in the shop and unlock weapons in the Armory. In RIFT a portal tears open your wall onto one of five worlds: pistols fixed to your hands, three hearts, an upgrade after every wave, a boss every tenth wave and roguelite runs. OUTBREAK is full VR at a gas station in the woods at night: hold the roof of a car in ROOFTOP, board up the shop in SAFE ZONE, or defend the whole site in GAS STATION. Play alone or in co-op for up to four. Coming soon to Meta Quest 3 and 3S.' },
+  { label: 'Short', en: 'Zombie Reality Breach is a zombie survival shooter for Meta Quest 3 and 3S: zombies smash through the real doors of your home in mixed reality, or a portal tears open your wall and the dead march in.' },
+  { label: 'Medium', en: 'Zombie Reality Breach comes with three mode families. In REALITY BREACH the game reads your room scan and zombies break through your real doors; between waves you restock in the shop and unlock weapons in the Armory. In RIFT a portal tears open your wall onto one of five worlds: pistols fixed to your hands, three hearts, an upgrade after every wave, a boss every tenth wave and roguelite runs. Play alone or in co-op for up to four. OUTBREAK, a full VR mode family at a gas station in the woods at night, is in development. Coming soon to Meta Quest 3 and 3S.' },
 ];
 
 /** File size from src/content/asset-manifest.json (written by scripts/Build-WebAssets.ps1), e.g. "23.0 MB". */
