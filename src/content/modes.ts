@@ -2,7 +2,8 @@ import { keyArtThemes, type KeyArtTheme } from '@/lib/site';
 
 /**
  * Mode content. Source of truth: Docs/GAME_DESIGN.md, Docs/RIFT_DESIGN.md, Docs/VR_GAME_DESIGN.md and the code
- * (WaveScaling, Difficulty assets, RiftUpgrades.cs, ZombieKind.cs, LocalSession.cs) as of 16 October 2026.
+ * (WaveScaling, Difficulty assets, RiftUpgrades.cs, ZombieKind.cs, LocalSession.cs) as of 16 October 2026;
+ * Reality Breach checked against the BETA build 26111318 (commit 62392671) on 13 November 2026.
  * Since 3 November 2026 OUTBREAK plays only in development builds (VrModes.Playable); store builds, the ALPHA
  * included, show it as COMING SOON. Its sub-modes are therefore listed as in development.
  */
@@ -48,14 +49,16 @@ export const modeFamilies: ModeFamily[] = [
     imageAlt: 'A zombie tears through the wall of a living room',
     short: 'Zombies break through your real doors.',
     shortDe: 'Zombies brechen durch deine echten Türen.',
-    desc: 'Your room, your doors, your fight. The game reads your room scan and turns your real doors into breach points. You hear the knocking, the door bends with every blow, and then it breaks out of its hinges. The waves never end; the run ends with you. Between waves you buy weapons, ammo, mods and supplies in the break shop; the Armory unlocks new weapons for good.',
-    descDe: 'Dein Raum, deine Türen, dein Kampf. Das Spiel liest deinen Raumscan und macht deine echten Türen zu Durchbruchstellen. Du hörst das Klopfen, die Tür biegt sich mit jedem Schlag, und dann bricht sie aus den Angeln. Die Wellen enden nie; der Lauf endet mit dir. Zwischen den Wellen kaufst du im Pausenshop Waffen, Munition, Aufsätze und Vorräte; das Arsenal schaltet neue Waffen dauerhaft frei.',
+    desc: 'Your room, your doors, your fight. The game reads your room scan and turns your real doors, and windows that reach the floor, into breach points. The dead gather all around your room and take the nearest way in. At a closed door you hear the knocking, the door bends with every blow, and then it breaks out of its hinges. The waves never end; the run ends with you. Between waves you buy weapons, ammo, mods and supplies in the break shop; the Armory unlocks new weapons for good.',
+    descDe: 'Dein Raum, deine Türen, dein Kampf. Das Spiel liest deinen Raumscan und macht deine echten Türen und bodentiefen Fenster zu Durchbruchstellen. Die Toten sammeln sich rund um deinen Raum und nehmen den nächsten Weg hinein. An einer geschlossenen Tür hörst du das Klopfen, die Tür biegt sich mit jedem Schlag, und dann bricht sie aus den Angeln. Die Wellen enden nie; der Lauf endet mit dir. Zwischen den Wellen kaufst du im Pausenshop Waffen, Munition, Aufsätze und Vorräte; das Arsenal schaltet neue Waffen dauerhaft frei.',
     tags: ['Solo', 'Co-op up to 4, same room', 'Room scan', 'Easy / Hard'],
     tagsDe: ['Solo', 'Co-op bis 4, im selben Raum', 'Raumscan', 'Easy / Hard'],
     points: [
       { en: 'Detected doors come first; you can measure, move, add or remove them. No door detected? Place one by hand.', de: 'Erkannte Türen zuerst; du kannst sie vermessen, verschieben, hinzufügen oder entfernen. Keine Tür erkannt? Dann setzt du eine von Hand.' },
-      { en: 'Wave 1 starts with nine zombies at the widest door in view; every wave adds one, from wave 3 more doors open. A boss comes every fifth wave.', de: 'Welle 1 beginnt mit neun Zombies an der breitesten Tür im Blick; jede Welle bringt einen mehr, ab Welle 3 öffnen weitere Türen. Jede fünfte Welle kommt ein Boss.' },
-      { en: 'Break of 20 seconds between waves, shop included; press Ready to skip it.', de: 'Zwanzig Sekunden Pause zwischen den Wellen, Shop inklusive; mit Ready geht es früher weiter.' },
+      { en: 'Wave 1 brings nine zombies, every wave one more. They come from all sides of your room, each to the nearest way in. A boss comes every fifth wave.', de: 'Welle 1 bringt neun Zombies, jede Welle einen mehr. Sie kommen von allen Seiten deines Raums, jeder zum nächsten Weg hinein. Jede fünfte Welle kommt ein Boss.' },
+      { en: 'Hold out and the wall gives way: from wave 8 on Hard and wave 12 on Easy, the dead tear a door-sized hole into a wall away from your doors, once per run.', de: 'Hältst du durch, gibt die Wand nach: ab Welle 8 auf Hard und ab Welle 12 auf Easy reißen die Toten ein türgroßes Loch in eine Wand abseits deiner Türen, einmal pro Lauf.' },
+      { en: 'Bed, sofa and table are no refuge: the dead climb up after you, attack from above and climb back down.', de: 'Bett, Sofa und Tisch sind keine Zuflucht: Die Toten klettern dir nach, greifen von oben an und steigen wieder herunter.' },
+      { en: 'Break of 90 seconds between waves, shop included; the shop also opens before wave 1. Alone, Ready ends the break at once; in co-op the break waits until everyone is ready.', de: '90 Sekunden Pause zwischen den Wellen, Shop inklusive; der Shop öffnet auch schon vor Welle 1. Allein beendet Ready die Pause sofort; im Co-op wartet die Pause, bis alle bereit sind.' },
       { en: 'Co-op for up to four in the same room: a downed player gets back up when a teammate holds a hand on them for three seconds.', de: 'Co-op für bis zu vier im selben Raum: Wer am Boden liegt, steht wieder auf, wenn ein Mitspieler drei Sekunden die Hand auflegt.' },
       { en: 'Score = kills × 10 × current wave; separate boards for Easy, Hard, solo and co-op.', de: 'Punkte = Kills × 10 × aktuelle Welle; eigene Boards für Easy, Hard, Solo und Co-op.' },
     ],

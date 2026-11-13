@@ -185,7 +185,10 @@ export default function GameModesPage() {
 
       {/* DIFFICULTY TABLE */}
       <section className="py-16 lg:py-24 max-w-4xl mx-auto px-4 lg:px-8">
-        <h2 className="section-title font-heading text-2xl uppercase text-bone mb-6">{t('modes.diff')}</h2>
+        <h2 className="section-title font-heading text-2xl uppercase text-bone mb-2">{t('modes.diff')}</h2>
+        <p className="text-sm text-bone-muted font-body font-light leading-relaxed mb-6">
+          {de ? 'Die Werte gelten für Reality Breach. Rift hat eigene Regeln (siehe oben).' : 'The values are for Reality Breach. Rift has its own rules (see above).'}
+        </p>
         <div className="steel-card overflow-hidden overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -208,17 +211,17 @@ export default function GameModesPage() {
               </tr>
               <tr className="border-b border-bg-steel/40">
                 <td className="px-4 py-3 font-heading text-xs text-ember uppercase">{de ? 'Zombieschaden' : 'Zombie damage'}</td>
-                <td className="px-4 py-3">× 0.7</td>
-                <td className="px-4 py-3">× 1.3</td>
+                <td className="px-4 py-3">× 1.0</td>
+                <td className="px-4 py-3">× 1.5</td>
               </tr>
               <tr className="border-b border-bg-steel/40">
                 <td className="px-4 py-3 font-heading text-xs text-ember uppercase">{de ? 'Heilung in der Pause' : 'Healing in the break'}</td>
-                <td className="px-4 py-3">{de ? 'Voll' : 'Full'}</td>
+                <td className="px-4 py-3">50 %</td>
                 <td className="px-4 py-3">35 %</td>
               </tr>
               <tr className="border-b border-bg-steel/40">
                 <td className="px-4 py-3 font-heading text-xs text-ember uppercase">{de ? 'Zombies pro Welle' : 'Zombies per wave'}</td>
-                <td className="px-4 py-3" colSpan={2}>{de ? 'Gleich: 9 in Welle 1, dann +1 je Welle, höchstens 6 gleichzeitig (3 in kleinen Räumen)' : 'The same: 9 in wave 1, then +1 per wave, at most 6 at once (3 in small rooms)'}</td>
+                <td className="px-4 py-3" colSpan={2}>{de ? 'Gleich: 9 in Welle 1, dann +1 je Welle; zu Beginn einer Welle 6 gleichzeitig (3 in kleinen Räumen), mehr, je länger die Welle dauert' : 'The same: 9 in wave 1, then +1 per wave; 6 at once when a wave starts (3 in small rooms), more the longer the wave lasts'}</td>
               </tr>
               <tr>
                 <td className="px-4 py-3 font-heading text-xs text-ember uppercase">{de ? 'Bestenliste' : 'Leaderboard'}</td>
