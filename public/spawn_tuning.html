@@ -16,9 +16,10 @@ td { padding: 3px 10px; border-bottom: 1px solid var(--line); white-space: nowra
 tr:nth-child(even) td { background: var(--zebra); }
 table.kv td + td, table.kv th + th, table.res td, table.res th { text-align: right; font-variant-numeric: tabular-nums; }
 table.res td:first-child, table.res th:first-child { text-align: left; }
-.tip { border-bottom: 1px dotted #999; cursor: help; position: relative; }
-.tip:hover::after { content: attr(data-tip); position: absolute; left: 0; top: 1.6em; z-index: 10; width: 340px; white-space: normal;
-  background: #222; color: #fff; padding: 7px 9px; border-radius: 5px; font-size: 12px; line-height: 1.35; box-shadow: 0 3px 10px rgba(0,0,0,.25); }
+.tip { border-bottom: 1px dotted #999; cursor: help; }
+#tipbox { position: fixed; z-index: 1000; max-width: 340px; display: none; pointer-events: none; white-space: normal; text-align: left;
+  background: #222; color: #fff; padding: 7px 9px; border-radius: 5px; font-size: 12px; font-weight: 400; line-height: 1.35; box-shadow: 0 3px 10px rgba(0,0,0,.25); }
+table.params tr.sec td { background: #f3e7e3; color: var(--red); font-weight: 600; text-align: left; border-top: 2px solid var(--red); padding-top: 6px; }
 .sim { display: flex; gap: 24px; align-items: flex-start; flex-wrap: wrap; }
 .sim .params td { padding: 2px 8px; }
 .sim input[type=number] { width: 70px; font: inherit; text-align: right; padding: 1px 4px; }
@@ -39,9 +40,9 @@ footer { margin-top: 18px; color: #777; font-size: 12px; border-top: 1px solid v
 @media print { .controls, button, .orig { display: none; } .resbox { max-height: none; overflow: visible; border: 0; } }
 </style></head><body>
 <h1>Zombie Reality Breach · SPAWN TUNING</h1>
-<p class="lead">Alle Werte der Seite SPAWN TUNING im Pausenmenü (Development-Builds), direkt aus dem Code gelesen am 14.11.2026 23:22 (Branch codex/rb-wall-breach, Commit 0ee418c9): Wave-Config-Assets, WavePressure.cs und ZombieHealth.cs. Mit der Maus über einen Namen fahren zeigt, was der Wert bewirkt.</p>
+<p class="lead">Alle Werte der Seite SPAWN TUNING im Pausenmenü (Development-Builds), direkt aus dem Code gelesen am 14.11.2026 23:30 (Branch codex/rb-wall-breach, Commit 13ca2a9b): Wave-Config-Assets, WavePressure.cs und ZombieHealth.cs. Mit der Maus über einen Namen fahren zeigt, was der Wert bewirkt.</p>
 
-<h2>RIFT · RiftWaveScaling · Simulator Wellen 1–50</h2>
+<h2>RIFT · Simulator Wellen 1–50 · RiftWaveScaling und Wellendruck</h2>
 <p class="note">Werte links ändern, rechts rechnet die Seite jede Welle neu, mit denselben Formeln wie das Spiel (RiftWaveConfig, WavePressure, WaveDirector). Geänderte Werte sind gelb, grau dahinter der Wert im Code. Die Spalten ab „Dauer“ sind eine Simulation: Annahme, dass jeder Spieler alle paar Sekunden einen Kopftreffer landet, auf Zombies, die schon eine Weile unterwegs sind; die Kopftreffer pro Zombie kommen aus der Tabelle unten. Zufall (Gruppen, Kopftreffer) folgt einem festen Startwert, ist aber nicht derselbe Zufallsgenerator wie im Spiel.</p>
 <div class="controls">
   <label>Spieler <select id="players"><option>1</option><option>2</option><option>3</option><option>4</option></select></label>
@@ -72,17 +73,6 @@ footer { margin-top: 18px; color: #777; font-size: 12px; border-top: 1px solid v
 <tr><td><span class="tip" data-tip="Pause nach der Welle in Sekunden (Shop); Ready beendet sie früher.">BREAK AFTER WAVE</span></td><td>90 s</td></tr>
 </table></section>
 
-<section><h2>Druck innerhalb einer Welle · WavePressure (alle Modi)</h2>
-<table class="kv"><tr><th>Wert</th><th>Aktuell</th></tr>
-<tr><td><span class="tip" data-tip="Untergrenze lebender Zombies pro Spieler in Welle 1–10: Fällt es darunter, kommt der nächste sofort, ohne Pause.">MIN ALIVE PER PLAYER</span></td><td>3</td></tr>
-<tr><td><span class="tip" data-tip="Die Untergrenze steigt alle 10 Wellen um so viel (11–20, 21–30 …), mal Spieler.">MIN ALIVE, MORE PER 10 WAVES</span></td><td>2</td></tr>
-<tr><td><span class="tip" data-tip="Je länger eine Welle läuft, desto kürzer die Spawn-Pause: bis zum Overtime-Zeitpunkt sinkt sie auf diesen Anteil.">PAUSE SHRINKS TO</span></td><td>35 %</td></tr>
-<tr><td><span class="tip" data-tip="Je länger eine Welle läuft, desto mehr gleichzeitig: bis zum Overtime-Zeitpunkt wächst die Grenze auf dieses Vielfache.">AT ONCE GROWS TO</span></td><td>2 x</td></tr>
-<tr><td><span class="tip" data-tip="Über diese Zahl hebt der Wellendruck die Grenze nie (Bildrate der Quest); eine höhere eigene Grenze des Modus bleibt.">AT ONCE, HARD LIMIT</span></td><td>24</td></tr>
-<tr><td><span class="tip" data-tip="Nach so vielen Sekunden (plus Zuschlag je Welle) kommt der Rest der Welle ohne Pause, so schnell die Grenze erlaubt.">OVERTIME AFTER</span></td><td>90 s</td></tr>
-<tr><td><span class="tip" data-tip="Der Overtime-Zeitpunkt liegt pro Welle so viele Sekunden später.">OVERTIME, LATER PER WAVE</span></td><td>5 s</td></tr>
-</table></section>
-
 <section><h2>OUTBREAK (VR, nur in Development-Builds spielbar)</h2>
 <table class="kv"><tr><th>Wert</th><th>Rooftop</th><th>Safe Zone</th><th>Gas Station Easy</th><th>Gas Station Hard</th></tr>
 <tr><td><span class="tip" data-tip="Wie viele Zombies Welle 1 insgesamt hat (ein Spieler, vor Schwierigkeits- und Spielerfaktor).">ZOMBIES IN WAVE 1</span></td><td>5</td><td>5</td><td>10</td><td>15</td></tr>
@@ -93,6 +83,7 @@ footer { margin-top: 18px; color: #777; font-size: 12px; border-top: 1px solid v
 <tr><td><span class="tip" data-tip="Pause nach der Welle in Sekunden (Shop); Ready beendet sie früher.">BREAK AFTER WAVE</span></td><td>20 s</td><td>20 s</td><td>20 s</td><td>20 s</td></tr>
 </table></section>
 
+<div id="tipbox"></div>
 <footer>Erzeugt mit Tools/Web/build_spawn_tuning.py aus dem Spiel-Repo. Geänderte Werte auf der Brille speichert das Spiel bei jeder Änderung in /sdcard/Android/data/com.kamastudios.zombierealitybreach/files/spawn_tuning.json (Wert, Ursprungswert, geändert ja/nein). · KaMa Studios</footer>
 <script>
 const DATA = {"rift": [{"label": "ZOMBIES IN WAVE 1", "kind": "Whole", "unit": "", "min": 1.0, "max": 40.0, "step": 1.0, "field": "baseZombieCount", "needsSpawnAroundRoom": false, "value": 7.0}, {"label": "MORE PER WAVE", "kind": "Whole", "unit": "", "min": 0.0, "max": 10.0, "step": 1.0, "field": "zombiesAddedPerWave", "needsSpawnAroundRoom": false, "value": 3.0}, {"label": "ZOMBIES, SHARE PER PLAYER", "kind": "Number", "unit": "", "min": 0.0, "max": 3.0, "step": 0.1, "field": "countPerPlayer", "needsSpawnAroundRoom": false, "value": 1.0}, {"label": "ZOMBIES, EASY FACTOR", "kind": "Number", "unit": " x", "min": 0.1, "max": 3.0, "step": 0.1, "field": "easyCountFactor", "needsSpawnAroundRoom": false, "value": 1.0}, {"label": "ZOMBIES, HARD FACTOR", "kind": "Number", "unit": " x", "min": 0.1, "max": 3.0, "step": 0.1, "field": "hardCountFactor", "needsSpawnAroundRoom": false, "value": 1.5}, {"label": "PEAK AT ONCE, WAVE 0", "kind": "Whole", "unit": "", "min": 0.0, "max": 30.0, "step": 1.0, "field": "concurrentBase", "needsSpawnAroundRoom": false, "value": 6.0}, {"label": "PEAK, MORE PER WAVE", "kind": "Number", "unit": "", "min": 0.0, "max": 4.0, "step": 0.1, "field": "concurrentPerWave", "needsSpawnAroundRoom": false, "value": 1.2}, {"label": "PEAK, SHARE PER PLAYER", "kind": "Number", "unit": "", "min": 0.0, "max": 3.0, "step": 0.1, "field": "concurrentPerPlayer", "needsSpawnAroundRoom": false, "value": 0.5}, {"label": "PEAK LIMIT SOLO", "kind": "Whole", "unit": "", "min": 1.0, "max": 40.0, "step": 1.0, "field": "soloMaxConcurrent", "needsSpawnAroundRoom": false, "value": 16.0}, {"label": "PEAK LIMIT, MORE PER PLAYER", "kind": "Whole", "unit": "", "min": 0.0, "max": 20.0, "step": 1.0, "field": "extraConcurrentPerPlayer", "needsSpawnAroundRoom": false, "value": 7.0}, {"label": "PEAK LIMIT ALL PLAYERS", "kind": "Whole", "unit": "", "min": 1.0, "max": 60.0, "step": 1.0, "field": "maxConcurrentTotal", "needsSpawnAroundRoom": false, "value": 34.0}, {"label": "AT ONCE AT WAVE START", "kind": "Whole", "unit": "", "min": 1.0, "max": 20.0, "step": 1.0, "field": "rampStartConcurrent", "needsSpawnAroundRoom": false, "value": 2.0}, {"label": "RAMP TO PEAK", "kind": "Number", "unit": " s", "min": 0.0, "max": 60.0, "step": 1.0, "field": "rampSeconds", "needsSpawnAroundRoom": false, "value": 20.0}, {"label": "RAMP, MORE PER WAVE", "kind": "Number", "unit": " s", "min": 0.0, "max": 10.0, "step": 0.5, "field": "rampSecondsPerWave", "needsSpawnAroundRoom": false, "value": 2.0}, {"label": "RAMP LIMIT", "kind": "Number", "unit": " s", "min": 0.0, "max": 120.0, "step": 5.0, "field": "maxRampSeconds", "needsSpawnAroundRoom": false, "value": 60.0}, {"label": "RAMP DONE AT WAVE SHARE", "kind": "Percent", "unit": "%", "min": 0.05, "max": 1.0, "step": 0.05, "field": "rampFullAtSpawnShare", "needsSpawnAroundRoom": false, "value": 0.75}, {"label": "FIRST PAUSE", "kind": "Number", "unit": " s", "min": 0.1, "max": 6.0, "step": 0.1, "field": "firstInterval", "needsSpawnAroundRoom": false, "value": 3.0}, {"label": "PAUSE, LESS PER WAVE", "kind": "Number", "unit": " s", "min": 0.0, "max": 0.3, "step": 0.01, "field": "intervalPerWave", "needsSpawnAroundRoom": false, "value": 0.08}, {"label": "SHORTEST PAUSE", "kind": "Number", "unit": " s", "min": 0.1, "max": 4.0, "step": 0.1, "field": "minInterval", "needsSpawnAroundRoom": false, "value": 1.2}, {"label": "PAUSE AT END OF WAVE", "kind": "Percent", "unit": "%", "min": 0.1, "max": 1.0, "step": 0.05, "field": "endOfWaveInterval", "needsSpawnAroundRoom": false, "value": 0.7}, {"label": "PAUSE, SHARE PER PLAYER", "kind": "Number", "unit": "", "min": 0.0, "max": 2.0, "step": 0.1, "field": "intervalPerPlayer", "needsSpawnAroundRoom": false, "value": 0.5}, {"label": "PAUSE, EASY FACTOR", "kind": "Number", "unit": " x", "min": 0.1, "max": 3.0, "step": 0.1, "field": "easyIntervalFactor", "needsSpawnAroundRoom": false, "value": 1.6}, {"label": "PAUSE, HARD FACTOR", "kind": "Number", "unit": " x", "min": 0.1, "max": 3.0, "step": 0.1, "field": "hardIntervalFactor", "needsSpawnAroundRoom": false, "value": 1.3}, {"label": "GROUP OF 2, MOST", "kind": "Percent", "unit": "%", "min": 0.0, "max": 1.0, "step": 0.05, "field": "firstGroupMaxChance", "needsSpawnAroundRoom": false, "value": 0.45}, {"label": "GROUP OF 2, MORE PER WAVE", "kind": "Percent", "unit": "%", "min": 0.0, "max": 0.3, "step": 0.01, "field": "firstGroupChancePerWave", "needsSpawnAroundRoom": false, "value": 0.06}, {"label": "GROUP OF 2, MORE PER PLAYER", "kind": "Percent", "unit": "%", "min": 0.0, "max": 0.5, "step": 0.05, "field": "firstGroupChancePerPlayer", "needsSpawnAroundRoom": false, "value": 0.15}, {"label": "GROUP OF 3, FROM WAVE", "kind": "Whole", "unit": "", "min": 1.0, "max": 30.0, "step": 1.0, "field": "secondGroupStartWave", "needsSpawnAroundRoom": false, "value": 8.0}, {"label": "GROUP OF 3, MOST", "kind": "Percent", "unit": "%", "min": 0.0, "max": 1.0, "step": 0.05, "field": "secondGroupMaxChance", "needsSpawnAroundRoom": false, "value": 0.25}, {"label": "GROUP OF 3, MORE PER WAVE", "kind": "Percent", "unit": "%", "min": 0.0, "max": 0.3, "step": 0.01, "field": "secondGroupChancePerWave", "needsSpawnAroundRoom": false, "value": 0.03}, {"label": "PATH SPAWN NEAREST", "kind": "Percent", "unit": "%", "min": 0.0, "max": 1.0, "step": 0.05, "field": "pathSpawnShare.x", "needsSpawnAroundRoom": false, "value": 0.3}, {"label": "PATH SPAWN FURTHEST", "kind": "Percent", "unit": "%", "min": 0.0, "max": 1.0, "step": 0.05, "field": "pathSpawnShare.y", "needsSpawnAroundRoom": false, "value": 0.55}, {"label": "COUNTDOWN BEFORE WAVE", "kind": "Number", "unit": " s", "min": 0.0, "max": 30.0, "step": 1.0, "field": "preWaveCountdown", "needsSpawnAroundRoom": false, "value": 5.0}, {"label": "BREAK AFTER WAVE", "kind": "Number", "unit": " s", "min": 1.0, "max": 180.0, "step": 1.0, "field": "breakDuration", "needsSpawnAroundRoom": false, "value": 20.0}], "pressure": [{"label": "MIN ALIVE PER PLAYER", "kind": "Whole", "unit": "", "min": 0.0, "max": 12.0, "step": 1.0, "field": "floorStart", "needsSpawnAroundRoom": false, "value": 3.0}, {"label": "MIN ALIVE, MORE PER 10 WAVES", "kind": "Whole", "unit": "", "min": 0.0, "max": 8.0, "step": 1.0, "field": "floorStep", "needsSpawnAroundRoom": false, "value": 2.0}, {"label": "PAUSE SHRINKS TO", "kind": "Percent", "unit": "%", "min": 0.1, "max": 1.0, "step": 0.05, "field": "finalIntervalFactor", "needsSpawnAroundRoom": false, "value": 0.35}, {"label": "AT ONCE GROWS TO", "kind": "Number", "unit": " x", "min": 1.0, "max": 4.0, "step": 0.25, "field": "finalCapFactor", "needsSpawnAroundRoom": false, "value": 2.0}, {"label": "AT ONCE, HARD LIMIT", "kind": "Whole", "unit": "", "min": 4.0, "max": 40.0, "step": 1.0, "field": "ceiling", "needsSpawnAroundRoom": false, "value": 24.0}, {"label": "OVERTIME AFTER", "kind": "Number", "unit": " s", "min": 20.0, "max": 300.0, "step": 10.0, "field": "longestBaseSeconds", "needsSpawnAroundRoom": false, "value": 90.0}, {"label": "OVERTIME, LATER PER WAVE", "kind": "Number", "unit": " s", "min": 0.0, "max": 20.0, "step": 1.0, "field": "longestPerWaveSeconds", "needsSpawnAroundRoom": false, "value": 5.0}], "fixed": {"spawnSeed": 1.0, "hardHealthFactor": 1.4, "easyHealthFactor": 1.0, "floorWaves": 10.0}, "heads": {"easy": [{"1": 1.0}, {"1": 1.0}, {"1": 1.0}, {"1": 1.0}, {"1": 1.0}, {"1": 1.0}, {"1": 1.0}, {"1": 1.0}, {"1": 1.0}, {"1": 0.5, "2": 0.5}, {"1": 0.9, "2": 0.1}, {"1": 0.7875, "2": 0.1625, "3": 0.05}, {"1": 0.675, "2": 0.225, "3": 0.1}, {"1": 0.5625, "2": 0.2875, "3": 0.15}, {"1": 0.45, "2": 0.35, "3": 0.2}, {"1": 0.3375, "2": 0.4125, "3": 0.25}, {"1": 0.225, "2": 0.475, "3": 0.3}, {"1": 0.1125, "2": 0.5375, "3": 0.35}, {"2": 0.6, "3": 0.4}, {"2": 0.7, "3": 0.25, "4": 0.05}, {"2": 0.6389, "3": 0.2833, "4": 0.0778}, {"2": 0.5778, "3": 0.3167, "4": 0.1056}, {"2": 0.5167, "3": 0.35, "4": 0.1333}, {"2": 0.4556, "3": 0.3833, "4": 0.1611}, {"2": 0.3944, "3": 0.4167, "4": 0.1889}, {"2": 0.3333, "3": 0.45, "4": 0.2167}, {"2": 0.2722, "3": 0.4833, "4": 0.2444}, {"2": 0.2111, "3": 0.5167, "4": 0.2722}, {"2": 0.15, "3": 0.55, "4": 0.3}, {"3": 0.75, "4": 0.2, "5": 0.05}, {"3": 0.7056, "4": 0.2278, "5": 0.0667}, {"3": 0.6611, "4": 0.2556, "5": 0.0833}, {"3": 0.6167, "4": 0.2833, "5": 0.1}, {"3": 0.5722, "4": 0.3111, "5": 0.1167}, {"3": 0.5278, "4": 0.3389, "5": 0.1333}, {"3": 0.4833, "4": 0.3667, "5": 0.15}, {"3": 0.4389, "4": 0.3944, "5": 0.1667}, {"3": 0.3944, "4": 0.4222, "5": 0.1833}, {"3": 0.35, "4": 0.45, "5": 0.2}, {"3": 0.4, "4": 0.45, "5": 0.15}, {"3": 0.3556, "4": 0.4667, "5": 0.1778}, {"3": 0.3111, "4": 0.4833, "5": 0.2056}, {"3": 0.2667, "4": 0.5, "5": 0.2333}, {"3": 0.2222, "4": 0.5167, "5": 0.2611}, {"3": 0.1778, "4": 0.5333, "5": 0.2889}, {"3": 0.1333, "4": 0.55, "5": 0.3167}, {"3": 0.0889, "4": 0.5667, "5": 0.3444}, {"3": 0.0444, "4": 0.5833, "5": 0.3722}, {"4": 0.6, "5": 0.4}, {"4": 0.6, "5": 0.4}], "hard": [{"1": 1.0}, {"1": 1.0}, {"1": 1.0}, {"1": 1.0}, {"1": 1.0}, {"1": 0.8, "2": 0.2}, {"1": 0.8, "2": 0.2}, {"1": 0.8, "2": 0.2}, {"1": 0.8, "2": 0.2}, {"1": 0.4, "2": 0.4, "3": 0.2}, {"1": 0.6, "2": 0.35, "3": 0.05}, {"1": 0.525, "2": 0.3062, "3": 0.0938, "4": 0.05, "5": 0.025}, {"1": 0.45, "2": 0.2625, "3": 0.1375, "4": 0.1, "5": 0.05}, {"1": 0.375, "2": 0.2188, "3": 0.1813, "4": 0.15, "5": 0.075}, {"1": 0.3, "2": 0.175, "3": 0.225, "4": 0.2, "5": 0.1}, {"1": 0.225, "2": 0.1312, "3": 0.2688, "4": 0.25, "5": 0.125}, {"1": 0.15, "2": 0.0875, "3": 0.3125, "4": 0.3, "5": 0.15}, {"1": 0.075, "2": 0.0438, "3": 0.3563, "4": 0.35, "5": 0.175}, {"3": 0.4, "4": 0.4, "5": 0.2}, {"3": 0.6, "4": 0.3, "5": 0.1}, {"3": 0.55, "4": 0.3111, "5": 0.1278, "6": 0.0111}, {"3": 0.5, "4": 0.3222, "5": 0.1556, "6": 0.0222}, {"3": 0.45, "4": 0.3333, "5": 0.1833, "6": 0.0333}, {"3": 0.4, "4": 0.3444, "5": 0.2111, "6": 0.0444}, {"3": 0.35, "4": 0.3556, "5": 0.2389, "6": 0.0556}, {"3": 0.3, "4": 0.3667, "5": 0.2667, "6": 0.0667}, {"3": 0.25, "4": 0.3778, "5": 0.2944, "6": 0.0778}, {"3": 0.2, "4": 0.3889, "5": 0.3222, "6": 0.0889}, {"3": 0.15, "4": 0.4, "5": 0.35, "6": 0.1}, {"4": 0.65, "5": 0.3, "6": 0.05}, {"4": 0.6056, "5": 0.3167, "6": 0.0778}, {"4": 0.5611, "5": 0.3333, "6": 0.1056}, {"4": 0.5167, "5": 0.35, "6": 0.1333}, {"4": 0.4722, "5": 0.3667, "6": 0.1611}, {"4": 0.4278, "5": 0.3833, "6": 0.1889}, {"4": 0.3833, "5": 0.4, "6": 0.2167}, {"4": 0.3389, "5": 0.4167, "6": 0.2444}, {"4": 0.2944, "5": 0.4333, "6": 0.2722}, {"4": 0.25, "5": 0.45, "6": 0.3}, {"4": 0.45, "5": 0.4, "6": 0.15}, {"4": 0.4, "5": 0.4111, "6": 0.1889}, {"4": 0.35, "5": 0.4222, "6": 0.2278}, {"4": 0.3, "5": 0.4333, "6": 0.2667}, {"4": 0.25, "5": 0.4444, "6": 0.3056}, {"4": 0.2, "5": 0.4556, "6": 0.3444}, {"4": 0.15, "5": 0.4667, "6": 0.3833}, {"4": 0.1, "5": 0.4778, "6": 0.4222}, {"4": 0.05, "5": 0.4889, "6": 0.4611}, {"5": 0.5, "6": 0.5}, {"5": 0.5, "6": 0.5}]}, "headsFrom": 11, "freeWaves": 5, "headFactor": 1.2};
@@ -177,27 +168,31 @@ function simulateWave(f, w, players, hard, shot, walk, seed) {
 }
 
 const $ = id => document.getElementById(id);
-const rows = DATA.rift, pr = Object.fromEntries(DATA.pressure.map(r => [r.field, r.value]));
+const rows = [...DATA.rift.map(r => ({ ...r, sec: 'rift' })), ...DATA.pressure.map(r => ({ ...r, sec: 'pressure' }))];
+const SECTIONS = { rift: 'RIFT · RiftWaveScaling', pressure: 'Wellendruck · WavePressure (gilt in allen Modi)' };
 const show = (r, v) => r.kind === 'Percent' ? Math.round(v * 100) + ' %' : (r.kind === 'Whole' ? String(Math.round(v)) : (+v.toFixed(2)) + r.unit);
 const shown = r => r.kind === 'Percent' ? +(r.value * 100).toFixed(2) : r.value;
 const fromShown = (r, x) => r.kind === 'Percent' ? x / 100 : x;
 const esc = s => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 $('params').innerHTML = '<tr><th>Wert</th><th>Simulation</th><th></th><th>Code</th></tr>' + rows.map((r, i) =>
-  `<tr><td><span class="tip" data-tip="${esc(EXPLAIN_DE[r.label] || '')}">${esc(r.label)}</span></td>` +
+  (i === 0 || rows[i - 1].sec !== r.sec ? `<tr class="sec"><td colspan="4">${SECTIONS[r.sec]}</td></tr>` : '') + `<tr><td><span class="tip" data-tip="${esc(EXPLAIN_DE[r.label] || '')}">${esc(r.label)}</span></td>` +
   `<td><input type="number" data-i="${i}" value="${shown(r)}" step="${r.kind === 'Percent' ? +(r.step * 100).toFixed(2) : r.step}" min="${r.kind === 'Percent' ? r.min * 100 : r.min}" max="${r.kind === 'Percent' ? r.max * 100 : r.max}"></td><td class="unit">${r.kind === 'Percent' ? '%' : esc(r.unit.trim())}</td>` +
   `<td class="orig">${show(r, r.value)}</td></tr>`).join('');
 const inputs = [...document.querySelectorAll('#params input')];
-function values() {
-  const v = {};
-  rows.forEach((r, i) => { const x = parseFloat(inputs[i].value); const val = isNaN(x) ? r.value : fromShown(r, x); v[r.field.replace('.', '_')] = val; inputs[i].classList.toggle('changed', Math.abs(val - r.value) > 1e-9); });
-  v.pathSpawnShare = { x: v.pathSpawnShare_x, y: v.pathSpawnShare_y };
-  return v;
+// Rift values (v) and wave pressure values (p) as entered, or as in the code (useCode).
+function values(useCode) {
+  const v = {}, p = {};
+  rows.forEach((r, i) => {
+    const x = parseFloat(inputs[i].value), val = useCode || isNaN(x) ? r.value : fromShown(r, x);
+    (r.sec === 'rift' ? v : p)[r.field.replace('.', '_')] = val;
+    if (!useCode) inputs[i].classList.toggle('changed', Math.abs(val - r.value) > 1e-9);
+  });
+  return [v, p];
 }
 const T = (head, tip) => `<th><span class="tip" data-tip="${esc(tip)}">${head}</span></th>`;
 function run() {
-  const v = values(), players = +$('players').value, hard = $('diff').value === 'hard';
-  const base = Object.fromEntries(rows.map(r => [r.field.replace('.', '_'), r.value]));
-  const f = riftFormulas(v, pr, players, hard), f0 = riftFormulas(base, pr, players, hard);
+  const [v, p] = values(false), [v0, p0] = values(true), players = +$('players').value, hard = $('diff').value === 'hard';
+  const f = riftFormulas(v, p, players, hard), f0 = riftFormulas(v0, p0, players, hard);
   const shot = Math.max(0.2, +$('shot').value || 1.2), walk = Math.max(0, +$('walk').value || 0);
   let html = '<tr><th>Welle</th>' + T('Zombies', 'Zombies der Welle (Spieler und Schwierigkeit eingerechnet).') +
     T('Start → Spitze', 'Gleichzeitig erlaubt zu Wellenbeginn und nach der Rampe (eigene Grenze, vor dem Wellendruck).') +
@@ -216,7 +211,7 @@ function run() {
     html += `<tr><td>${w}</td>` + cmp(total, f0.count(w), n0) +
       `<td>${f.rampStart(w)} → ${f.peak(w)}</td>` + cmp(f.rampDur(w), f0.rampDur(w), n0) +
       `<td>${f.interval(w, total, total).toFixed(2)} → ${f.interval(w, 1, total).toFixed(2)}</td>` +
-      `<td>${f.floor(w)}</td><td>${Math.round(f.longest(w))}</td>` +
+      cmp(f.floor(w), f0.floor(w), n0) + cmp(f.longest(w), f0.longest(w), n0) +
       cmp(s.end, s0.end, n0) + cmp(s.lastSpawn, s0.lastSpawn, n0) + cmp(s.maxAlive, s0.maxAlive, n0) + '</tr>';
   }
   $('res').innerHTML = html;
@@ -241,6 +236,16 @@ $('copy').onclick = () => {
     .map(([r, v]) => `${r.label} (${r.field}): ${show(r, r.value)} -> ${show(r, v)}`).join('\n');
   navigator.clipboard.writeText(changed || 'Keine Werte geändert.').then(() => { $('copy').textContent = 'Kopiert'; setTimeout(() => $('copy').textContent = 'Geänderte Werte kopieren', 1500); });
 };
+// One tooltip box for the whole page, kept inside the window (the table's scroll area cut it off).
+const tipbox = $('tipbox');
+document.addEventListener('mouseover', e => { const t = e.target.closest('.tip'); if (!t || !t.dataset.tip) return; tipbox.textContent = t.dataset.tip; tipbox.style.display = 'block'; place(t); });
+document.addEventListener('mouseout', e => { if (e.target.closest('.tip')) tipbox.style.display = 'none'; });
+function place(t) {
+  const r = t.getBoundingClientRect(), b = tipbox.getBoundingClientRect(), m = 8;
+  let x = Math.min(Math.max(m, r.left), innerWidth - b.width - m);
+  let y = r.bottom + 6; if (y + b.height > innerHeight - m) y = Math.max(m, r.top - b.height - 6);
+  tipbox.style.left = x + 'px'; tipbox.style.top = y + 'px';
+}
 heads(); run();
 </script>
 </body></html>
