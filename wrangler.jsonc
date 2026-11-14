@@ -31,8 +31,9 @@
     "binding": "ASSETS",
     // React router: unknown paths get index.html.
     "not_found_handling": "single-page-application",
-    // The API must reach the worker instead of the SPA fallback.
-    "run_worker_first": ["/api/*"]
+    // The API must reach the worker instead of the SPA fallback. The videos go through the worker for byte ranges
+    // (static assets answer a Range request with the full file, worker/media.ts).
+    "run_worker_first": ["/api/*", "/assets/video/*"]
   },
   "routes": [
     { "pattern": "zombierealitybreach.com", "custom_domain": true },

@@ -117,6 +117,8 @@ ffmpeg -i ZRB_Trailer_EN_1920x1080.mp4 -c:v libx264 -preset slow -profile:v high
 
 Eingebunden auf der Startseite über `src/components/Trailer.tsx` (`trailerVideo` in `src/lib/site.ts`): Die Datei richtet sich nach der gewählten Sprache; beim Umschalten laufen Position und Wiedergabe weiter. Vor dem Klick auf Abspielen wird nichts geladen (`preload="none"`), als Standbild dient die Titelgrafik `wall-breach/cover_1920.jpg`. Selbst gehostet, kein Einbetten von Drittanbietern.
 
+Teilabrufe: Cloudflare Workers Static Assets beantwortet eine `Range`-Anfrage mit `200` und der ganzen Datei; Safari spielt ein Video dann nicht ab, und Spulen geht in keinem Browser. Deshalb läuft `/assets/video/*` zuerst durch den Worker (`run_worker_first` in `wrangler.jsonc`), der in `worker/media.ts` die angefragten Bytes als `206 Partial Content` liefert. Neue Videos gehören in denselben Ordner.
+
 ## 3D-Modelle der Web-AR-Quest
 
 Herkunft, Lizenzen und die nötige Namensnennung (CC-BY 4.0 der goldenen Desert Eagle) stehen in `CREDITS.md`. Die A3500X (Asset Store) wird nur lokal nach `public/breach/private/` erzeugt und nie committet (`DEPLOY.md`, „Private Assets der Web-AR-Quest“).

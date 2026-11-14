@@ -3,6 +3,7 @@
 //   /api/quest/*               web AR quest runs and redemption codes (quest.ts)
 //   /api/meta/*                Meta account linking for the quest reward (meta.ts)
 //   /api/rewards/*             server-to-server reward lookup for the game's Cloud Code (rewards.ts)
+// Outside the API only /assets/video/* reaches the worker: byte ranges for the trailer (media.ts).
 // Contract: Docs/WEB_AR_QUEST.md in the game repo.
 
 import type { Ctx, Env } from './env';
@@ -11,6 +12,7 @@ import { handleLeaderboards } from './leaderboards';
 import { handleQuest } from './quest';
 import { handleMeta } from './meta';
 import { handleRewards } from './rewards';
+import { handleVideo } from './media';
 
 async function route(path: string, request: Request, env: Env, ctx: Ctx): Promise<Response> {
   if (path.startsWith('/api/quest/')) return handleQuest(path, request, env, ctx);
@@ -23,6 +25,7 @@ export default {
   async fetch(request: Request, env: Env, ctx: Ctx): Promise<Response> {
     const path = new URL(request.url).pathname;
     if (path === '/api/leaderboards') return handleLeaderboards(request, env, ctx);
+    if (path.startsWith('/assets/video/')) return handleVideo(request, env);
     if (!path.startsWith('/api/')) return env.ASSETS.fetch(request);
 
     try {
