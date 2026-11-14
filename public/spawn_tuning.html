@@ -1,117 +1,246 @@
 <!doctype html>
-<html lang="de"><head><meta charset="utf-8"><title>Spawn-Tuning-Werte 14.11.2026</title>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spawn-Tuning-Werte</title>
 <style>
 @page { size: A4; margin: 15mm 16mm 16mm; }
-body { font-family: "Segoe UI", Arial, sans-serif; color: #1c1b19; font-size: 9.5pt; line-height: 1.4; margin: 0; }
-h1 { font-size: 17pt; margin: 0 0 3pt; letter-spacing: .01em; }
-h2 { font-size: 11.5pt; margin: 13pt 0 4pt; color: #8c2a17; }
-p { margin: 0 0 4pt; }
-.lead { color: #444; max-width: 160mm; }
-.note { color: #666; font-size: 8.5pt; }
-table { border-collapse: collapse; width: 100%; break-inside: avoid; }
-th { background: #8c2a17; color: #fff; text-align: left; font-weight: 600; padding: 3pt 6pt; font-size: 8.5pt; }
-td { padding: 2.4pt 6pt; border-bottom: .4pt solid #d8d4cc; font-size: 8.8pt; }
-td + td, th + th { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
-tr:nth-child(even) td { background: #f4f2ee; }
-.two { width: 62%; }
-section { break-inside: avoid; }
-.heads { break-before: page; }
-.heads td, .heads th { padding: 1.6pt 5pt; font-size: 7.8pt; }
-.heads td.d, .heads th.d { text-align: left; white-space: normal; }
-.heads td.d { color: #444; }
-.heads tr.blk td { border-top: 1.2pt solid #8c2a17; }
-footer { margin-top: 12pt; color: #777; font-size: 8pt; border-top: .4pt solid #d8d4cc; padding-top: 4pt; }
+:root { --red: #8c2a17; --line: #d8d4cc; --zebra: #f4f2ee; --ink: #1c1b19; }
+body { font-family: "Segoe UI", Arial, sans-serif; color: var(--ink); font-size: 13px; line-height: 1.4; margin: 16px; background: #fff; }
+h1 { font-size: 22px; margin: 0 0 4px; }
+h2 { font-size: 15px; margin: 22px 0 6px; color: var(--red); }
+p { margin: 0 0 6px; max-width: 900px; }
+.lead, .note { color: #555; }
+.note { font-size: 12px; }
+table { border-collapse: collapse; }
+th { background: var(--red); color: #fff; text-align: left; font-weight: 600; padding: 4px 10px; font-size: 12px; white-space: nowrap; }
+td { padding: 3px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+tr:nth-child(even) td { background: var(--zebra); }
+table.kv td + td, table.kv th + th, table.res td, table.res th { text-align: right; font-variant-numeric: tabular-nums; }
+table.res td:first-child, table.res th:first-child { text-align: left; }
+.tip { border-bottom: 1px dotted #999; cursor: help; position: relative; }
+.tip:hover::after { content: attr(data-tip); position: absolute; left: 0; top: 1.6em; z-index: 10; width: 340px; white-space: normal;
+  background: #222; color: #fff; padding: 7px 9px; border-radius: 5px; font-size: 12px; line-height: 1.35; box-shadow: 0 3px 10px rgba(0,0,0,.25); }
+.sim { display: flex; gap: 24px; align-items: flex-start; flex-wrap: wrap; }
+.sim .params td { padding: 2px 8px; }
+.sim input[type=number] { width: 70px; font: inherit; text-align: right; padding: 1px 4px; }
+.sim input.changed { background: #fff3c4; border-color: #c9a227; }
+.orig { color: #999; font-size: 11px; }
+table.kv td.unit { text-align: left; padding-left: 2px; color: #666; }
+.controls { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; margin: 4px 0 10px; }
+.controls label { white-space: nowrap; }
+.controls input[type=number] { width: 60px; }
+button { font: inherit; padding: 3px 10px; cursor: pointer; }
+.resbox { max-height: 900px; overflow: auto; border: 1px solid var(--line); }
+.resbox th { position: sticky; top: 0; }
+td.up { color: #b3261e; } td.down { color: #1b6e3a; }
+.heads td.d, .heads th.d { text-align: left; white-space: normal; color: #444; }
+.heads th.d { color: #fff; }
+.heads tr.blk td { border-top: 2px solid var(--red); }
+footer { margin-top: 18px; color: #777; font-size: 12px; border-top: 1px solid var(--line); padding-top: 6px; }
+@media print { .controls, button, .orig { display: none; } .resbox { max-height: none; overflow: visible; border: 0; } }
 </style></head><body>
 <h1>Zombie Reality Breach · SPAWN TUNING</h1>
-<p class="lead">Alle Werte der Seite SPAWN TUNING im Pausenmenü (Development-Builds), Stand des Codes am 14.11.2026 (Branch codex/rb-wall-breach). Quelle: die Wave-Config-Assets des Projekts und die Konstanten in WavePressure.cs.</p>
+<p class="lead">Alle Werte der Seite SPAWN TUNING im Pausenmenü (Development-Builds), direkt aus dem Code gelesen am 14.11.2026 23:22 (Branch codex/rb-wall-breach, Commit 0ee418c9): Wave-Config-Assets, WavePressure.cs und ZombieHealth.cs. Mit der Maus über einen Namen fahren zeigt, was der Wert bewirkt.</p>
 
-<section><h2>RIFT · RiftWaveScaling</h2>
-<table class="two"><tr><th>Wert</th><th>Aktuell</th></tr>
-<tr><td>ZOMBIES IN WAVE 1</td><td>7</td></tr><tr><td>MORE PER WAVE</td><td>3</td></tr><tr><td>ZOMBIES, SHARE PER PLAYER</td><td>1</td></tr>
-<tr><td>ZOMBIES, EASY FACTOR</td><td>1 x</td></tr><tr><td>ZOMBIES, HARD FACTOR</td><td>1.5 x</td></tr><tr><td>PEAK AT ONCE, WAVE 0</td><td>6</td></tr>
-<tr><td>PEAK, MORE PER WAVE</td><td>1.2</td></tr><tr><td>PEAK, SHARE PER PLAYER</td><td>0.5</td></tr><tr><td>PEAK LIMIT SOLO</td><td>16</td></tr>
-<tr><td>PEAK LIMIT, MORE PER PLAYER</td><td>7</td></tr><tr><td>PEAK LIMIT ALL PLAYERS</td><td>34</td></tr><tr><td>AT ONCE AT WAVE START</td><td>2</td></tr>
-<tr><td>RAMP TO PEAK</td><td>20 s</td></tr><tr><td>RAMP, MORE PER WAVE</td><td>2 s</td></tr><tr><td>RAMP LIMIT</td><td>60 s</td></tr>
-<tr><td>RAMP DONE AT WAVE SHARE</td><td>75 %</td></tr><tr><td>FIRST PAUSE</td><td>3 s</td></tr><tr><td>PAUSE, LESS PER WAVE</td><td>0.08 s</td></tr>
-<tr><td>SHORTEST PAUSE</td><td>1.2 s</td></tr><tr><td>PAUSE AT END OF WAVE</td><td>70 %</td></tr><tr><td>PAUSE, SHARE PER PLAYER</td><td>0.5</td></tr>
-<tr><td>PAUSE, EASY FACTOR</td><td>1.6 x</td></tr><tr><td>PAUSE, HARD FACTOR</td><td>1.3 x</td></tr><tr><td>GROUP OF 2, MOST</td><td>45 %</td></tr>
-<tr><td>GROUP OF 2, MORE PER WAVE</td><td>6 %</td></tr><tr><td>GROUP OF 2, MORE PER PLAYER</td><td>15 %</td></tr><tr><td>GROUP OF 3, FROM WAVE</td><td>8</td></tr>
-<tr><td>GROUP OF 3, MOST</td><td>25 %</td></tr><tr><td>GROUP OF 3, MORE PER WAVE</td><td>3 %</td></tr><tr><td>PATH SPAWN NEAREST</td><td>30 %</td></tr>
-<tr><td>PATH SPAWN FURTHEST</td><td>55 %</td></tr><tr><td>COUNTDOWN BEFORE WAVE</td><td>5 s</td></tr><tr><td>BREAK AFTER WAVE</td><td>20 s</td></tr>
-</table></section>
+<h2>RIFT · RiftWaveScaling · Simulator Wellen 1–50</h2>
+<p class="note">Werte links ändern, rechts rechnet die Seite jede Welle neu, mit denselben Formeln wie das Spiel (RiftWaveConfig, WavePressure, WaveDirector). Geänderte Werte sind gelb, grau dahinter der Wert im Code. Die Spalten ab „Dauer“ sind eine Simulation: Annahme, dass jeder Spieler alle paar Sekunden einen Kopftreffer landet, auf Zombies, die schon eine Weile unterwegs sind; die Kopftreffer pro Zombie kommen aus der Tabelle unten. Zufall (Gruppen, Kopftreffer) folgt einem festen Startwert, ist aber nicht derselbe Zufallsgenerator wie im Spiel.</p>
+<div class="controls">
+  <label>Spieler <select id="players"><option>1</option><option>2</option><option>3</option><option>4</option></select></label>
+  <label>Schwierigkeit <select id="diff"><option value="easy">Easy</option><option value="hard">Hard</option></select></label>
+  <label><span class="tip" data-tip="Annahme der Simulation: so viele Sekunden braucht ein Spieler im Schnitt für einen Kopftreffer (zielen und schießen).">Sekunden je Kopftreffer</span> <input type="number" id="shot" value="1.2" step="0.1" min="0.2"></label>
+  <label><span class="tip" data-tip="Annahme der Simulation: so lange ist ein Zombie nach dem Spawn unterwegs, bevor man ihn treffen kann.">Laufzeit bis Treffer möglich (s)</span> <input type="number" id="walk" value="4" step="0.5" min="0"></label>
+  <button id="reset">Alle Werte zurück</button>
+  <button id="copy">Geänderte Werte kopieren</button>
+</div>
+<div class="sim">
+  <table class="kv params" id="params"></table>
+  <div class="resbox"><table class="res" id="res"></table></div>
+</div>
 
 <section class="heads"><h2>RIFT · Kopftreffer bis zum Tod</h2>
-<p class="note">Normale Zombies, Pistolentreffer am Kopf, Stand 14.11.2026. Ab Welle 11 wird es mit jeder Welle ein wenig schwerer: Bis Welle 19 erreicht Easy 2–3 und Hard 3–5. Ab Welle 20, 30 und 40 beginnt ein neuer Block, der 1–2 Kopftreffer mehr erreicht, aber mit den hohen Werten seltener startet als am Ende des Blocks davor. Ab Welle 50 bleibt es gleich. Prozent = Anteil der Zombies; Ø = Durchschnitt.</p>
-<table><tr><th>Welle</th><th>Easy</th><th>Ø</th><th class="d">Easy Verteilung</th><th>Hard</th><th>Ø</th><th class="d">Hard Verteilung</th></tr>
-<tr><td>1–9</td><td>1</td><td>1,0</td><td class="d">1: 100%</td><td>1 (ab 6: 1–2)</td><td>1,0 / 1,2</td><td class="d">—</td></tr>
-<tr><td>10</td><td>1–2</td><td>1,5</td><td class="d">1: 50% · 2: 50%</td><td>1–3</td><td>1,8</td><td class="d">—</td></tr>
-<tr class="blk"><td>11</td><td>1–2</td><td>1,1</td><td class="d">1: 90% · 2: 10%</td><td>1–3</td><td>1,4</td><td class="d">1: 60% · 2: 35% · 3: 5%</td></tr>
-<tr><td>12</td><td>1–3</td><td>1,3</td><td class="d">1: 79% · 2: 16% · 3: 5%</td><td>1–5</td><td>1,7</td><td class="d">1: 52% · 2: 31% · 3: 9% · 4: 5% · 5: 2%</td></tr>
-<tr><td>13</td><td>1–3</td><td>1,4</td><td class="d">1: 68% · 2: 22% · 3: 10%</td><td>1–5</td><td>2,0</td><td class="d">1: 45% · 2: 26% · 3: 14% · 4: 10% · 5: 5%</td></tr>
-<tr><td>14</td><td>1–3</td><td>1,6</td><td class="d">1: 56% · 2: 29% · 3: 15%</td><td>1–5</td><td>2,3</td><td class="d">1: 38% · 2: 22% · 3: 18% · 4: 15% · 5: 8%</td></tr>
-<tr><td>15</td><td>1–3</td><td>1,8</td><td class="d">1: 45% · 2: 35% · 3: 20%</td><td>1–5</td><td>2,6</td><td class="d">1: 30% · 2: 18% · 3: 23% · 4: 20% · 5: 10%</td></tr>
-<tr><td>16</td><td>1–3</td><td>1,9</td><td class="d">1: 34% · 2: 41% · 3: 25%</td><td>1–5</td><td>2,9</td><td class="d">1: 22% · 2: 13% · 3: 27% · 4: 25% · 5: 12%</td></tr>
-<tr><td>17</td><td>1–3</td><td>2,1</td><td class="d">1: 22% · 2: 48% · 3: 30%</td><td>1–5</td><td>3,2</td><td class="d">1: 15% · 2: 9% · 3: 31% · 4: 30% · 5: 15%</td></tr>
-<tr><td>18</td><td>1–3</td><td>2,2</td><td class="d">1: 11% · 2: 54% · 3: 35%</td><td>1–5</td><td>3,5</td><td class="d">1: 7% · 2: 4% · 3: 36% · 4: 35% · 5: 18%</td></tr>
-<tr><td>19</td><td>2–3</td><td>2,4</td><td class="d">2: 60% · 3: 40%</td><td>3–5</td><td>3,8</td><td class="d">3: 40% · 4: 40% · 5: 20%</td></tr>
-<tr class="blk"><td>20</td><td>2–4</td><td>2,4</td><td class="d">2: 70% · 3: 25% · 4: 5%</td><td>3–5</td><td>3,5</td><td class="d">3: 60% · 4: 30% · 5: 10%</td></tr>
-<tr><td>21</td><td>2–4</td><td>2,4</td><td class="d">2: 64% · 3: 28% · 4: 8%</td><td>3–6</td><td>3,6</td><td class="d">3: 55% · 4: 31% · 5: 13% · 6: 1%</td></tr>
-<tr><td>22</td><td>2–4</td><td>2,5</td><td class="d">2: 58% · 3: 32% · 4: 11%</td><td>3–6</td><td>3,7</td><td class="d">3: 50% · 4: 32% · 5: 16% · 6: 2%</td></tr>
-<tr><td>23</td><td>2–4</td><td>2,6</td><td class="d">2: 52% · 3: 35% · 4: 13%</td><td>3–6</td><td>3,8</td><td class="d">3: 45% · 4: 33% · 5: 18% · 6: 3%</td></tr>
-<tr><td>24</td><td>2–4</td><td>2,7</td><td class="d">2: 46% · 3: 38% · 4: 16%</td><td>3–6</td><td>3,9</td><td class="d">3: 40% · 4: 34% · 5: 21% · 6: 4%</td></tr>
-<tr><td>25</td><td>2–4</td><td>2,8</td><td class="d">2: 39% · 3: 42% · 4: 19%</td><td>3–6</td><td>4,0</td><td class="d">3: 35% · 4: 36% · 5: 24% · 6: 6%</td></tr>
-<tr><td>26</td><td>2–4</td><td>2,9</td><td class="d">2: 33% · 3: 45% · 4: 22%</td><td>3–6</td><td>4,1</td><td class="d">3: 30% · 4: 37% · 5: 27% · 6: 7%</td></tr>
-<tr><td>27</td><td>2–4</td><td>3,0</td><td class="d">2: 27% · 3: 48% · 4: 24%</td><td>3–6</td><td>4,2</td><td class="d">3: 25% · 4: 38% · 5: 29% · 6: 8%</td></tr>
-<tr><td>28</td><td>2–4</td><td>3,1</td><td class="d">2: 21% · 3: 52% · 4: 27%</td><td>3–6</td><td>4,3</td><td class="d">3: 20% · 4: 39% · 5: 32% · 6: 9%</td></tr>
-<tr><td>29</td><td>2–4</td><td>3,2</td><td class="d">2: 15% · 3: 55% · 4: 30%</td><td>3–6</td><td>4,4</td><td class="d">3: 15% · 4: 40% · 5: 35% · 6: 10%</td></tr>
-<tr class="blk"><td>30</td><td>3–5</td><td>3,3</td><td class="d">3: 75% · 4: 20% · 5: 5%</td><td>4–6</td><td>4,4</td><td class="d">4: 65% · 5: 30% · 6: 5%</td></tr>
-<tr><td>31</td><td>3–5</td><td>3,4</td><td class="d">3: 71% · 4: 23% · 5: 7%</td><td>4–6</td><td>4,5</td><td class="d">4: 61% · 5: 32% · 6: 8%</td></tr>
-<tr><td>32</td><td>3–5</td><td>3,4</td><td class="d">3: 66% · 4: 26% · 5: 8%</td><td>4–6</td><td>4,5</td><td class="d">4: 56% · 5: 33% · 6: 11%</td></tr>
-<tr><td>33</td><td>3–5</td><td>3,5</td><td class="d">3: 62% · 4: 28% · 5: 10%</td><td>4–6</td><td>4,6</td><td class="d">4: 52% · 5: 35% · 6: 13%</td></tr>
-<tr><td>34</td><td>3–5</td><td>3,5</td><td class="d">3: 57% · 4: 31% · 5: 12%</td><td>4–6</td><td>4,7</td><td class="d">4: 47% · 5: 37% · 6: 16%</td></tr>
-<tr><td>35</td><td>3–5</td><td>3,6</td><td class="d">3: 53% · 4: 34% · 5: 13%</td><td>4–6</td><td>4,8</td><td class="d">4: 43% · 5: 38% · 6: 19%</td></tr>
-<tr><td>36</td><td>3–5</td><td>3,7</td><td class="d">3: 48% · 4: 37% · 5: 15%</td><td>4–6</td><td>4,8</td><td class="d">4: 38% · 5: 40% · 6: 22%</td></tr>
-<tr><td>37</td><td>3–5</td><td>3,7</td><td class="d">3: 44% · 4: 39% · 5: 17%</td><td>4–6</td><td>4,9</td><td class="d">4: 34% · 5: 42% · 6: 24%</td></tr>
-<tr><td>38</td><td>3–5</td><td>3,8</td><td class="d">3: 39% · 4: 42% · 5: 18%</td><td>4–6</td><td>5,0</td><td class="d">4: 29% · 5: 43% · 6: 27%</td></tr>
-<tr><td>39</td><td>3–5</td><td>3,8</td><td class="d">3: 35% · 4: 45% · 5: 20%</td><td>4–6</td><td>5,0</td><td class="d">4: 25% · 5: 45% · 6: 30%</td></tr>
-<tr class="blk"><td>40</td><td>3–5</td><td>3,8</td><td class="d">3: 40% · 4: 45% · 5: 15%</td><td>4–6</td><td>4,7</td><td class="d">4: 45% · 5: 40% · 6: 15%</td></tr>
-<tr><td>41</td><td>3–5</td><td>3,8</td><td class="d">3: 36% · 4: 47% · 5: 18%</td><td>4–6</td><td>4,8</td><td class="d">4: 40% · 5: 41% · 6: 19%</td></tr>
-<tr><td>42</td><td>3–5</td><td>3,9</td><td class="d">3: 31% · 4: 48% · 5: 21%</td><td>4–6</td><td>4,9</td><td class="d">4: 35% · 5: 42% · 6: 23%</td></tr>
-<tr><td>43</td><td>3–5</td><td>4,0</td><td class="d">3: 27% · 4: 50% · 5: 23%</td><td>4–6</td><td>5,0</td><td class="d">4: 30% · 5: 43% · 6: 27%</td></tr>
-<tr><td>44</td><td>3–5</td><td>4,0</td><td class="d">3: 22% · 4: 52% · 5: 26%</td><td>4–6</td><td>5,1</td><td class="d">4: 25% · 5: 44% · 6: 31%</td></tr>
-<tr><td>45</td><td>3–5</td><td>4,1</td><td class="d">3: 18% · 4: 53% · 5: 29%</td><td>4–6</td><td>5,1</td><td class="d">4: 20% · 5: 46% · 6: 34%</td></tr>
-<tr><td>46</td><td>3–5</td><td>4,2</td><td class="d">3: 13% · 4: 55% · 5: 32%</td><td>4–6</td><td>5,2</td><td class="d">4: 15% · 5: 47% · 6: 38%</td></tr>
-<tr><td>47</td><td>3–5</td><td>4,3</td><td class="d">3: 9% · 4: 57% · 5: 34%</td><td>4–6</td><td>5,3</td><td class="d">4: 10% · 5: 48% · 6: 42%</td></tr>
-<tr><td>48</td><td>3–5</td><td>4,3</td><td class="d">3: 4% · 4: 58% · 5: 37%</td><td>4–6</td><td>5,4</td><td class="d">4: 5% · 5: 49% · 6: 46%</td></tr>
-<tr><td>49</td><td>4–5</td><td>4,4</td><td class="d">4: 60% · 5: 40%</td><td>5–6</td><td>5,5</td><td class="d">5: 50% · 6: 50%</td></tr>
-<tr><td>50+</td><td>4–5</td><td>4,4</td><td class="d">4: 60% · 5: 40%</td><td>5–6</td><td>5,5</td><td class="d">5: 50% · 6: 50%</td></tr>
-</table></section>
+<p class="note">Normale Zombies, Pistolentreffer am Kopf. Bis Welle 10 wie in allen Modi (Hard ab Welle 6 mal 1,2), ab Welle 11 die Rift-Rampe in Blöcken. Prozent = Anteil der Zombies; Ø = Durchschnitt.</p>
+<table class="res" id="heads"></table></section>
 
 <section><h2>REALITY BREACH · WaveScaling</h2>
-<table class="two"><tr><th>Wert</th><th>Aktuell</th></tr>
-<tr><td>ZOMBIES IN WAVE 1</td><td>9</td></tr><tr><td>MORE PER WAVE</td><td>1</td></tr><tr><td>MAX AT ONCE</td><td>6</td></tr>
-<tr><td>MAX AT ONCE, SMALL ROOM</td><td>3</td></tr><tr><td>SPAWN PAUSE</td><td>2.5 s</td></tr><tr><td>SPAWN DISTANCE MIN</td><td>8 m</td></tr>
-<tr><td>SPAWN DISTANCE MAX</td><td>14 m</td></tr><tr><td>COUNTDOWN BEFORE WAVE</td><td>5 s</td></tr><tr><td>BREAK AFTER WAVE</td><td>90 s</td></tr>
+<table class="kv"><tr><th>Wert</th><th>Aktuell</th></tr>
+<tr><td><span class="tip" data-tip="Wie viele Zombies Welle 1 insgesamt hat (ein Spieler, vor Schwierigkeits- und Spielerfaktor).">ZOMBIES IN WAVE 1</span></td><td>9</td></tr>
+<tr><td><span class="tip" data-tip="So viele Zombies kommen mit jeder weiteren Welle dazu. Welle n hat: Welle-1-Wert + (n − 1) × dieser Wert.">MORE PER WAVE</span></td><td>1</td></tr>
+<tr><td><span class="tip" data-tip="Höchstens so viele Zombies leben gleichzeitig (eigene Grenze des Modus, vor dem Wellendruck).">MAX AT ONCE</span></td><td>6</td></tr>
+<tr><td><span class="tip" data-tip="Sekunden zwischen zwei Spawns (vor dem Wellendruck).">SPAWN PAUSE</span></td><td>2.5 s</td></tr>
+<tr><td><span class="tip" data-tip="Kleinster Abstand in Metern, in dem die Toten rund um den Raum erscheinen.">SPAWN DISTANCE MIN</span></td><td>8 m</td></tr>
+<tr><td><span class="tip" data-tip="Größter Abstand in Metern, in dem die Toten rund um den Raum erscheinen.">SPAWN DISTANCE MAX</span></td><td>14 m</td></tr>
+<tr><td><span class="tip" data-tip="Countdown in Sekunden, bevor die Welle startet.">COUNTDOWN BEFORE WAVE</span></td><td>5 s</td></tr>
+<tr><td><span class="tip" data-tip="Pause nach der Welle in Sekunden (Shop); Ready beendet sie früher.">BREAK AFTER WAVE</span></td><td>90 s</td></tr>
 </table></section>
 
 <section><h2>Druck innerhalb einer Welle · WavePressure (alle Modi)</h2>
-<table class="two"><tr><th>Wert</th><th>Aktuell</th></tr>
-<tr><td>MIN ALIVE PER PLAYER</td><td>3</td></tr><tr><td>MIN ALIVE, MORE PER 10 WAVES</td><td>2</td></tr><tr><td>PAUSE SHRINKS TO</td><td>35 %</td></tr>
-<tr><td>AT ONCE GROWS TO</td><td>2 x</td></tr><tr><td>AT ONCE, HARD LIMIT</td><td>24</td></tr><tr><td>OVERTIME AFTER</td><td>90 s</td></tr>
-<tr><td>OVERTIME, LATER PER WAVE</td><td>5 s</td></tr>
+<table class="kv"><tr><th>Wert</th><th>Aktuell</th></tr>
+<tr><td><span class="tip" data-tip="Untergrenze lebender Zombies pro Spieler in Welle 1–10: Fällt es darunter, kommt der nächste sofort, ohne Pause.">MIN ALIVE PER PLAYER</span></td><td>3</td></tr>
+<tr><td><span class="tip" data-tip="Die Untergrenze steigt alle 10 Wellen um so viel (11–20, 21–30 …), mal Spieler.">MIN ALIVE, MORE PER 10 WAVES</span></td><td>2</td></tr>
+<tr><td><span class="tip" data-tip="Je länger eine Welle läuft, desto kürzer die Spawn-Pause: bis zum Overtime-Zeitpunkt sinkt sie auf diesen Anteil.">PAUSE SHRINKS TO</span></td><td>35 %</td></tr>
+<tr><td><span class="tip" data-tip="Je länger eine Welle läuft, desto mehr gleichzeitig: bis zum Overtime-Zeitpunkt wächst die Grenze auf dieses Vielfache.">AT ONCE GROWS TO</span></td><td>2 x</td></tr>
+<tr><td><span class="tip" data-tip="Über diese Zahl hebt der Wellendruck die Grenze nie (Bildrate der Quest); eine höhere eigene Grenze des Modus bleibt.">AT ONCE, HARD LIMIT</span></td><td>24</td></tr>
+<tr><td><span class="tip" data-tip="Nach so vielen Sekunden (plus Zuschlag je Welle) kommt der Rest der Welle ohne Pause, so schnell die Grenze erlaubt.">OVERTIME AFTER</span></td><td>90 s</td></tr>
+<tr><td><span class="tip" data-tip="Der Overtime-Zeitpunkt liegt pro Welle so viele Sekunden später.">OVERTIME, LATER PER WAVE</span></td><td>5 s</td></tr>
 </table></section>
 
 <section><h2>OUTBREAK (VR, nur in Development-Builds spielbar)</h2>
-<p class="note">Ohne Spawn-Abstand: die VR-Level spawnen nicht rund um den Raum.</p>
-<table><tr><th>Wert</th><th>Rooftop</th><th>Safe Zone</th><th>Gas Station Easy</th><th>Gas Station Hard</th></tr>
-<tr><td>ZOMBIES IN WAVE 1</td><td>5</td><td>5</td><td>10</td><td>15</td></tr>
-<tr><td>MORE PER WAVE</td><td>2</td><td>2</td><td>4</td><td>6</td></tr>
-<tr><td>MAX AT ONCE</td><td>12</td><td>10</td><td>14</td><td>20</td></tr>
-<tr><td>MAX AT ONCE, SMALL ROOM</td><td>3</td><td>3</td><td>3</td><td>3</td></tr>
-<tr><td>SPAWN PAUSE</td><td>2.5 s</td><td>2.5 s</td><td>1.5 s</td><td>1.5 s</td></tr>
-<tr><td>COUNTDOWN BEFORE WAVE</td><td>10 s</td><td>10 s</td><td>10 s</td><td>10 s</td></tr>
-<tr><td>BREAK AFTER WAVE</td><td>20 s</td><td>20 s</td><td>20 s</td><td>20 s</td></tr>
+<table class="kv"><tr><th>Wert</th><th>Rooftop</th><th>Safe Zone</th><th>Gas Station Easy</th><th>Gas Station Hard</th></tr>
+<tr><td><span class="tip" data-tip="Wie viele Zombies Welle 1 insgesamt hat (ein Spieler, vor Schwierigkeits- und Spielerfaktor).">ZOMBIES IN WAVE 1</span></td><td>5</td><td>5</td><td>10</td><td>15</td></tr>
+<tr><td><span class="tip" data-tip="So viele Zombies kommen mit jeder weiteren Welle dazu. Welle n hat: Welle-1-Wert + (n − 1) × dieser Wert.">MORE PER WAVE</span></td><td>2</td><td>2</td><td>4</td><td>6</td></tr>
+<tr><td><span class="tip" data-tip="Höchstens so viele Zombies leben gleichzeitig (eigene Grenze des Modus, vor dem Wellendruck).">MAX AT ONCE</span></td><td>12</td><td>10</td><td>14</td><td>20</td></tr>
+<tr><td><span class="tip" data-tip="Sekunden zwischen zwei Spawns (vor dem Wellendruck).">SPAWN PAUSE</span></td><td>2.5 s</td><td>2.5 s</td><td>1.5 s</td><td>1.5 s</td></tr>
+<tr><td><span class="tip" data-tip="Countdown in Sekunden, bevor die Welle startet.">COUNTDOWN BEFORE WAVE</span></td><td>10 s</td><td>10 s</td><td>10 s</td><td>10 s</td></tr>
+<tr><td><span class="tip" data-tip="Pause nach der Welle in Sekunden (Shop); Ready beendet sie früher.">BREAK AFTER WAVE</span></td><td>20 s</td><td>20 s</td><td>20 s</td><td>20 s</td></tr>
 </table></section>
 
-<footer>Geänderte Werte auf der Brille speichert das Spiel ab dem nächsten Development-Build bei jeder Änderung in /sdcard/Android/data/com.kamastudios.zombierealitybreach/files/spawn_tuning.json (Wert, Ursprungswert, geändert ja/nein). · KaMa Studios · 14.11.2026</footer>
+<footer>Erzeugt mit Tools/Web/build_spawn_tuning.py aus dem Spiel-Repo. Geänderte Werte auf der Brille speichert das Spiel bei jeder Änderung in /sdcard/Android/data/com.kamastudios.zombierealitybreach/files/spawn_tuning.json (Wert, Ursprungswert, geändert ja/nein). · KaMa Studios</footer>
+<script>
+const DATA = {"rift": [{"label": "ZOMBIES IN WAVE 1", "kind": "Whole", "unit": "", "min": 1.0, "max": 40.0, "step": 1.0, "field": "baseZombieCount", "needsSpawnAroundRoom": false, "value": 7.0}, {"label": "MORE PER WAVE", "kind": "Whole", "unit": "", "min": 0.0, "max": 10.0, "step": 1.0, "field": "zombiesAddedPerWave", "needsSpawnAroundRoom": false, "value": 3.0}, {"label": "ZOMBIES, SHARE PER PLAYER", "kind": "Number", "unit": "", "min": 0.0, "max": 3.0, "step": 0.1, "field": "countPerPlayer", "needsSpawnAroundRoom": false, "value": 1.0}, {"label": "ZOMBIES, EASY FACTOR", "kind": "Number", "unit": " x", "min": 0.1, "max": 3.0, "step": 0.1, "field": "easyCountFactor", "needsSpawnAroundRoom": false, "value": 1.0}, {"label": "ZOMBIES, HARD FACTOR", "kind": "Number", "unit": " x", "min": 0.1, "max": 3.0, "step": 0.1, "field": "hardCountFactor", "needsSpawnAroundRoom": false, "value": 1.5}, {"label": "PEAK AT ONCE, WAVE 0", "kind": "Whole", "unit": "", "min": 0.0, "max": 30.0, "step": 1.0, "field": "concurrentBase", "needsSpawnAroundRoom": false, "value": 6.0}, {"label": "PEAK, MORE PER WAVE", "kind": "Number", "unit": "", "min": 0.0, "max": 4.0, "step": 0.1, "field": "concurrentPerWave", "needsSpawnAroundRoom": false, "value": 1.2}, {"label": "PEAK, SHARE PER PLAYER", "kind": "Number", "unit": "", "min": 0.0, "max": 3.0, "step": 0.1, "field": "concurrentPerPlayer", "needsSpawnAroundRoom": false, "value": 0.5}, {"label": "PEAK LIMIT SOLO", "kind": "Whole", "unit": "", "min": 1.0, "max": 40.0, "step": 1.0, "field": "soloMaxConcurrent", "needsSpawnAroundRoom": false, "value": 16.0}, {"label": "PEAK LIMIT, MORE PER PLAYER", "kind": "Whole", "unit": "", "min": 0.0, "max": 20.0, "step": 1.0, "field": "extraConcurrentPerPlayer", "needsSpawnAroundRoom": false, "value": 7.0}, {"label": "PEAK LIMIT ALL PLAYERS", "kind": "Whole", "unit": "", "min": 1.0, "max": 60.0, "step": 1.0, "field": "maxConcurrentTotal", "needsSpawnAroundRoom": false, "value": 34.0}, {"label": "AT ONCE AT WAVE START", "kind": "Whole", "unit": "", "min": 1.0, "max": 20.0, "step": 1.0, "field": "rampStartConcurrent", "needsSpawnAroundRoom": false, "value": 2.0}, {"label": "RAMP TO PEAK", "kind": "Number", "unit": " s", "min": 0.0, "max": 60.0, "step": 1.0, "field": "rampSeconds", "needsSpawnAroundRoom": false, "value": 20.0}, {"label": "RAMP, MORE PER WAVE", "kind": "Number", "unit": " s", "min": 0.0, "max": 10.0, "step": 0.5, "field": "rampSecondsPerWave", "needsSpawnAroundRoom": false, "value": 2.0}, {"label": "RAMP LIMIT", "kind": "Number", "unit": " s", "min": 0.0, "max": 120.0, "step": 5.0, "field": "maxRampSeconds", "needsSpawnAroundRoom": false, "value": 60.0}, {"label": "RAMP DONE AT WAVE SHARE", "kind": "Percent", "unit": "%", "min": 0.05, "max": 1.0, "step": 0.05, "field": "rampFullAtSpawnShare", "needsSpawnAroundRoom": false, "value": 0.75}, {"label": "FIRST PAUSE", "kind": "Number", "unit": " s", "min": 0.1, "max": 6.0, "step": 0.1, "field": "firstInterval", "needsSpawnAroundRoom": false, "value": 3.0}, {"label": "PAUSE, LESS PER WAVE", "kind": "Number", "unit": " s", "min": 0.0, "max": 0.3, "step": 0.01, "field": "intervalPerWave", "needsSpawnAroundRoom": false, "value": 0.08}, {"label": "SHORTEST PAUSE", "kind": "Number", "unit": " s", "min": 0.1, "max": 4.0, "step": 0.1, "field": "minInterval", "needsSpawnAroundRoom": false, "value": 1.2}, {"label": "PAUSE AT END OF WAVE", "kind": "Percent", "unit": "%", "min": 0.1, "max": 1.0, "step": 0.05, "field": "endOfWaveInterval", "needsSpawnAroundRoom": false, "value": 0.7}, {"label": "PAUSE, SHARE PER PLAYER", "kind": "Number", "unit": "", "min": 0.0, "max": 2.0, "step": 0.1, "field": "intervalPerPlayer", "needsSpawnAroundRoom": false, "value": 0.5}, {"label": "PAUSE, EASY FACTOR", "kind": "Number", "unit": " x", "min": 0.1, "max": 3.0, "step": 0.1, "field": "easyIntervalFactor", "needsSpawnAroundRoom": false, "value": 1.6}, {"label": "PAUSE, HARD FACTOR", "kind": "Number", "unit": " x", "min": 0.1, "max": 3.0, "step": 0.1, "field": "hardIntervalFactor", "needsSpawnAroundRoom": false, "value": 1.3}, {"label": "GROUP OF 2, MOST", "kind": "Percent", "unit": "%", "min": 0.0, "max": 1.0, "step": 0.05, "field": "firstGroupMaxChance", "needsSpawnAroundRoom": false, "value": 0.45}, {"label": "GROUP OF 2, MORE PER WAVE", "kind": "Percent", "unit": "%", "min": 0.0, "max": 0.3, "step": 0.01, "field": "firstGroupChancePerWave", "needsSpawnAroundRoom": false, "value": 0.06}, {"label": "GROUP OF 2, MORE PER PLAYER", "kind": "Percent", "unit": "%", "min": 0.0, "max": 0.5, "step": 0.05, "field": "firstGroupChancePerPlayer", "needsSpawnAroundRoom": false, "value": 0.15}, {"label": "GROUP OF 3, FROM WAVE", "kind": "Whole", "unit": "", "min": 1.0, "max": 30.0, "step": 1.0, "field": "secondGroupStartWave", "needsSpawnAroundRoom": false, "value": 8.0}, {"label": "GROUP OF 3, MOST", "kind": "Percent", "unit": "%", "min": 0.0, "max": 1.0, "step": 0.05, "field": "secondGroupMaxChance", "needsSpawnAroundRoom": false, "value": 0.25}, {"label": "GROUP OF 3, MORE PER WAVE", "kind": "Percent", "unit": "%", "min": 0.0, "max": 0.3, "step": 0.01, "field": "secondGroupChancePerWave", "needsSpawnAroundRoom": false, "value": 0.03}, {"label": "PATH SPAWN NEAREST", "kind": "Percent", "unit": "%", "min": 0.0, "max": 1.0, "step": 0.05, "field": "pathSpawnShare.x", "needsSpawnAroundRoom": false, "value": 0.3}, {"label": "PATH SPAWN FURTHEST", "kind": "Percent", "unit": "%", "min": 0.0, "max": 1.0, "step": 0.05, "field": "pathSpawnShare.y", "needsSpawnAroundRoom": false, "value": 0.55}, {"label": "COUNTDOWN BEFORE WAVE", "kind": "Number", "unit": " s", "min": 0.0, "max": 30.0, "step": 1.0, "field": "preWaveCountdown", "needsSpawnAroundRoom": false, "value": 5.0}, {"label": "BREAK AFTER WAVE", "kind": "Number", "unit": " s", "min": 1.0, "max": 180.0, "step": 1.0, "field": "breakDuration", "needsSpawnAroundRoom": false, "value": 20.0}], "pressure": [{"label": "MIN ALIVE PER PLAYER", "kind": "Whole", "unit": "", "min": 0.0, "max": 12.0, "step": 1.0, "field": "floorStart", "needsSpawnAroundRoom": false, "value": 3.0}, {"label": "MIN ALIVE, MORE PER 10 WAVES", "kind": "Whole", "unit": "", "min": 0.0, "max": 8.0, "step": 1.0, "field": "floorStep", "needsSpawnAroundRoom": false, "value": 2.0}, {"label": "PAUSE SHRINKS TO", "kind": "Percent", "unit": "%", "min": 0.1, "max": 1.0, "step": 0.05, "field": "finalIntervalFactor", "needsSpawnAroundRoom": false, "value": 0.35}, {"label": "AT ONCE GROWS TO", "kind": "Number", "unit": " x", "min": 1.0, "max": 4.0, "step": 0.25, "field": "finalCapFactor", "needsSpawnAroundRoom": false, "value": 2.0}, {"label": "AT ONCE, HARD LIMIT", "kind": "Whole", "unit": "", "min": 4.0, "max": 40.0, "step": 1.0, "field": "ceiling", "needsSpawnAroundRoom": false, "value": 24.0}, {"label": "OVERTIME AFTER", "kind": "Number", "unit": " s", "min": 20.0, "max": 300.0, "step": 10.0, "field": "longestBaseSeconds", "needsSpawnAroundRoom": false, "value": 90.0}, {"label": "OVERTIME, LATER PER WAVE", "kind": "Number", "unit": " s", "min": 0.0, "max": 20.0, "step": 1.0, "field": "longestPerWaveSeconds", "needsSpawnAroundRoom": false, "value": 5.0}], "fixed": {"spawnSeed": 1.0, "hardHealthFactor": 1.4, "easyHealthFactor": 1.0, "floorWaves": 10.0}, "heads": {"easy": [{"1": 1.0}, {"1": 1.0}, {"1": 1.0}, {"1": 1.0}, {"1": 1.0}, {"1": 1.0}, {"1": 1.0}, {"1": 1.0}, {"1": 1.0}, {"1": 0.5, "2": 0.5}, {"1": 0.9, "2": 0.1}, {"1": 0.7875, "2": 0.1625, "3": 0.05}, {"1": 0.675, "2": 0.225, "3": 0.1}, {"1": 0.5625, "2": 0.2875, "3": 0.15}, {"1": 0.45, "2": 0.35, "3": 0.2}, {"1": 0.3375, "2": 0.4125, "3": 0.25}, {"1": 0.225, "2": 0.475, "3": 0.3}, {"1": 0.1125, "2": 0.5375, "3": 0.35}, {"2": 0.6, "3": 0.4}, {"2": 0.7, "3": 0.25, "4": 0.05}, {"2": 0.6389, "3": 0.2833, "4": 0.0778}, {"2": 0.5778, "3": 0.3167, "4": 0.1056}, {"2": 0.5167, "3": 0.35, "4": 0.1333}, {"2": 0.4556, "3": 0.3833, "4": 0.1611}, {"2": 0.3944, "3": 0.4167, "4": 0.1889}, {"2": 0.3333, "3": 0.45, "4": 0.2167}, {"2": 0.2722, "3": 0.4833, "4": 0.2444}, {"2": 0.2111, "3": 0.5167, "4": 0.2722}, {"2": 0.15, "3": 0.55, "4": 0.3}, {"3": 0.75, "4": 0.2, "5": 0.05}, {"3": 0.7056, "4": 0.2278, "5": 0.0667}, {"3": 0.6611, "4": 0.2556, "5": 0.0833}, {"3": 0.6167, "4": 0.2833, "5": 0.1}, {"3": 0.5722, "4": 0.3111, "5": 0.1167}, {"3": 0.5278, "4": 0.3389, "5": 0.1333}, {"3": 0.4833, "4": 0.3667, "5": 0.15}, {"3": 0.4389, "4": 0.3944, "5": 0.1667}, {"3": 0.3944, "4": 0.4222, "5": 0.1833}, {"3": 0.35, "4": 0.45, "5": 0.2}, {"3": 0.4, "4": 0.45, "5": 0.15}, {"3": 0.3556, "4": 0.4667, "5": 0.1778}, {"3": 0.3111, "4": 0.4833, "5": 0.2056}, {"3": 0.2667, "4": 0.5, "5": 0.2333}, {"3": 0.2222, "4": 0.5167, "5": 0.2611}, {"3": 0.1778, "4": 0.5333, "5": 0.2889}, {"3": 0.1333, "4": 0.55, "5": 0.3167}, {"3": 0.0889, "4": 0.5667, "5": 0.3444}, {"3": 0.0444, "4": 0.5833, "5": 0.3722}, {"4": 0.6, "5": 0.4}, {"4": 0.6, "5": 0.4}], "hard": [{"1": 1.0}, {"1": 1.0}, {"1": 1.0}, {"1": 1.0}, {"1": 1.0}, {"1": 0.8, "2": 0.2}, {"1": 0.8, "2": 0.2}, {"1": 0.8, "2": 0.2}, {"1": 0.8, "2": 0.2}, {"1": 0.4, "2": 0.4, "3": 0.2}, {"1": 0.6, "2": 0.35, "3": 0.05}, {"1": 0.525, "2": 0.3062, "3": 0.0938, "4": 0.05, "5": 0.025}, {"1": 0.45, "2": 0.2625, "3": 0.1375, "4": 0.1, "5": 0.05}, {"1": 0.375, "2": 0.2188, "3": 0.1813, "4": 0.15, "5": 0.075}, {"1": 0.3, "2": 0.175, "3": 0.225, "4": 0.2, "5": 0.1}, {"1": 0.225, "2": 0.1312, "3": 0.2688, "4": 0.25, "5": 0.125}, {"1": 0.15, "2": 0.0875, "3": 0.3125, "4": 0.3, "5": 0.15}, {"1": 0.075, "2": 0.0438, "3": 0.3563, "4": 0.35, "5": 0.175}, {"3": 0.4, "4": 0.4, "5": 0.2}, {"3": 0.6, "4": 0.3, "5": 0.1}, {"3": 0.55, "4": 0.3111, "5": 0.1278, "6": 0.0111}, {"3": 0.5, "4": 0.3222, "5": 0.1556, "6": 0.0222}, {"3": 0.45, "4": 0.3333, "5": 0.1833, "6": 0.0333}, {"3": 0.4, "4": 0.3444, "5": 0.2111, "6": 0.0444}, {"3": 0.35, "4": 0.3556, "5": 0.2389, "6": 0.0556}, {"3": 0.3, "4": 0.3667, "5": 0.2667, "6": 0.0667}, {"3": 0.25, "4": 0.3778, "5": 0.2944, "6": 0.0778}, {"3": 0.2, "4": 0.3889, "5": 0.3222, "6": 0.0889}, {"3": 0.15, "4": 0.4, "5": 0.35, "6": 0.1}, {"4": 0.65, "5": 0.3, "6": 0.05}, {"4": 0.6056, "5": 0.3167, "6": 0.0778}, {"4": 0.5611, "5": 0.3333, "6": 0.1056}, {"4": 0.5167, "5": 0.35, "6": 0.1333}, {"4": 0.4722, "5": 0.3667, "6": 0.1611}, {"4": 0.4278, "5": 0.3833, "6": 0.1889}, {"4": 0.3833, "5": 0.4, "6": 0.2167}, {"4": 0.3389, "5": 0.4167, "6": 0.2444}, {"4": 0.2944, "5": 0.4333, "6": 0.2722}, {"4": 0.25, "5": 0.45, "6": 0.3}, {"4": 0.45, "5": 0.4, "6": 0.15}, {"4": 0.4, "5": 0.4111, "6": 0.1889}, {"4": 0.35, "5": 0.4222, "6": 0.2278}, {"4": 0.3, "5": 0.4333, "6": 0.2667}, {"4": 0.25, "5": 0.4444, "6": 0.3056}, {"4": 0.2, "5": 0.4556, "6": 0.3444}, {"4": 0.15, "5": 0.4667, "6": 0.3833}, {"4": 0.1, "5": 0.4778, "6": 0.4222}, {"4": 0.05, "5": 0.4889, "6": 0.4611}, {"5": 0.5, "6": 0.5}, {"5": 0.5, "6": 0.5}]}, "headsFrom": 11, "freeWaves": 5, "headFactor": 1.2};
+const FIXED = DATA.fixed, HEADS = DATA.heads;
+const EXPLAIN_DE = {"ZOMBIES IN WAVE 1": "Wie viele Zombies Welle 1 insgesamt hat (ein Spieler, vor Schwierigkeits- und Spielerfaktor).", "MORE PER WAVE": "So viele Zombies kommen mit jeder weiteren Welle dazu. Welle n hat: Welle-1-Wert + (n − 1) × dieser Wert.", "ZOMBIES, SHARE PER PLAYER": "Jeder weitere Spieler bringt diesen Anteil einer Solo-Welle zusätzlich. 1 = zu zweit doppelt so viele.", "ZOMBIES, EASY FACTOR": "Faktor auf die Zombiezahl der Welle auf Easy.", "ZOMBIES, HARD FACTOR": "Faktor auf die Zombiezahl der Welle auf Hard (1.5 = 50 % mehr).", "PEAK AT ONCE, WAVE 0": "Grundwert, wie viele Zombies höchstens gleichzeitig leben dürfen (Spitze), bevor der Wellenzuwachs dazukommt.", "PEAK, MORE PER WAVE": "Die Spitze gleichzeitig lebender Zombies wächst pro Welle um so viel (Spitze = Grundwert + Welle × dieser Wert, gerundet).", "PEAK, SHARE PER PLAYER": "Jeder weitere Spieler hebt die Spitze um diesen Anteil (0.5 = zu zweit 50 % mehr gleichzeitig).", "PEAK LIMIT SOLO": "Obergrenze der Spitze für einen Spieler, egal welche Welle.", "PEAK LIMIT, MORE PER PLAYER": "So viel höher liegt die Obergrenze mit jedem weiteren Spieler.", "PEAK LIMIT ALL PLAYERS": "Absolute Obergrenze der Spitze, egal wie viele Spieler.", "AT ONCE AT WAVE START": "So viele Zombies dürfen direkt zu Wellenbeginn gleichzeitig leben; von hier steigt es bis zur Spitze (Rampe).", "RAMP TO PEAK": "Sekunden, in denen die Zahl gleichzeitiger Zombies vom Startwert bis zur Spitze steigt (Grundwert).", "RAMP, MORE PER WAVE": "Die Rampe dauert pro Welle so viel länger.", "RAMP LIMIT": "Die Rampe dauert höchstens so lange.", "RAMP DONE AT WAVE SHARE": "Die Rampe ist spätestens fertig, wenn dieser Anteil der Wellenzombies gespawnt ist, auch wenn die Zeit noch nicht um ist.", "FIRST PAUSE": "Pause zwischen zwei Spawns in Welle 1 am Wellenanfang (Sekunden).", "PAUSE, LESS PER WAVE": "Die Spawn-Pause wird pro Welle um so viele Sekunden kürzer.", "SHORTEST PAUSE": "Kürzer wird die Spawn-Pause nie (gilt vor dem Schwierigkeitsfaktor und vor dem Wellendruck).", "PAUSE AT END OF WAVE": "Zum Ende der Welle schrumpft die Pause auf diesen Anteil (gleitend nach gespawntem Anteil der Welle).", "PAUSE, SHARE PER PLAYER": "Jeder weitere Spieler teilt die Pause: Pause ÷ (1 + Spieler weitere × dieser Wert).", "PAUSE, EASY FACTOR": "Faktor auf die Spawn-Pause auf Easy (1.6 = 60 % längere Pausen).", "PAUSE, HARD FACTOR": "Faktor auf die Spawn-Pause auf Hard.", "GROUP OF 2, MOST": "Höchste Chance, dass mit einem Zombie ein zweiter gleichzeitig mitkommt.", "GROUP OF 2, MORE PER WAVE": "Die Chance auf einen zweiten Zombie steigt pro Welle um so viel (bis zum Höchstwert).", "GROUP OF 2, MORE PER PLAYER": "Jeder weitere Spieler hebt die Chance auf einen zweiten Zombie um so viel.", "GROUP OF 3, FROM WAVE": "Ab dieser Welle kann zusätzlich ein dritter Zombie mitkommen.", "GROUP OF 3, MOST": "Höchste Chance auf einen dritten Zombie.", "GROUP OF 3, MORE PER WAVE": "Die Chance auf einen dritten Zombie steigt pro Welle um so viel (bis zum Höchstwert).", "PATH SPAWN NEAREST": "Wo auf dem brennenden Pfad hinter dem Portal die Toten frühestens erscheinen, als Anteil der Pfadlänge (näher = schneller da).", "PATH SPAWN FURTHEST": "Wo sie spätestens erscheinen, als Anteil der Pfadlänge. Eng beieinander = sie kommen zusammen an.", "COUNTDOWN BEFORE WAVE": "Countdown in Sekunden, bevor die Welle startet.", "BREAK AFTER WAVE": "Pause nach der Welle in Sekunden (Shop); Ready beendet sie früher.", "MAX AT ONCE": "Höchstens so viele Zombies leben gleichzeitig (eigene Grenze des Modus, vor dem Wellendruck).", "SPAWN PAUSE": "Sekunden zwischen zwei Spawns (vor dem Wellendruck).", "SPAWN DISTANCE MIN": "Kleinster Abstand in Metern, in dem die Toten rund um den Raum erscheinen.", "SPAWN DISTANCE MAX": "Größter Abstand in Metern, in dem die Toten rund um den Raum erscheinen.", "MIN ALIVE PER PLAYER": "Untergrenze lebender Zombies pro Spieler in Welle 1–10: Fällt es darunter, kommt der nächste sofort, ohne Pause.", "MIN ALIVE, MORE PER 10 WAVES": "Die Untergrenze steigt alle 10 Wellen um so viel (11–20, 21–30 …), mal Spieler.", "PAUSE SHRINKS TO": "Je länger eine Welle läuft, desto kürzer die Spawn-Pause: bis zum Overtime-Zeitpunkt sinkt sie auf diesen Anteil.", "AT ONCE GROWS TO": "Je länger eine Welle läuft, desto mehr gleichzeitig: bis zum Overtime-Zeitpunkt wächst die Grenze auf dieses Vielfache.", "AT ONCE, HARD LIMIT": "Über diese Zahl hebt der Wellendruck die Grenze nie (Bildrate der Quest); eine höhere eigene Grenze des Modus bleibt.", "OVERTIME AFTER": "Nach so vielen Sekunden (plus Zuschlag je Welle) kommt der Rest der Welle ohne Pause, so schnell die Grenze erlaubt.", "OVERTIME, LATER PER WAVE": "Der Overtime-Zeitpunkt liegt pro Welle so viele Sekunden später."};
+
+// Mirrors RiftWaveConfig (Count, Concurrent, RampStart, RampDuration, ConcurrentAt, Interval, GroupExtras),
+// WavePressure (Floor, LongestSeconds, IntervalFactor, Cap) and WaveDirector.TickSpawn. Unity's Mathf.RoundToInt rounds
+// half to even.
+const rint = x => { const f = Math.floor(x), d = x - f; if (Math.abs(d - 0.5) < 1e-9) return f % 2 === 0 ? f : f + 1; return Math.round(x); };
+const clamp01 = x => Math.min(1, Math.max(0, x));
+const lerp = (a, b, t) => a + (b - a) * clamp01(t);
+function rng(seed) { let s = seed >>> 0; return () => { s = (s + 0x6D2B79F5) >>> 0; let t = s; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+
+function riftFormulas(v, pr, players, hard) {
+  const f = {};
+  const cf = hard ? v.hardCountFactor : v.easyCountFactor;
+  const pf = 1 + v.concurrentPerPlayer * (players - 1);
+  f.count = w => rint(rint((v.baseZombieCount + v.zombiesAddedPerWave * Math.max(0, w - 1)) * (1 + v.countPerPlayer * (players - 1))) * cf);
+  f.peak = w => Math.min(Math.min(v.maxConcurrentTotal, v.soloMaxConcurrent + v.extraConcurrentPerPlayer * (players - 1)), rint((v.concurrentBase + v.concurrentPerWave * w) * pf));
+  f.rampStart = w => Math.min(Math.max(rint(v.rampStartConcurrent * pf), 1), f.peak(w));
+  f.rampDur = w => Math.min(v.maxRampSeconds, v.rampSeconds + v.rampSecondsPerWave * w);
+  f.concAt = (w, el, spawned, total) => {
+    const peak = f.peak(w), start = f.rampStart(w), d = f.rampDur(w);
+    const byTime = d > 0 ? clamp01(el / d) : 1;
+    const bySp = total > 0 && v.rampFullAtSpawnShare > 0 ? clamp01(spawned / (total * v.rampFullAtSpawnShare)) : 1;
+    return Math.min(peak, start + Math.floor((peak - start) * Math.max(byTime, bySp) + 0.0001));
+  };
+  const ivf = hard ? v.hardIntervalFactor : v.easyIntervalFactor;
+  f.interval = (w, remaining, total) => {
+    let i = Math.max(v.minInterval, v.firstInterval - v.intervalPerWave * (w - 1));
+    i /= 1 + v.intervalPerPlayer * (players - 1);
+    const prog = total > 0 ? 1 - remaining / total : 0;
+    return Math.max(v.minInterval, i * lerp(1, v.endOfWaveInterval, prog)) * ivf;
+  };
+  f.groupExtras = (w, r) => {
+    let e = 0;
+    if (r() < Math.min(v.firstGroupMaxChance, v.firstGroupChancePerWave * w + v.firstGroupChancePerPlayer * (players - 1))) e++;
+    if (w >= v.secondGroupStartWave && r() < Math.min(v.secondGroupMaxChance, v.secondGroupChancePerWave * w)) e++;
+    return e;
+  };
+  f.floor = w => (pr.floorStart + pr.floorStep * Math.floor((Math.max(1, w) - 1) / FIXED.floorWaves)) * Math.max(1, players);
+  f.longest = w => pr.longestBaseSeconds + pr.longestPerWaveSeconds * Math.max(1, w);
+  f.ivFactor = (w, el) => el >= f.longest(w) ? 0 : lerp(1, pr.finalIntervalFactor, clamp01(el / f.longest(w)));
+  f.cap = (own, w, el) => Math.max(own, Math.min(pr.ceiling, Math.max(f.floor(w), rint(own * lerp(1, pr.finalCapFactor, clamp01(el / f.longest(w)))))));
+  return f;
+}
+
+// One wave of WaveDirector.TickSpawn at 30 frames per second. Kills: every player shoots one head every `shot` seconds
+// at a zombie that has walked for `walk` seconds; each zombie takes its rolled number of head shots.
+function simulateWave(f, w, players, hard, shot, walk, seed) {
+  const r = rng(seed * 7919 + w), hr = rng(seed * 104729 + w);
+  const dist = HEADS[hard ? 'hard' : 'easy'][w - 1];
+  const pick = () => { let x = hr(); for (const k in dist) { x -= dist[k]; if (x < 0) return +k; } return +Object.keys(dist).pop(); };
+  const total = f.count(w); let left = total, next = 0, t = 0, maxAlive = 0, lastSpawn = 0, overtimeAt = null;
+  const alive = []; const guns = new Array(players).fill(0); const dt = 1 / 30;
+  const spawn = () => { alive.push({ born: t, hp: pick() }); left--; lastSpawn = t; };
+  let guard = 0;
+  while ((left > 0 || alive.length > 0) && guard++ < 30 * 3600) {
+    if (left > 0) {
+      const pressed = alive.length < f.floor(w) || t >= f.longest(w);
+      if (t >= f.longest(w) && overtimeAt === null) overtimeAt = t;
+      const max = () => f.cap(f.concAt(w, t, total - left, total), w, t);
+      if ((t >= next || pressed) && alive.length < max()) {
+        spawn();
+        const extra = f.groupExtras(w, r);
+        for (let i = 0; i < extra && left > 0 && alive.length < max(); i++) spawn();
+        next = t + f.interval(w, left, total) * f.ivFactor(w, t);
+      }
+    }
+    maxAlive = Math.max(maxAlive, alive.length);
+    for (let g = 0; g < players; g++) {
+      if (t < guns[g]) continue;
+      const target = alive.find(z => t - z.born >= walk);
+      if (!target) continue;
+      guns[g] = t + shot;
+      if (--target.hp <= 0) alive.splice(alive.indexOf(target), 1);
+    }
+    t += dt;
+  }
+  return { total, end: t, lastSpawn, maxAlive, overtimeAt };
+}
+
+const $ = id => document.getElementById(id);
+const rows = DATA.rift, pr = Object.fromEntries(DATA.pressure.map(r => [r.field, r.value]));
+const show = (r, v) => r.kind === 'Percent' ? Math.round(v * 100) + ' %' : (r.kind === 'Whole' ? String(Math.round(v)) : (+v.toFixed(2)) + r.unit);
+const shown = r => r.kind === 'Percent' ? +(r.value * 100).toFixed(2) : r.value;
+const fromShown = (r, x) => r.kind === 'Percent' ? x / 100 : x;
+const esc = s => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+$('params').innerHTML = '<tr><th>Wert</th><th>Simulation</th><th></th><th>Code</th></tr>' + rows.map((r, i) =>
+  `<tr><td><span class="tip" data-tip="${esc(EXPLAIN_DE[r.label] || '')}">${esc(r.label)}</span></td>` +
+  `<td><input type="number" data-i="${i}" value="${shown(r)}" step="${r.kind === 'Percent' ? +(r.step * 100).toFixed(2) : r.step}" min="${r.kind === 'Percent' ? r.min * 100 : r.min}" max="${r.kind === 'Percent' ? r.max * 100 : r.max}"></td><td class="unit">${r.kind === 'Percent' ? '%' : esc(r.unit.trim())}</td>` +
+  `<td class="orig">${show(r, r.value)}</td></tr>`).join('');
+const inputs = [...document.querySelectorAll('#params input')];
+function values() {
+  const v = {};
+  rows.forEach((r, i) => { const x = parseFloat(inputs[i].value); const val = isNaN(x) ? r.value : fromShown(r, x); v[r.field.replace('.', '_')] = val; inputs[i].classList.toggle('changed', Math.abs(val - r.value) > 1e-9); });
+  v.pathSpawnShare = { x: v.pathSpawnShare_x, y: v.pathSpawnShare_y };
+  return v;
+}
+const T = (head, tip) => `<th><span class="tip" data-tip="${esc(tip)}">${head}</span></th>`;
+function run() {
+  const v = values(), players = +$('players').value, hard = $('diff').value === 'hard';
+  const base = Object.fromEntries(rows.map(r => [r.field.replace('.', '_'), r.value]));
+  const f = riftFormulas(v, pr, players, hard), f0 = riftFormulas(base, pr, players, hard);
+  const shot = Math.max(0.2, +$('shot').value || 1.2), walk = Math.max(0, +$('walk').value || 0);
+  let html = '<tr><th>Welle</th>' + T('Zombies', 'Zombies der Welle (Spieler und Schwierigkeit eingerechnet).') +
+    T('Start → Spitze', 'Gleichzeitig erlaubt zu Wellenbeginn und nach der Rampe (eigene Grenze, vor dem Wellendruck).') +
+    T('Rampe s', 'Sekunden bis zur Spitze (oder früher, sobald der eingestellte Anteil gespawnt ist).') +
+    T('Pause Anfang → Ende', 'Sekunden zwischen zwei Spawns am Wellenanfang und kurz vor dem letzten Zombie, mit Schwierigkeitsfaktor, ohne Wellendruck.') +
+    T('Min lebend', 'Untergrenze lebender Zombies (WavePressure): darunter kommt der nächste sofort.') +
+    T('Overtime ab s', 'Ab dieser Sekunde kommt der Rest der Welle ohne Pause.') +
+    T('Dauer s', 'Simulation: Sekunden bis der letzte Zombie der Welle tot ist.') +
+    T('Letzter Spawn s', 'Simulation: Sekunde, in der der letzte Zombie erscheint.') +
+    T('Max gleichz.', 'Simulation: die meisten gleichzeitig lebenden Zombies in der Welle.') + '</tr>';
+  for (let w = 1; w <= 50; w++) {
+    const s = simulateWave(f, w, players, hard, shot, walk, FIXED.spawnSeed), s0 = simulateWave(f0, w, players, hard, shot, walk, FIXED.spawnSeed);
+    const cmp = (a, b, fmt) => { const d = a - b; const cls = Math.abs(d) < 1e-6 ? '' : (d > 0 ? 'up' : 'down'); return `<td class="${cls}" title="Code: ${fmt(b)}">${fmt(a)}</td>`; };
+    const n0 = x => String(Math.round(x)), n1 = x => x.toFixed(1);
+    const total = f.count(w);
+    html += `<tr><td>${w}</td>` + cmp(total, f0.count(w), n0) +
+      `<td>${f.rampStart(w)} → ${f.peak(w)}</td>` + cmp(f.rampDur(w), f0.rampDur(w), n0) +
+      `<td>${f.interval(w, total, total).toFixed(2)} → ${f.interval(w, 1, total).toFixed(2)}</td>` +
+      `<td>${f.floor(w)}</td><td>${Math.round(f.longest(w))}</td>` +
+      cmp(s.end, s0.end, n0) + cmp(s.lastSpawn, s0.lastSpawn, n0) + cmp(s.maxAlive, s0.maxAlive, n0) + '</tr>';
+  }
+  $('res').innerHTML = html;
+}
+function heads() {
+  const fmt = d => Object.entries(d).filter(([, p]) => p >= 0.005).map(([k, p]) => `${k}: ${Math.round(p * 100)}%`).join(' · ');
+  const avg = d => Object.entries(d).reduce((s, [k, p]) => s + k * p, 0);
+  const range = d => { const k = Object.keys(d).filter(x => d[x] >= 0.005).map(Number); return Math.min(...k) === Math.max(...k) ? String(k[0]) : Math.min(...k) + '–' + Math.max(...k); };
+  let h = '<tr><th>Welle</th><th>Easy</th><th>Ø</th><th class="d">Easy Verteilung</th><th>Hard</th><th>Ø</th><th class="d">Hard Verteilung</th></tr>';
+  for (let w = 1; w <= 50; w++) {
+    const e = HEADS.easy[w - 1], d = HEADS.hard[w - 1];
+    const blk = w >= DATA.headsFrom && (w === DATA.headsFrom || w % 10 === 0) ? ' class="blk"' : '';
+    h += `<tr${blk}><td>${w === 50 ? '50+' : w}</td><td>${range(e)}</td><td>${avg(e).toFixed(1).replace('.', ',')}</td><td class="d">${fmt(e)}</td><td>${range(d)}</td><td>${avg(d).toFixed(1).replace('.', ',')}</td><td class="d">${fmt(d)}</td></tr>`;
+  }
+  $('heads').innerHTML = h;
+}
+inputs.forEach(i => i.addEventListener('input', run));
+['players', 'diff', 'shot', 'walk'].forEach(id => $(id).addEventListener('input', run));
+$('reset').onclick = () => { rows.forEach((r, i) => inputs[i].value = shown(r)); run(); };
+$('copy').onclick = () => {
+  const changed = rows.map((r, i) => [r, fromShown(r, parseFloat(inputs[i].value))]).filter(([r, v]) => Math.abs(v - r.value) > 1e-9)
+    .map(([r, v]) => `${r.label} (${r.field}): ${show(r, r.value)} -> ${show(r, v)}`).join('\n');
+  navigator.clipboard.writeText(changed || 'Keine Werte geändert.').then(() => { $('copy').textContent = 'Kopiert'; setTimeout(() => $('copy').textContent = 'Geänderte Werte kopieren', 1500); });
+};
+heads(); run();
+</script>
 </body></html>
