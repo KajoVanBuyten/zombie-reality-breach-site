@@ -22,3 +22,13 @@ This work is based on "Desert Eagle" (https://sketchfab.com/3d-models/desert-eag
 Namensnennung für den Pistolenschuss:
 
 Pistol sound: "Chaingun, pistol, rifle, shotgun shots" (https://opengameart.org/content/chaingun-pistol-rifle-shotgun-shots) by Michel Baradari (apollo-music.de), licensed under CC-BY 3.0 (https://creativecommons.org/licenses/by/3.0/).
+
+## Trailer (`public/assets/video/`)
+
+| Bestandteil | Herkunft |
+| --- | --- |
+| Bild | eigene Gameplay-Aufnahmen des Besitzers (Meta Quest 3), ohne Originalton |
+| Musik | mit ElevenLabs Music erzeugt (KI) |
+| Sprecher | ElevenLabs-Stimme „Christian“ (KI), nachbearbeitet |
+| Schüsse, Einschläge, Anstiege | mit ffmpeg synthetisiert, keine fremden Aufnahmen |
+| Logo, Schriften | Marken-Logo des Spiels; Black Ops One und Oswald (SIL Open Font License) |

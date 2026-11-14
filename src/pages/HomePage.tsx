@@ -1,4 +1,6 @@
+import { useRef } from 'react';
 import { Link } from 'react-router-dom';
+import Trailer, { type TrailerHandle } from '@/components/Trailer';
 import { Play, Crosshair, Hand, Users, ArrowRight, Skull, Gift, FlaskConical, ScanLine } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
 import { META_URL, META_BETA_URL, keyArtThemes } from '@/lib/site';
@@ -17,6 +19,8 @@ export default function HomePage() {
   const de = lang === 'de';
   // Only the Quest browser (immersive AR) gets the web quest button.
   const arSupported = useImmersiveArSupported();
+
+  const trailerRef = useRef<TrailerHandle>(null);
 
   const latestNews = newsPosts.slice(0, 3);
 
@@ -81,8 +85,9 @@ export default function HomePage() {
               {t('hero.cta')}
             </a>
             <button
-              className="px-7 py-3 border border-bg-steel text-bone-muted font-heading uppercase tracking-wider text-sm flex items-center justify-center gap-2 cursor-not-allowed"
-              disabled
+              type="button"
+              onClick={() => trailerRef.current?.play()}
+              className="px-7 py-3 border border-bone/60 text-bone hover:bg-bone hover:text-bg font-heading uppercase tracking-wider text-sm transition-all hover:scale-105 flex items-center justify-center gap-2"
             >
               <Play className="w-4 h-4" />
               {t('hero.trailer')}
@@ -102,6 +107,14 @@ export default function HomePage() {
             </a>
           </div>
         </div>
+      </section>
+
+      <HazardDivider />
+
+      {/* TRAILER */}
+      <section id="trailer" className="py-20 lg:py-28 max-w-5xl mx-auto px-4 lg:px-8">
+        <h2 className="section-title font-heading text-2xl lg:text-3xl uppercase text-bone mb-8 text-center">{t('trailer.title')}</h2>
+        <Trailer ref={trailerRef} />
       </section>
 
       <HazardDivider />

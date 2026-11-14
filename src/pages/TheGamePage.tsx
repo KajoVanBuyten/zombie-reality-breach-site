@@ -184,7 +184,7 @@ export default function TheGamePage() {
           <li className="flex items-start gap-2"><span className="w-1.5 h-1.5 bg-blood mt-2 flex-shrink-0" />{de ? 'Internet für Online-Co-op, Bestenlisten und den Online-Fortschritt' : 'Internet for online co-op, leaderboards and online progress'}</li>
         </ul>
         <p className="text-xs text-bone-muted/60 font-body font-light mt-6">
-          {de ? 'Screenshots und Trailer folgen mit der Store-Seite.' : 'Screenshots and a trailer will follow with the store page.'}
+          {de ? 'Screenshots folgen mit der Store-Seite.' : 'Screenshots will follow with the store page.'}
         </p>
       </section>
     </div>

@@ -107,6 +107,16 @@ Aufsätze und Vorräte ohne eigenes Modell werden so gebaut, wie das Spiel sie b
 
 Asset-Store-Modelle (A3500X, Pistol 92, Katana) dürfen als Render der Spielszene gezeigt, aber nicht als Rohdateien weitergegeben werden; die Renders sind davon nicht betroffen.
 
+## Trailer (`public/assets/video/`)
+
+`zrb_trailer_en_1080.mp4` und `zrb_trailer_de_1080.mp4`: der Trailer vom 14.11.2026 (56 s, 1920 × 1080, je rund 17,7 MB), gleicher Schnitt und gleiche Zeiten, nur Schrift und Sprecher unterscheiden sich. Web-Fassungen der Master aus dem Spiel-Repo (`Docs/Marketing/ZRB-Schnitt-2026-11-14.md`), mit ffmpeg neu kodiert, damit sie unter der Cloudflare-Grenze von 25 MiB je Datei bleiben:
+
+```bash
+ffmpeg -i ZRB_Trailer_EN_1920x1080.mp4 -c:v libx264 -preset slow -profile:v high -level 4.1 -pix_fmt yuv420p -crf 23 -maxrate 2600k -bufsize 5200k -g 60 -c:a aac -b:a 160k -ar 48000 -movflags +faststart -map_metadata -1 public/assets/video/zrb_trailer_en_1080.mp4
+```
+
+Eingebunden auf der Startseite über `src/components/Trailer.tsx` (`trailerVideo` in `src/lib/site.ts`): Die Datei richtet sich nach der gewählten Sprache; beim Umschalten laufen Position und Wiedergabe weiter. Vor dem Klick auf Abspielen wird nichts geladen (`preload="none"`), als Standbild dient die Titelgrafik `wall-breach/cover_1920.jpg`. Selbst gehostet, kein Einbetten von Drittanbietern.
+
 ## 3D-Modelle der Web-AR-Quest
 
 Herkunft, Lizenzen und die nötige Namensnennung (CC-BY 4.0 der goldenen Desert Eagle) stehen in `CREDITS.md`. Die A3500X (Asset Store) wird nur lokal nach `public/breach/private/` erzeugt und nie committet (`DEPLOY.md`, „Private Assets der Web-AR-Quest“).

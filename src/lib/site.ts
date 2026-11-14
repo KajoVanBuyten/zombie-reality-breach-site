@@ -39,6 +39,16 @@ export const brand = {
 };
 
 /* ------------------------------------------------------------------ */
+/* Trailer (public/assets/video, see ASSETS.md)                        */
+/* ------------------------------------------------------------------ */
+
+/** The trailer per site language: same cut and timing, only the lettering and the voice differ. */
+export const trailerVideo = {
+  en: asset('assets/video/zrb_trailer_en_1080.mp4'),
+  de: asset('assets/video/zrb_trailer_de_1080.mp4'),
+} as const;
+
+/* ------------------------------------------------------------------ */
 /* Key art (public/assets/keyart/<theme>/<kind>_<width>.webp|jpg)      */
 /* ------------------------------------------------------------------ */
 
