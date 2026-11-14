@@ -18,7 +18,7 @@ const translations: Record<string, Record<Lang, string>> = {
   'nav.press': { en: 'Press', de: 'Presse' },
   'nav.faq': { en: 'FAQ', de: 'FAQ' },
   'nav.join': { en: 'Meta Quest', de: 'Meta Quest' },
-  'hero.tagline': { en: 'Your room. Their breach.', de: 'Dein Raum. Ihr Durchbruch.' },
+  'hero.tagline': { en: 'The zombie apocalypse begins… in your living room!', de: 'Die Zombie-Apokalypse beginnt … in deinem Wohnzimmer!' },
   'hero.sub': { en: 'Mixed Reality · Meta Quest 3 / 3S · Solo & Co-op', de: 'Mixed Reality · Meta Quest 3 / 3S · Solo & Co-op' },
   'hero.coming': { en: 'Coming soon to Meta Quest 3 and 3S', de: 'Bald für Meta Quest 3 und 3S' },
   'hero.ea': { en: 'Early Access planned', de: 'Early Access geplant' },
