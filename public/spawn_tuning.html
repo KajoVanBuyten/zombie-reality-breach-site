@@ -19,7 +19,7 @@ table.res td:first-child, table.res th:first-child { text-align: left; }
 .tip { border-bottom: 1px dotted #999; cursor: help; }
 #tipbox { position: fixed; z-index: 1000; max-width: 340px; display: none; pointer-events: none; white-space: normal; text-align: left;
   background: #222; color: #fff; padding: 7px 9px; border-radius: 5px; font-size: 12px; font-weight: 400; line-height: 1.35; box-shadow: 0 3px 10px rgba(0,0,0,.25); }
-table.params tr.sec td { background: #f3e7e3; color: var(--red); font-weight: 600; text-align: left; border-top: 2px solid var(--red); padding-top: 6px; }
+table.params tr.sec td { white-space: normal; background: #f3e7e3; color: var(--red); font-weight: 600; text-align: left; border-top: 2px solid var(--red); padding-top: 6px; }
 .sim { display: flex; gap: 24px; align-items: flex-start; flex-wrap: wrap; }
 .sim .params td { padding: 2px 8px; }
 .sim input[type=number] { width: 70px; font: inherit; text-align: right; padding: 1px 4px; }
@@ -36,11 +36,22 @@ td.up { color: #b3261e; } td.down { color: #1b6e3a; }
 .heads td.d, .heads th.d { text-align: left; white-space: normal; color: #444; }
 .heads th.d { color: #fff; }
 .heads tr.blk td { border-top: 2px solid var(--red); }
+.right { flex: 1; min-width: 300px; }
+.tabs { display: flex; margin-bottom: 6px; border-bottom: 2px solid var(--red); }
+.tabs button { border: 1px solid var(--line); border-bottom: 0; background: #f4f2ee; color: #444; border-radius: 5px 5px 0 0; padding: 4px 14px; margin-right: 4px; }
+.tabs button.on { background: var(--red); border-color: var(--red); color: #fff; }
+.legend { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; color: #52514e; font-size: 12px; margin: 2px 0 8px; }
+.legend svg { vertical-align: middle; margin-right: 5px; }
+.charts { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 14px 18px; }
+.chart h3 { font-size: 12px; font-weight: 600; margin: 0 0 2px; color: var(--ink); }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; cursor: crosshair; }
+.chart text { font-size: 10px; fill: #52514e; font-variant-numeric: tabular-nums; }
+[hidden] { display: none !important; }
 footer { margin-top: 18px; color: #777; font-size: 12px; border-top: 1px solid var(--line); padding-top: 6px; }
-@media print { .controls, button, .orig { display: none; } .resbox { max-height: none; overflow: visible; border: 0; } }
+@media print { .controls, button, .orig, .tabs { display: none; } .resbox { max-height: none; overflow: visible; border: 0; } }
 </style></head><body>
 <h1>Zombie Reality Breach · SPAWN TUNING</h1>
-<p class="lead">Alle Werte der Seite SPAWN TUNING im Pausenmenü (Development-Builds), direkt aus dem Code gelesen am 15.11.2026 16:23 (Branch codex/rb-wall-breach, Commit 19d3c2b9): Wave-Config-Assets, WavePressure.cs und ZombieHealth.cs. Mit der Maus über einen Namen fahren zeigt, was der Wert bewirkt.</p>
+<p class="lead">Alle Werte der Seite SPAWN TUNING im Pausenmenü (Development-Builds), direkt aus dem Code gelesen am 15.11.2026 16:34 (Branch codex/rb-wall-breach, Commit 12baf8e7): Wave-Config-Assets, WavePressure.cs und ZombieHealth.cs. Mit der Maus über einen Namen fahren zeigt, was der Wert bewirkt.</p>
 
 <h2>RIFT · Simulator Wellen 1–50 · RiftWaveScaling und Wellendruck</h2>
 <p class="note">Werte links ändern, rechts rechnet die Seite jede Welle neu, mit denselben Formeln wie das Spiel (RiftWaveConfig, WavePressure, WaveDirector). Geänderte Werte sind gelb, grau dahinter der Wert im Code. Die Spalten ab „Dauer“ sind eine Simulation: Annahme, dass jeder Spieler alle paar Sekunden einen Kopftreffer landet, auf Zombies, die schon eine Weile unterwegs sind; die Kopftreffer pro Zombie kommen aus der Tabelle unten. Zufall (Gruppen, Kopftreffer) folgt einem festen Startwert, ist aber nicht derselbe Zufallsgenerator wie im Spiel.</p>
@@ -54,7 +65,16 @@ footer { margin-top: 18px; color: #777; font-size: 12px; border-top: 1px solid v
 </div>
 <div class="sim">
   <table class="kv params" id="params"></table>
-  <div class="resbox"><table class="res" id="res"></table></div>
+  <div class="right">
+    <div class="tabs" role="tablist"><button class="on" data-view="table" role="tab">Tabelle</button><button data-view="chart" role="tab">Diagramme</button></div>
+    <div id="tableview"><div class="resbox"><table class="res" id="res"></table></div></div>
+    <div id="chartview" hidden>
+      <div class="legend"><span><svg width="22" height="8"><line x1="0" y1="4" x2="22" y2="4" stroke="#2a78d6" stroke-width="2"/></svg>Eingestellte Werte</span>
+        <span><svg width="22" height="8"><line x1="0" y1="4" x2="22" y2="4" stroke="#8f8d86" stroke-width="2" stroke-dasharray="4 3"/></svg>Werte im Code</span>
+        <span>Wellen 1–50 · Maus über ein Diagramm zeigt die Zahlen</span></div>
+      <div class="charts" id="charts"></div>
+    </div>
+  </div>
 </div>
 
 <section class="heads"><h2>RIFT · Kopftreffer bis zum Tod</h2>
@@ -185,7 +205,7 @@ function simulateWave(f, w, players, hard, shot, walk, seed) {
 
 const $ = id => document.getElementById(id);
 const rows = [...DATA.rift.map(r => ({ ...r, sec: 'rift' })), ...DATA.pressure.map(r => ({ ...r, sec: 'pressure' }))];
-const SECTIONS = { rift: 'RIFT · RiftWaveScaling', pressure: 'Wellendruck · WavePressure (wie in allen Modi; MIN ALIVE, MORE PER 10 WAVES und AT ONCE GROWS TO hat Rift oben selbst)' };
+const SECTIONS = { rift: 'RIFT · RiftWaveScaling', pressure: 'Wellendruck · WavePressure (alle Modi; zwei Werte hat Rift oben selbst)' };
 const show = (r, v) => r.kind === 'Percent' ? Math.round(v * 100) + ' %' : (r.kind === 'Whole' ? String(Math.round(v)) : (+v.toFixed(2)) + r.unit);
 const shown = r => r.kind === 'Percent' ? +(r.value * 100).toFixed(2) : r.value;
 const fromShown = (r, x) => r.kind === 'Percent' ? x / 100 : x;
@@ -219,8 +239,12 @@ function run() {
     T('Dauer s', 'Simulation: Sekunden bis der letzte Zombie der Welle tot ist.') +
     T('Letzter Spawn s', 'Simulation: Sekunde, in der der letzte Zombie erscheint.') +
     T('Max gleichz.', 'Simulation: die meisten gleichzeitig lebenden Zombies in der Welle.') + '</tr>';
+  const series = [];
   for (let w = 1; w <= 50; w++) {
     const s = simulateWave(f, w, players, hard, shot, walk, FIXED.spawnSeed), s0 = simulateWave(f0, w, players, hard, shot, walk, FIXED.spawnSeed);
+    const pick = (g, sw) => { const n = g.count(w); return { count: n, peak: g.peak(w), start: g.rampStart(w), ramp: g.rampDur(w), iv0: g.interval(w, n, n),
+      floor: g.floor(w), longest: g.longest(w), end: sw.end, lastSpawn: sw.lastSpawn, maxAlive: sw.maxAlive }; };
+    series.push({ a: pick(f, s), b: pick(f0, s0) });
     const cmp = (a, b, fmt) => { const d = a - b; const cls = Math.abs(d) < 1e-6 ? '' : (d > 0 ? 'up' : 'down'); return `<td class="${cls}" title="Code: ${fmt(b)}">${fmt(a)}</td>`; };
     const n0 = x => String(Math.round(x)), n1 = x => x.toFixed(1);
     const total = f.count(w);
@@ -231,7 +255,70 @@ function run() {
       cmp(s.end, s0.end, n0) + cmp(s.lastSpawn, s0.lastSpawn, n0) + cmp(s.maxAlive, s0.maxAlive, n0) + '</tr>';
   }
   $('res').innerHTML = html;
+  lastSeries = series;
+  if (!$('chartview').hidden) charts(series);
 }
+
+// Diagrams: one small chart per measure, each with its own scale, waves 1-50; solid = entered values, dashed = code.
+const CHARTS = [
+  ['Zombies der Welle', 'count', 0], ['Dauer der Welle (s, Simulation)', 'end', 0], ['Letzter Spawn (s, Simulation)', 'lastSpawn', 0],
+  ['Max. gleichzeitig (Simulation)', 'maxAlive', 0], ['Spitze gleichzeitig (eigene Grenze)', 'peak', 0], ['Gleichzeitig zu Wellenbeginn', 'start', 0],
+  ['Pause am Wellenanfang (s)', 'iv0', 2], ['Min. lebend (Wellendruck)', 'floor', 0], ['Rampe bis zur Spitze (s)', 'ramp', 0], ['Overtime ab (s)', 'longest', 0],
+];
+const CW = 300, CH = 150, CL = 34, CR = 10, CT = 8, CB = 20;
+let lastSeries = [];
+function niceMax(m) {
+  if (!(m > 0)) return { max: 1, step: 0.5 };
+  const raw = m / 4, mag = Math.pow(10, Math.floor(Math.log10(raw))), step = [1, 2, 2.5, 5, 10].map(k => k * mag).find(k => k >= raw - 1e-12);
+  return { max: Math.ceil(m / step - 1e-9) * step, step };
+}
+function charts(series) {
+  const n = series.length, x = i => CL + i * (CW - CL - CR) / (n - 1);
+  $('charts').innerHTML = CHARTS.map(([title, key], ci) => {
+    const a = series.map(d => d.a[key]), b = series.map(d => d.b[key]);
+    const { max, step } = niceMax(Math.max(...a, ...b));
+    const y = v => CT + (CH - CT - CB) * (1 - v / max);
+    const path = vals => vals.map((v, i) => (i ? 'L' : 'M') + x(i).toFixed(1) + ' ' + y(v).toFixed(1)).join('');
+    let grid = '';
+    for (let g = 0; g <= max + 1e-9; g += step) {
+      grid += `<line x1="${CL}" x2="${CW - CR}" y1="${y(g)}" y2="${y(g)}" stroke="${g === 0 ? '#bdb9b0' : '#ebe8e2'}" stroke-width="1"/>` +
+        `<text x="${CL - 5}" y="${y(g) + 3}" text-anchor="end">${+g.toFixed(2)}</text>`;
+    }
+    for (const w of [1, 10, 20, 30, 40, 50]) grid += `<text x="${x(w - 1)}" y="${CH - 5}" text-anchor="middle">${w}</text>`;
+    return `<div class="chart"><h3>${title}</h3><svg viewBox="0 0 ${CW} ${CH}" data-c="${ci}" role="img" aria-label="${title}, Wellen 1 bis 50">${grid}` +
+      `<path d="${path(b)}" fill="none" stroke="#8f8d86" stroke-width="2" stroke-dasharray="4 3"/>` +
+      `<path d="${path(a)}" fill="none" stroke="#2a78d6" stroke-width="2" stroke-linejoin="round"/>` +
+      `<g class="hover" visibility="hidden"><line y1="${CT}" y2="${CH - CB}" stroke="#52514e" stroke-width="1"/>` +
+      `<circle r="4" fill="#8f8d86" stroke="#fff" stroke-width="2" class="hb"/><circle r="4" fill="#2a78d6" stroke="#fff" stroke-width="2" class="ha"/></g>` +
+      `<rect x="0" y="0" width="${CW}" height="${CH}" fill="transparent"/></svg></div>`;
+  }).join('');
+  document.querySelectorAll('#charts svg').forEach(svg => {
+    const [title, key, dec] = CHARTS[+svg.dataset.c], hv = svg.querySelector('.hover');
+    const vals = series.map(d => [d.a[key], d.b[key]]);
+    const { max } = niceMax(Math.max(...vals.flat()));
+    const y = v => CT + (CH - CT - CB) * (1 - v / max);
+    const set = (sel, attrs) => Object.entries(attrs).forEach(([k, v]) => hv.querySelector(sel).setAttribute(k, v));
+    svg.addEventListener('mousemove', e => {
+      const r = svg.getBoundingClientRect(), px = (e.clientX - r.left) * CW / r.width;
+      const i = Math.max(0, Math.min(n - 1, Math.round((px - CL) / (CW - CL - CR) * (n - 1)))), [va, vb] = vals[i];
+      hv.setAttribute('visibility', 'visible');
+      set('line', { x1: x(i), x2: x(i) }); set('.ha', { cx: x(i), cy: y(va) }); set('.hb', { cx: x(i), cy: y(vb) });
+      tipbox.textContent = `Welle ${i + 1} · ${title}: ${va.toFixed(dec)}` + (Math.abs(va - vb) > 1e-6 ? ` · im Code ${vb.toFixed(dec)}` : ' · wie im Code');
+      tipbox.style.display = 'block';
+      const b = tipbox.getBoundingClientRect();
+      tipbox.style.left = Math.max(8, Math.min(innerWidth - b.width - 8, e.clientX + 12)) + 'px';
+      tipbox.style.top = (e.clientY - b.height - 12 < 8 ? e.clientY + 16 : e.clientY - b.height - 12) + 'px';
+    });
+    svg.addEventListener('mouseleave', () => { hv.setAttribute('visibility', 'hidden'); tipbox.style.display = 'none'; });
+  });
+}
+function view(name) {
+  document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.view === name));
+  $('tableview').hidden = name !== 'table'; $('chartview').hidden = name !== 'chart';
+  if (name === 'chart') charts(lastSeries);
+  try { localStorage.setItem('zrbSpawnView', name); } catch (e) {}
+}
+document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => view(b.dataset.view));
 function heads() {
   const fmt = d => Object.entries(d).filter(([, p]) => p >= 0.005).map(([k, p]) => `${k}: ${Math.round(p * 100)}%`).join(' · ');
   const avg = d => Object.entries(d).reduce((s, [k, p]) => s + k * p, 0);
@@ -263,5 +350,6 @@ function place(t) {
   tipbox.style.left = x + 'px'; tipbox.style.top = y + 'px';
 }
 heads(); run();
+try { if (localStorage.getItem('zrbSpawnView') === 'chart') view('chart'); } catch (e) {}
 </script>
 </body></html>
