@@ -10,6 +10,7 @@ import HazardDivider from '@/components/HazardDivider';
 import { newsPosts } from '@/content/news';
 import { modeFamilies } from '@/content/modes';
 import HomeLeaderboardPreview from '@/components/HomeLeaderboardPreview';
+import LiveStats from '@/components/LiveStats';
 import { useImmersiveArSupported } from '@/lib/xrSupport';
 
 const pitchIcons = [Crosshair, Hand, Users];
@@ -110,6 +111,9 @@ export default function HomePage() {
       </section>
 
       <HazardDivider />
+
+      {/* LIVE NUMBERS from the game (hidden until the first player was counted) */}
+      <LiveStats />
 
       {/* TRAILER */}
       <section id="trailer" className="py-20 lg:py-28 max-w-5xl mx-auto px-4 lg:px-8">

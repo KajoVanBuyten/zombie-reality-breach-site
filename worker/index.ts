@@ -3,6 +3,7 @@
 //   /api/quest/*               web AR quest runs and redemption codes (quest.ts)
 //   /api/meta/*                Meta account linking for the quest reward (meta.ts)
 //   /api/rewards/*             server-to-server reward lookup for the game's Cloud Code (rewards.ts)
+//   /api/live/*                live player numbers: the game's sign of life and round reports, the home page counters (live.ts)
 // Outside the API only /assets/video/* reaches the worker: byte ranges for the trailer (media.ts).
 // Contract: Docs/WEB_AR_QUEST.md in the game repo.
 
@@ -12,12 +13,14 @@ import { handleLeaderboards } from './leaderboards';
 import { handleQuest } from './quest';
 import { handleMeta } from './meta';
 import { handleRewards } from './rewards';
+import { handleLive } from './live';
 import { handleVideo } from './media';
 
 async function route(path: string, request: Request, env: Env, ctx: Ctx): Promise<Response> {
   if (path.startsWith('/api/quest/')) return handleQuest(path, request, env, ctx);
   if (path.startsWith('/api/meta/')) return handleMeta(path, request, env);
   if (path.startsWith('/api/rewards/')) return handleRewards(path, request, env);
+  if (path.startsWith('/api/live/')) return handleLive(path, request, env, ctx);
   throw new HttpError(404, 'not_found');
 }
 
