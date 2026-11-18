@@ -50,3 +50,14 @@ Neue Umgebung: ANALYTICS_SECRET und ANALYTICS_ADMIN_KEY jeweils kryptografisch z
 Schlüsselverlust: Admin-Schlüssel mit `wrangler secret put ANALYTICS_ADMIN_KEY` rotieren, Besitzerablage aktualisieren. Bei Sitzungsschlüssel-Rotation verfallen vorhandene Tokens, Clients fordern neue an. Rollback auf eine frühere Worker-Version benötigt keine Datenbanklöschung; Zustimmung bleibt für alte Versionen bedeutungslos. Bei dauerhafter Abschaltung Erfassung und Aufbewahrung gemeinsam planen.
 
 Messdaten beginnen erst mit Inbetriebnahme. Frühere Website-Besuche lassen sich nicht rekonstruieren.
+
+## Nachweis der Inbetriebnahme am 19.11.2026
+
+- Worker-Version: `d4a3e899-3b11-4c86-8eba-a8f2d1d702cc`, Frontend `index-DANQY-zT.js`, beide Custom Domains veröffentlicht.
+- TypeScript-Prüfung und Frontend-Build erfolgreich. ESLint ohne Fehler; eine vorhandene Fast-Refresh-Warnung in i18n und zwei Warnungen in generierten Wrangler-Typen.
+- Lokale API-Integration: geschützter Bericht, Herkunft, fehlende Einwilligung, DNT/GPC, ungültige Tokens/Ereignisse, Wiederholungs-Deduplizierung, Aggregation und Entfernung privater URL-Inhalte geprüft.
+- Originale SQL-Migration in isolierter In-Memory-Datenbank: 10.002 Einfügeversuche ergeben genau 10.000 gespeicherte Ereignisse und passenden Budgetzähler.
+- Live: Bericht mit Schlüssel HTTP 200/Cache-Control no-store, ohne Schlüssel HTTP 401; bestehende Live-Statistik und private Quest-GLB weiter HTTP 200.
+- Browserprüfung: Ablehnung, Zustimmung, späterer Widerruf und Statistikoberfläche. Live-Testkampagne ergab eine Sitzung, einen Trailerstart und einen Beta-Klick; nur diese drei eigenen Testereignisse danach entfernt. Tagesbudget enthält diese drei technischen Testschreibvorgänge, Besucherstatistik enthält sie nicht.
+- Vorhandene Spielquelle meldete bei Inbetriebnahme drei Installationen und null online. Das ist ausdrücklich kein Nachweis der Anzahl der Meta-Beta-Mitglieder.
+- Private Besitzerablage des Zugriffsschlüssels: `E:\KaMaStudios\Marketing\ZRB\WebsiteTracking\ZRB-Tracking-Zugang.json`; Datei mit eingeschränkter lokaler ACL, kein Schlüssel in Git.
