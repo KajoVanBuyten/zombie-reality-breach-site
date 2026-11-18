@@ -33,6 +33,11 @@ export interface Env {
   META_APP_SECRET?: string;
   QUEST_SECRET?: string;
   WEB_REWARDS_KEY?: string;
+  /** Separate EU analytics database; no game identifiers or credentials are joined to it. */
+  ANALYTICS_DB?: WorkerBindings['ANALYTICS_DB'];
+  ANALYTICS_SECRET?: string;
+  ANALYTICS_ADMIN_KEY?: string;
+  ANALYTICS_LIMITER?: WorkerBindings['ANALYTICS_LIMITER'];
 }
 
 export interface Ctx {

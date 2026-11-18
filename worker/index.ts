@@ -15,8 +15,10 @@ import { handleMeta } from './meta';
 import { handleRewards } from './rewards';
 import { handleLive } from './live';
 import { handleVideo } from './media';
+import { handleAnalytics, cleanupAnalytics } from './analytics';
 
 async function route(path: string, request: Request, env: Env, ctx: Ctx): Promise<Response> {
+  if (path.startsWith('/api/analytics/')) return handleAnalytics(path, request, env);
   if (path.startsWith('/api/quest/')) return handleQuest(path, request, env, ctx);
   if (path.startsWith('/api/meta/')) return handleMeta(path, request, env);
   if (path.startsWith('/api/rewards/')) return handleRewards(path, request, env);
@@ -25,6 +27,9 @@ async function route(path: string, request: Request, env: Env, ctx: Ctx): Promis
 }
 
 export default {
+  async scheduled(_event: unknown, env: Env, ctx: Ctx) {
+    if (env.ANALYTICS_DB) ctx.waitUntil(cleanupAnalytics(env.ANALYTICS_DB));
+  },
   async fetch(request: Request, env: Env, ctx: Ctx): Promise<Response> {
     const path = new URL(request.url).pathname;
     if (path === '/api/leaderboards') return handleLeaderboards(request, env, ctx);

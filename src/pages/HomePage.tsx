@@ -78,6 +78,7 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row gap-4">
             <a
               href={META_URL}
+              data-track="hero_meta"
               target="_blank"
               rel="noopener noreferrer"
               className="px-7 py-3 bg-blood hover:bg-blood-hover text-bone font-heading uppercase tracking-wider text-sm transition-all hover:scale-105 glow-blood flex items-center justify-center gap-2"
@@ -99,6 +100,7 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row gap-4 mt-4">
             <a
               href={META_BETA_URL}
+              data-track="hero_beta"
               target="_blank"
               rel="noopener noreferrer"
               className="px-7 py-3 border border-gold text-gold hover:bg-gold hover:text-bg font-heading uppercase tracking-wider text-sm transition-all hover:scale-105 flex items-center justify-center gap-2"
@@ -257,6 +259,7 @@ export default function HomePage() {
           <p className="text-sm text-bone-muted font-body mb-6">{t('hero.ea')}</p>
           <a
             href={META_URL}
+            data-track="bottom_beta"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-8 py-3.5 bg-blood hover:bg-blood-hover text-bone font-heading uppercase tracking-wider text-sm transition-all hover:scale-105 glow-blood"

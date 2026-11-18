@@ -94,12 +94,31 @@ export function DatenschutzPage() {
             </p>
           </Section>
 
-          <Section title="4. Keine Cookies, kein Tracking">
+          <Section title="4. Optionale Website-Analyse">
             <p>
-              Diese Website setzt keine Cookies, verwendet keine Analyse- oder Tracking-Dienste und keine Werbedienste.
-              Es gibt keine Kontaktformulare, keine Benutzerkonten und keine Newsletter. Ein Cookie-Banner ist daher nicht
-              erforderlich.
+              Nur nach Ihrer freiwilligen Einwilligung analysieren wir Seitenaufrufe, interne Navigation, Klicks zum
+              Beta-Zugang, externe Links und Downloads, Trailer-Wiedergabe, Scrolltiefe, aktive Besuchsdauer,
+              Sprachwechsel und die Anzahl technischer Fehler. Die Analyse dient der Verbesserung der Website und
+              der Bewertung unserer Beta-Kampagne. Rechtsgrundlagen sind Art. 6 Abs. 1 lit. a DSGVO und § 25 Abs. 1 TDDDG.
+              Eine Ablehnung hat keine Auswirkungen auf die Nutzung der Website.
             </p>
+            <p>Gespeichert werden eine zufällige Sitzungskennung, Ereignisart und Zeitpunkt, bereinigte Seitenpfade,
+              Kampagnenkennungen aus utm_source, utm_medium, utm_campaign und utm_content, grobe Geräte- und
+              Browserkategorien, Sprache und das Land. Wir speichern in der Analyse keine IP-Adresse, vollständigen
+              Referrer-URLs, URL-Abfrageparameter außerhalb der genannten Kampagnenkennungen, Namen, E-Mail-Adressen,
+              Formulareingaben oder Fehlertexte. Bitte verwenden Sie in Kampagnenkennungen keine personenbezogenen Daten.
+              Es gibt keine Werbepixel, kein Fingerprinting und keinen Abgleich mit Meta-Konten oder Spielkennungen.
+              Ein Klick zum Beta-Zugang ist kein bestätigter Beitritt und keine Installation.</p>
+            <p>Ihre Auswahl wird im lokalen Browserspeicher für 180 Tage gespeichert. Nur nach Zustimmung wird eine
+              zufällige Sitzungskennung im Sitzungsspeicher des Tabs abgelegt; nach 30 Minuten Inaktivität oder spätestens
+              nach 24 Stunden beginnt eine neue Sitzung. Analysedaten werden bei Cloudflare in einer separaten D1-Datenbank
+              mit EU-Jurisdiktion gespeichert und nach 90 Tagen automatisch gelöscht. Die technische Auslieferung über
+              Cloudflare kann weiterhin Verbindungsdaten verarbeiten (siehe Hosting). Zur Missbrauchsbegrenzung verwendet
+              Cloudflare die IP-Adresse vorübergehend im Rate-Limiter; sie wird nicht in die Analysedatenbank geschrieben.</p>
+            <p>Sie können Ihre Einwilligung jederzeit über „Datenschutz-Einstellungen“ widerrufen. Danach werden keine
+              weiteren Analyseereignisse gesendet; die lokale Analyse-Sitzungskennung wird entfernt. Der Widerruf berührt
+              die Rechtmäßigkeit der bisherigen Verarbeitung nicht. DNT und Global Privacy Control des Browsers werden
+              als Ablehnung respektiert. Ablehnungen und Werbeblocker führen zu Lücken in der Auswertung.</p>
           </Section>
 
           <Section title="5. Schriftarten">
@@ -150,7 +169,7 @@ export function DatenschutzPage() {
             </p>
           </Section>
 
-          <p className="text-xs text-bone-muted/60">Stand: Oktober 2026</p>
+          <p className="text-xs text-bone-muted/60">Stand: November 2026</p>
         </div>
       </section>
     </div>
