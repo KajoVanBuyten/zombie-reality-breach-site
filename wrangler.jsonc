@@ -8,6 +8,8 @@
   "compatibility_date": "2026-10-01",
   // Keep variables set in the Cloudflare dashboard; without this every deploy deletes them.
   "keep_vars": true,
+  "triggers": { "crons": ["17 3 * * *"] },
+  "ratelimits": [{ "name": "ANALYTICS_LIMITER", "namespace_id": "1001", "simple": { "limit": 60, "period": 60 } }],
   // UGS environment "production" (not a secret).
   // META_APP_ID: public Meta app id. META_ORG_ID: Meta team (organization) id for account linking, not a secret;
   // empty until the owner fills it in (the /api/meta endpoints answer 503 { configured: false } until then).
@@ -19,6 +21,12 @@
   // Web AR quest runs, rewards and codes (migrations/), created 2026-10-20 with `npx wrangler d1 create zrb-web-quest`.
   // New migrations: npx wrangler d1 migrations apply zrb-web-quest --remote
   "d1_databases": [
+    {
+      "binding": "ANALYTICS_DB",
+      "database_name": "zrb-site-analytics",
+      "database_id": "5bbe5ba2-d79c-4a24-bf5a-8d13f2c18182",
+      "migrations_dir": "analytics-migrations"
+    },
     {
       "binding": "DB",
       "database_name": "zrb-web-quest",

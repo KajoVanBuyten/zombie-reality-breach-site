@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ScrollToTop from '@/components/ScrollToTop';
 import AsciiSmoke from '@/components/AsciiSmoke';
+import Analytics from '@/components/Analytics';
 import HomePage from '@/pages/HomePage';
 import TheGamePage from '@/pages/TheGamePage';
 import GameModesPage from '@/pages/GameModesPage';
@@ -18,11 +19,13 @@ import { ImpressumPage, DatenschutzPage } from '@/pages/LegalPages';
 // The web AR quest (three.js) loads as its own chunk, so the landing page bundle does not grow.
 const BreachPage = lazy(() => import('@/pages/BreachPage'));
 const BreachLinkedPage = lazy(() => import('@/pages/BreachLinkedPage'));
+const TrackingPage = lazy(() => import('@/pages/TrackingPage'));
 
 export default function App() {
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL}>
       <I18nProvider>
+        <Analytics />
         <div className="min-h-screen bg-bg text-bone flex flex-col">
           <Navbar />
           <ScrollToTop />
@@ -41,6 +44,7 @@ export default function App() {
               <Route path="/faq" element={<FAQPage />} />
               <Route path="/impressum" element={<ImpressumPage />} />
               <Route path="/datenschutz" element={<DatenschutzPage />} />
+              <Route path="/tracking" element={<Suspense fallback={<Loading />}><TrackingPage /></Suspense>} />
               <Route path="/breach" element={<Suspense fallback={<Loading />}><BreachPage /></Suspense>} />
               <Route path="/breach/linked" element={<Suspense fallback={<Loading />}><BreachLinkedPage /></Suspense>} />
               <Route path="*" element={<NotFound />} />

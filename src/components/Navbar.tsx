@@ -67,6 +67,7 @@ export default function Navbar() {
 
           <a
             href={META_URL}
+            data-track="desktop_nav_beta"
             target="_blank"
             rel="noopener noreferrer"
             className="hidden sm:inline-flex items-center px-4 py-2 bg-blood hover:bg-blood-hover text-bone text-xs font-heading uppercase tracking-wider transition-all hover:scale-105 glow-blood"
@@ -98,6 +99,7 @@ export default function Navbar() {
             <li>
               <a
                 href={META_URL}
+                data-track="mobile_nav_beta"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center mt-2 px-4 py-2 bg-blood hover:bg-blood-hover text-bone text-xs font-heading uppercase tracking-wider"

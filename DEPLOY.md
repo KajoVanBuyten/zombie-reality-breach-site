@@ -63,6 +63,10 @@ npm run typecheck && npm run lint && npm run build && npx wrangler deploy
 | `vars.META_APP_ID`, `vars.META_ORG_ID` | Meta-App-ID und Team-ID (Organisations-ID) für die Kontoverknüpfung der Web-AR-Quest (keine Geheimnisse). `META_ORG_ID` ist leer, bis der Besitzer sie einträgt. |
 | `d1_databases` (`DB`) | D1-Datenbank `zrb-web-quest` für Quest-Läufe, Belohnungen und Codes; Schema in `migrations/`. |
 
+## Website-Tracking
+
+Privater Bericht: `/tracking`. Einrichtung, Grenzen, Einwilligung, Migration und lokale Integrationstests siehe [TRACKING.md](TRACKING.md). Separate EU-Datenbank `zrb-site-analytics` (`ANALYTICS_DB`), unabhängige Secrets `ANALYTICS_SECRET` und `ANALYTICS_ADMIN_KEY`, tägliche 90-Tage-Bereinigung. Bei Deployment die bestehende Spiel-Datenbank und ihre Secrets erhalten.
+
 ## Secrets
 
 Die Bestenlisten lesen Punkte aus Unity Gaming Services mit einem Service-Account. Die Schlüssel liegen nur als Worker-Secrets in Cloudflare, nie im Repository, nie im Chat:
